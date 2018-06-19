@@ -1,0 +1,8 @@
+div.overflowy {
+    overflow-y:  scroll;
+    height: 300px;
+}
+
+div.centertext {
+    text-align: center;
+}

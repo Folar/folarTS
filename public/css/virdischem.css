@@ -1,0 +1,435 @@
+body {background-color: #c0c0c0 ;align:center}
+
+.whiteBG{
+    background-color:white ;
+    height:750px;
+}
+.inactiveApp {
+   color: lightblue;
+    background-color: #20b2aa;
+}
+.titleFont{
+    font-family:papyrus;
+    margin-left:60px;
+}
+.titleFont2{
+    font-family:papyrus;
+    background-color: #008080;
+    padding-top:12px;
+    margin-top:0px;
+    padding-left:10px;
+    height:43px;
+    width:200px;
+    color:white;
+}
+.titleFontReg{
+    font-family:papyrus;
+    margin-left:-20px;
+}
+.menuSuffix{
+    font-family:papyrus;
+    background-color: #008080;
+    padding-top:12px;
+    margin-top:0px;
+    padding-left:10px;
+    height:43px;
+    width:300px;
+    color:white;
+    margin-left:-25px;
+}
+.activeApp {
+   color: blue;
+   background-color: #20b2aa;
+}
+#menu ul{
+    list-style:none;
+    display: inline-block;
+     background-color:#008080;
+}
+.bottom{
+            margin:0 0 25px 0;
+}
+.topLeft{
+            margin:40px 0 0 0;
+}
+
+.exit {
+    float:right;
+}
+
+.error{
+    margin: 0 0 0 2px;
+    font-family:ProximaNova li;
+    font-size:10pt;
+    color:red;
+}
+
+.showBorder{
+    border-width:1;
+    border-color: red;
+    border-style: solid;
+}
+.hideBorder{
+}
+.showError{
+    visibility: visible;
+}
+.hideError{
+     visibility: hidden;
+}
+.detail{
+    margin:5px 0 0 0;
+    height:48;
+     width:130px ;
+    font-family:ProximaNova li;
+    font-size:12pt;
+}
+
+.detail2{
+    margin:5px 0 0 -15px;
+    height:48;
+     width:130px ;
+    font-family:ProximaNova li;
+    font-size:12pt;
+}
+.detail3{
+    margin:5px 0 0 -15px;
+    height:48;
+     width:60px ;
+    font-family:ProximaNova li;
+    font-size:12pt;
+}
+
+.detailInputShort {
+    width:80px;
+    margin:5px 0 0 0;
+    height:48;
+    font-family:ProximaNova li;
+    font-size:12pt;
+}
+.detailInput {
+    width:300px;
+    margin:5px 0 0 0;
+    height:48;
+    font-family:ProximaNova li;
+    font-size:12pt;
+}
+.trialChk {
+    width:20px  !important;
+    height:20px !important;
+    margin:25px 4px 0 136px !important;
+}
+.trial {
+    margin:10px 24px 0 0 !important;
+    font-family:ProximaNova li;
+    font-size:14pt;
+}
+.top75{
+            margin:5px  75px;
+            width:400px;
+            border-radius: 8px;
+            height:48;
+            font-family:ProximaNova li;
+            font-size:14pt;
+}
+
+.registerLink {
+    color:#20b2aa;
+    font-size:20px;
+    margin:5px 0 0 55px;
+}
+
+.wantto {
+    color:#000000;
+    font-size:30px;
+    margin:40px 0 0 55px;
+    width:340
+}
+
+.loginButton {
+    color:#20b2aa;
+    background-color:#20b2aa;
+    margin:5px 0 0 398px;
+}
+
+.regButton {
+    color:#20b2aa;
+    margin:0 0 0 38px;
+}
+.borderRight {
+    margin-top:50px;
+    margin-bottom:50px;
+    border-right-style: solid;
+    border-right-color: lightGrey;
+}
+.analyzer  li{
+    margin-top:50px;
+    color:black;
+    position:relative;
+}
+
+
+.marg10  {
+    margin-left:10px;
+    width:1475px;
+}
+.graphRight  {
+    float:right;
+    width:400px;
+    margin-left:10px;
+    margin-top:30px;
+}
+.headerHide{
+    display:none;
+}
+
+.propTable {
+
+    width:580px;
+}
+
+
+.jqx-widget-header {
+    background-color:#707070 !important;
+}
+ul li{
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor:pointer;
+    background-color:#008080;
+    color:#ffffff;
+
+    transition:0.3s;
+}
+
+ul li:hover{
+    background-color:#cyan;
+}
+
+#menu {
+  padding:0px 0px 0px 0px;
+  width: 100%;
+  display: block;
+  background-color:#008080;
+
+
+}
+.ellipse {
+     white-space: nowrap;
+     width: 190px;
+     overflow: hidden;
+     display:inline-block;
+     text-overflow: ellipsis ;
+}
+.ellipseLink {
+     white-space: nowrap;
+     width: 190px;
+     overflow: hidden;
+     display:inline-block;
+     text-overflow: ellipsis ;
+     color: blue;
+     text-decoration: underline;
+     cursor: pointer;
+}
+ul li.focused{
+    color:#ffffff;
+    background-color:#696969;
+}
+
+.tabs-panel {
+	display: none;
+    margin-top: 0;
+}
+
+.tabs-panel_selected {
+	display: block;
+}
+
+.tab + .tab {
+	margin-left: .5em;
+}
+
+.tab_selected {
+	text-decoration: none;
+	color: black;
+	font-weight: bold;
+}
+#treeGrid {
+    margin-top:45px;
+}
+.ui-menu-item {
+    background-color:white;
+}
+.waterRow {
+    background-color:#afeeee !important;
+}
+
+.airRow {
+    background-color: #0064b9 !important;
+}
+
+.soilRow {
+    background-color:#5f9ea0 !important;
+}
+
+
+.acuteRow {
+     background-color:#da70d6 !important;
+}
+.chronicRow {
+     background-color:#9370db !important;
+ }
+.fireRow {
+      background-color:#ffd700 !important;
+
+ }
+ .specialRow {
+     background-color: #d16200 !important;
+  }
+  .reactivityRow {
+        background-color:#974922 !important;
+  }
+
+.showComponent {
+        visibility: visible;
+}
+  .hideComponent {
+        visibility: hidden;
+  }
+ .hideCompare {
+           visibility: hidden;
+ }
+.typeSelector{
+    margin:5px 5px 0 -25px;
+    height:28px;
+ }
+
+ .searchBox{
+    height:38px;
+    margin-right:3px;
+    margin-left:5px;
+ }
+#diamondHeight {
+
+    height:200px;
+}
+.showDiamond1 {
+      margin: 5px 0 0 187px ;
+}
+
+.showDiamond2 {
+      margin: 5px 0 0 83px ;
+}
+.showDiamond3 {
+      margin: 5px 0 0 47px ;
+}
+.showDiamond {
+      background-image: url(../img/diamond.png);
+      background-repeat: no-repeat;
+      height:38px;
+      width:38px;
+      position:relative;
+      background-size: 38px 38px;
+  }
+ .redDiamond {
+     font-size:8px;
+     font-weight: bold;
+     left: 16px;
+     position: absolute;
+     top: 4px;
+ }
+  .blueDiamond {
+      font-size:8px;
+      font-weight: bold;
+      left: 8px;
+      position: absolute;
+      top: 14px;
+  }
+
+  .yellowDiamond {
+       font-size:8px;
+       font-weight: bold;
+       left: 26px;
+       position: absolute;
+       top: 14px;
+   }
+
+  .whiteDiamond {
+        font-size:8px;
+        font-weight: bold;
+        left: 16px;
+        position: absolute;
+        top: 24px;
+  }
+
+  .rel {
+          position: relative;
+  }
+
+   .chemimg {
+            background-color: "#ffffff";
+    }
+
+   .graphContainer {
+        margin-top:10px;
+   }
+
+   .arrowDisplay{
+           width: 45px;
+           text-align:left;
+   }
+   .periodDisplay{
+        width: 325px;
+        text-align:center;
+   }
+
+
+.zoomSelector{
+    margin:5px 5px 5px 0px;
+    height:28px;
+ }
+
+ .left8{
+     margin:5px 5px 5px 8px;
+
+  }
+
+ .configLbl{
+       margin:5px 0px 0px -15px;
+
+ }
+
+.positionLbl{
+       margin:5px 0px 0px 5px;
+
+ }
+  .configSel{
+        margin:5px 0px 0px -20px;
+
+  }
+
+ .wide{
+        width:700px;
+
+  }
+
+
+ .tall{
+        height:40px;
+
+  }
+
+  .stkMargin {
+  margin: 10px 0  0 0
+  }
+
+  .lbleft {
+    text-align: left;
+    margin: 0 -5px 5px 20px;
+  }
+
+  .bottomM {
+      margin: 0 0 10px -5px;
+    }
