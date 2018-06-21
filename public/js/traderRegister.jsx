@@ -28,7 +28,6 @@ var zip;
 var state;
 var company;
 var dept;
-var trial;
 
 
 
@@ -95,25 +94,29 @@ var TraderRegister= React.createClass({
             };
     },
     submitText2: function() {
-                //if(!this.validate()) return;
+       // if(!this.validate()) return;
+        func = this.success;
+        $.post("/reg", {
+            fn: firstName.value, ln: lastName.value, email:email.value, password:password.value,
+            phone: phone.value, mobile: mobile.value, company:company.value,ad1:address1.value,
+            ad2: address2.value, city: city.value, state:state.value,zip:zip.value ,
+            dept: dept.value, country:country.value
+            }, function (data) {
+                func(data);
+            }
+        )
 
-                this.state.regSource.fetch({ data: { fn: firstName.value, ln: lastName.value, email:email.value, password:password.value,
-                                                          phone: phone.value, mobile: mobile.value, company:company.value,ad1:address1.value,
-                                                          ad2: address2.value, city: city.value, state:state.value,zip:zip.value ,
-                                                          dept: dept.value, country:country.value},
-                 success: this.success, fail: this.fail, type: 'POST' });
-                this.setState({ busy: true });
+        this.setState({ busy: true });
 
     },
-    success : function(){
+    success : function(data){
 
          var func  = this.props.func;
           this.setState({ busy: false })
-          var data = this.state.regSource.models[0];
-           if (data.attributes.duplicateUser)
-               alert(data.attributes.user + " Already Exists");
+           if (data.duplicateUser)
+               alert(data.user + " Already Exists");
            else
-                func(0,data.attributes.user,100);
+                func(0,data.user,1);
 
 
     },
@@ -232,7 +235,8 @@ var TraderRegister= React.createClass({
              <Details  ref="country"  placeholder="Optional" rid="country" label="Country" />
              <Details rid="dept" ref="dept"  placeholder="Optional" label="Department"  />
               <Row>
-                 <input type="checkbox" ref="trial"  className="trialChk" checked /><label className="trial"> Trial Account </label> &nbsp;<Button className="regButton"  bsSize="large" onClick={this.submitText2} disabled={this.state.busy}>{buttonContent}</Button>
+                   <Button className="regButton"  bsSize="large" onClick={this.submitText2}
+                           disabled={this.state.busy}>{buttonContent}</Button>
               </Row>
         </div>
         );

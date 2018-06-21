@@ -3,35 +3,19 @@
 var Models = {}, Collections = {};
 
 
-Models.Reaction = Backbone.Model.extend({
-    paramRoot: 'reaction',
-    urlRoot: '/reaction',
-});
-
-Collections.ReactionCollection = Backbone.Collection.extend({
-    model: Models.Reaction,
-    url: '/reaction'
-});
 
 
 
 
 
 
-Collections.newPositionCollection = Backbone.Collection.extend({
-    model: Models.Reaction,
-    url: '/newposition'
-});
 
 Collections.editPositionCollection = Backbone.Collection.extend({
     model: Models.Reaction,
     url: '/editposition'
 });
 
-Collections.chgPositionCollection = Backbone.Collection.extend({
-    model: Models.Reaction,
-    url: '/chgposition'
-});
+
 
 Collections.modifyTansactionCollection = Backbone.Collection.extend({
     model: Models.Reaction,
@@ -43,21 +27,9 @@ Collections.moveTansactionCollection = Backbone.Collection.extend({
     url: '/movetrans'
 });
 
-Collections.configCollection = Backbone.Collection.extend({
-    model: Models.Reaction,
-    url: '/config'
-});
-Collections.newConfigCollection = Backbone.Collection.extend({
-    model: Models.Reaction,
-    url: '/newconfig'
-});
 
 
 
-Collections.regCollection = Backbone.Collection.extend({
-    model: Models.Reaction,
-    url: '/reg'
-});
 
 
 Collections.logCollection = Backbone.Collection.extend({
@@ -1043,23 +1015,23 @@ var Trader = React.createClass({
         });
     },
     okNewPosition: function (val) {
-        this.state.newPositionSource.fetch({
-            data: {
-                newName: val
+        let func = this.addNewPosition;
+        $.post("/newPosition",
+            {
+                name: val
+            },
+            function (data) {
+                func(data);
 
-            }, success: this.addNewPosition, fail: this.fail, type: 'POST'
-        });
+            }
+        );
     },
     deleteThePosition: function () {
         this.reload("");
     },
-    addNewPosition: function () {
-        var arr = this.state.positionNames;
-        arr.push({
-            item: this.state.newPositionSource.models[0].attributes.name,
-            id: this.state.newPositionSource.models[0].attributes.id
-        });
-        this.setState({positionNames: arr, positionSel: this.state.newPositionSource.models[0].attributes.id});
+    addNewPosition: function (data) {
+
+        this.setState({positionNames: data.positionNames, positionSel: data.currentPosition });
         this.fetch("");
     },
 
@@ -1140,15 +1112,20 @@ var Trader = React.createClass({
         var id = this.refs.nameCombo.getConfigName();
 
         this.setState({positionSel: id});
-        this.state.chgPositionSource.fetch({
-            data: {
-                id: id
-            }, success: this.chgPosition, fail: this.fail, type: 'POST'
-        });
+        let func = this.chgPosition;
+        $.post("/chgPosition",
+            {
+                name: id
+            },
+            function (data) {
+                func(data);
+
+            }
+        );
     },
 
-    chgPosition: function () {
-        this.setState({positionSel: this.state.chgPositionSource.models[0].attributes.id, offset: -1});
+    chgPosition: function (data) {
+        this.setState({positionSel: data.currentPosition, offset: -1});
         this.clearTrans();
         this.fetch("");
     },
@@ -1207,7 +1184,7 @@ var Trader = React.createClass({
                             Stocks:
                         </Col>
                         <Col xs={1} className={this.state.klassName}>
-                            <ConfigNameCombo ref="nameCombo2" names={this.state.stockNames} sel={this.state.stockSel}
+                            <StockNameCombo ref="nameCombo2" names={this.state.stockNames} sel={this.state.stockSel}
                                              switchConfig={this.switchStocks}/>
                         </Col>
 
@@ -1241,7 +1218,6 @@ var Trader = React.createClass({
 
     componentDidMount: function () {
         this.state.offset = this.props.offset;
-
         this.fetch("");
         tradeNode = $(this.refs.tradetable.getDOMNode());
         tradeNode2 = $(this.refs.tradetable2.getDOMNode());
@@ -1276,7 +1252,7 @@ var Trader = React.createClass({
     },
     success: function (data) {
         var j = 1;
-        var id = data.idPosition;
+        var id = data.currentPosition;
         var names = data.positionNames;
 
         var sid = data.currentStock;
@@ -1563,7 +1539,7 @@ var TraderApp = React.createClass({
         var me = this;
         var transition = function (state, name, fnc) {
 
-
+            debugger;
             if (state == 1) {
                 if (me.state.fnc == null) {
                     me.setState({fnc: fnc});

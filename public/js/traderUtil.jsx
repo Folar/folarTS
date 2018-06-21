@@ -12,6 +12,43 @@ var Models = {}, Collections = {};
 
 
 
+var StockNameCombo = React.createClass({
+    getInitialState: function() {
+        return {
+            test :0
+        };
+    },
+    getConfigName:function(){
+
+        var node=$(this.getDOMNode()).context.children[0];
+        return node.value;
+    },
+
+    setConfigName:function(val){
+
+        var node=$(this.getDOMNode()).context.children[0];
+        node.value = val;
+    },
+    render: function() {
+
+        var items = this.props.names.map(function(item, index) {
+            return <option value={item} > {item} </option>;
+        });
+
+
+        if (items.length >1)
+            return <div>
+                <select value = {this.props.sel}  onChange={ this.props.switchConfig} >
+                    {items}
+                </select>
+            </div>;
+
+        return <div>
+            <span> {this.props.sel} </span>
+        </div>;
+    }
+
+});
 
 
 var ConfigNameCombo = React.createClass({

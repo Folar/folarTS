@@ -20,14 +20,12 @@ var TraderLogin = React.createClass({
         var name = $(this.refs.name.getDOMNode())[0].value;
         var pw = $(this.refs.pw.getDOMNode())[0].value;
         var func = this.props.func;
-        $.post("/login", {name: 'm', pw: 'm'}, function (data) {
+        $.post("/login", {name: 'pl', pw: 'dddd'}, function (data) {
 
                 if (data.badLogin)
                     alert("Wrong user and password");
 
                 else {
-
-
                     func(0, data.email, 1);
                     //this.setState({busy: false});
                 }

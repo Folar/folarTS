@@ -82,7 +82,7 @@ var TraderConfig = React.createClass({
                 col3: this.refs.col3.getColumn(),
                 col4: this.refs.col4.getColumn(),
                 col5: this.refs.col5.getColumn(),
-                stocks: $("#stocks")[0].value,
+                stocks: $("#stocks")[0].value.toUpperCase(),
             }, function (data) {
             }
         )
