@@ -8,6 +8,7 @@ var request = require('request');
 var express = require('express');
 const bp = require("body-parser")
 var mysql = require('mysql');
+var moment = require('moment');
 
 const {Result} = require('./Result.js');
 const {MatrixRow} = require('./MatrixRow.js');
@@ -24,9 +25,9 @@ const {TradeDataPeriod} = require('./TradeDataPeriod.js');
 
 let dbInfo = {
     host: "localhost",
-    user: "",
+    user: "root",
     password: "",
-    database: ""
+    database: "Vproduction"
 
 }
 function connectToDB() {
@@ -316,12 +317,12 @@ app.post('/chgposition', function (req, res) {
     info.currentPosition = id;
     for (let i in info.positionNames) {
         if (id == info.positionNames[i].name) {
-            info.currentPositionId = info.positionNames[i].idPosition;
+            info.currentPositionId = info.positionNames[i].idposition;
             break;
         }
     }
     let con = connectToDB();
-    updateCurrentConfig(con, info.currentConfigId).then((data) => {
+    updateCurrentPosition(con, info.currentPositionId).then((data) => {
         con.end();
         user.currentPosition = info.currentPosition;
         user.currentPositionId = info.currentPositionId;
@@ -550,20 +551,75 @@ const getDataFromDB = async (con, sql) => {
         });
     });
 };
-const getAsyncData = async (con, user, trans) => {
+const getAsyncData = async (con, user, trans, underlying) => {
 
-    const configData = await  getConfig(con, user.currentConfigId)
+    const configData = await  getConfig(con, user.currentConfigId);
+    // make sure underlying is in config
+    let stockNames = configData[0].stocks.split(",");
+    if (!stockNames.includes(user.currentStock)) {
+        underlying = user.currentStock = user.info.currentStock = stockNames[0];
+        const result = await getDataFromDB(con,
+            "UPDATE user SET  currentStock = '" + underlying + "' where iduser = " + user.idUser);
+    }
     let stkData = user.info.stkData;
 
     const configNames = await  getConfigNames(con, user.idUser);
     const positions = await  getPositions(con, user.idUser);
+    if (underlying != "00" && user.currentStock != underlying) {
+        user.currentStock = underlying;
+        const result = await getDataFromDB(con,
+            "UPDATE user SET  currentStock = '" + underlying + "' where iduser = " + user.idUser
+        );
+    }
+
+
+    if (trans.length > 0) {
+        let R = new Result();
+        // create new transactions
+        let iduser = user.idUser;
+        let transactionsStr = trans.split(":");
+        for (let i = 0; i < transactionsStr.length; i++) {
+            let transactionStr = transactionsStr[i].split(",");
+
+            let opra = underlying;
+            let dt = transactionStr[R.EXP].split("-");
+            opra += dt[0].substring(2) + dt[1] + dt[2] +
+                transactionStr[R.T_TYPE].substring(0, 1) + transactionStr[R.STRIKE];
+            let sql = "INSERT INTO transaction (iduser, strike,qty,type,action,symbol,price,expiration,opra, createDate,modifyDate ) VALUES(" +
+                +iduser + "," +
+                transactionStr[R.STRIKE] + "," +
+                transactionStr[R.MAG] + "," +
+                "'" + transactionStr[R.T_TYPE].toLowerCase() + "'," +
+                "'" + transactionStr[R.T_ACTION].toLowerCase() + "'," +
+                "'" + transactionStr[R.UNDERLYING] + "'," +
+                transactionStr[R.MID] + "," +
+                "'" + transactionStr[R.EXP] + "'," +
+                "'" + opra + "'," +
+                "NOW(),NOW());";
+
+            let resu = await getDataFromDB(con, sql);
+            let idtrans = resu.insertId;
+            sql = "INSERT INTO position_transaction (idposition, idtransaction,  createDate,modifyDate ) VALUES(" +
+                +user.currentPositionId + "," +
+                +idtrans + "," +
+                "NOW(),NOW());";
+            resu = await getDataFromDB(con, sql);
+        }
+    }
+    // get transactions and merge
+    let sql = "SELECT  strike,qty,type,action,symbol,price,expiration, t.createDate FROM position_transaction pt" +
+        "  left join transaction t on  pt.idtransaction = t.idtransaction where idposition = " + user.currentPositionId + ";";
+    resultSet = await getDataFromDB(con, sql);
+
+
     con.end();
     if (stkData[user.currentStock] == undefined) {
         let stk = await  getStockData();
         user.info.stkData[user.currentStock] = stk;
     }
-    return [configData, user.info.stkData[user.currentStock], configNames, positions];
-};
+    return [configData, user.info.stkData[user.currentStock], configNames, positions, resultSet];
+}
+
 function extractData(expMap, underlyingPrice, map, offset) {
     let lst = [];
 
@@ -593,6 +649,7 @@ function extractData(expMap, underlyingPrice, map, offset) {
     }
     return [lst, min, max];
 }
+
 function getTableName(elem) {
 
     let exp = elem.symbol.split('_')[1].substring(0, 6);
@@ -600,6 +657,7 @@ function getTableName(elem) {
     return name;
 
 }
+
 function addData(item, elem, underlyingPrice, map) {
     let newPeriod = false;
     let tbl = item;
@@ -614,7 +672,8 @@ function addData(item, elem, underlyingPrice, map) {
 
     return newPeriod;
 }
-function generateData(res, info) {
+
+function generateData(res, info, transMap) {
 
     let callmap = [];
     let putmap = [];
@@ -630,7 +689,8 @@ function generateData(res, info) {
     info.expDay2 = "<" + info.expNames[parseInt(info.offset) + 1].split(":")[1] + ">";
     info.period3 = info.expNames[parseInt(info.offset) + 2].split(":")[0];
     info.expDay3 = "<" + info.expNames[parseInt(info.offset) + 2].split(":")[1] + ">";
-
+    info.call = [];
+    info.put =[]
 
     let addRow = false;
     let lowLimit = arr[1];
@@ -653,17 +713,17 @@ function generateData(res, info) {
         if (tdr1.strikePrice == i) {
             cnt1++;
             addRow = true;
-            mapData(tdr1, callRow, info.config, 1, null, "Call", tdp1, info);
+            mapData(tdr1, callRow, info.config, 1, transMap, "call", info.period1, info);
         }
         if (tdr2.strikePrice == i) {
             cnt2++;
             addRow = true;
-            mapData(tdr2, callRow, info.config, 2, null, "Call", tdp2, info);
+            mapData(tdr2, callRow, info.config, 2, transMap, "call", info.period2, info);
         }
         if (tdr3.strikePrice == i) {
             addRow = true;
             cnt3++;
-            mapData(tdr3, callRow, info.config, 3, null, "Call", tdp3, info);
+            mapData(tdr3, callRow, info.config, 3, transMap, "call", info.period3, info);
         }
         if (addRow)
             info.call.push(callRow);
@@ -687,23 +747,24 @@ function generateData(res, info) {
         if (tdr1.strikePrice == i) {
             cnt1++;
             addRow = true;
-            mapData(tdr1, putRow, info.config, 1, null, "put", tdp1, info);
+            mapData(tdr1, putRow, info.config, 1, transMap, "put", info.period1, info);
         }
         if (tdr2.strikePrice == i) {
             cnt2++;
             addRow = true;
-            mapData(tdr2, putRow, info.config, 2, null, "put", tdp2, info);
+            mapData(tdr2, putRow, info.config, 2, transMap, "put", info.period2, info);
         }
         if (tdr3.strikePrice == i) {
             addRow = true;
             cnt3++;
-            mapData(tdr3, putRow, info.config, 3, null, "put", tdp3, info);
+            mapData(tdr3, putRow, info.config, 3, transMap, "put", info.period3, info);
         }
         if (addRow)
             info.put.push(putRow);
     }
 
 }
+
 function mapData(tdr, row, config, idx, transMap, type, tdp, info) {
     switch (idx) {
         case 1:
@@ -739,10 +800,11 @@ function mapData(tdr, row, config, idx, transMap, type, tdp, info) {
             break;
     }
 }
+
 function selectColumn(val, tdr, transMap, type, tdp) {
     switch (val) {
         case "iv":
-            return tdr["volatility"];
+            return parseFloat(tdr["volatility"]) / 100;
 
         case "mid":
             return parseFloat(((tdr["ask"] + tdr["bid"]) / 2).toFixed(2));
@@ -760,14 +822,15 @@ function selectColumn(val, tdr, transMap, type, tdp) {
         case "trade":
             return "";
         case "position":
-            let key = type + ":" + tdp.expiration + ":" + tdp.strikePrice;
-            if (transMap.get(key) == null || transMap.get(key).getQty() == 0)
+            let key = type + ":" + tdp + ":" + tdr.strikePrice;
+            if (transMap[key] == undefined || transMap[key].getQty() == 0)
                 return "";
             else
-                return String.valueOf(transMap.get(key).getQty());
+                return transMap[key].getQty();
     }
     return "tbd";
 }
+
 app.post('/tradetable', function (req, resp) {
     let con = connectToDB();
     let obj = req.body;
@@ -778,12 +841,41 @@ app.post('/tradetable', function (req, resp) {
     let clear = false;
     let setOffset = false;
     let offsetExp = null;
+    let TransMap = [];
 
     let info = user.info;
     let config = new Config();
-    info.offset = offset == -1 ? 0 : offset;
+    info.offset = offset == -1 ? 4 : offset;
 
-    getAsyncData(con, user, trans).then((data) => {
+    getAsyncData(con, user, trans, underlying).then((data) => {
+        let trdata = data[4];
+        for (let i in trdata) {
+            let action = trdata[i].action == "buy" ? "Buy" : "Sell";
+            let qty = parseInt(trdata[i].qty);
+            let dt = moment(trdata[i].expiration).format('YYYY-MM-DD');
+            let tm = moment(trdata[i].createDate).format('HH:mm:ss');
+            let tr = new Transaction(parseFloat(trdata[i].strike), parseInt(trdata[i].qty), trdata[i].type == "call"?"Call":"Put",
+                action, user.currentStock, parseFloat(trdata[i].price), dt, tm, 0);
+            let finalTR = tr;
+            let key = tr.getType().toLowerCase() + ":" + tr.getExpiration() + ":" + tr.getStrike();
+            if (TransMap[key] != undefined) {
+                finalTR = TransMap[key];
+                let a = tr.getQty() ;
+                let b = finalTR.getQty() ;
+                let c = a + b;
+                finalTR.qty = c;
+                finalTR.action = c < 0 ? "Buy" : "Sell";
+            }
+            TransMap[key] = finalTR;
+        }
+        info.transactions = []
+        for (let k in TransMap) {
+            let tr = TransMap[k];
+            if (tr.getQty() == 0) continue;
+
+            info.transactions.push(tr);
+
+        }
         let configData = data[0];
         let stkData = data[1];
         info.configNames = data[2];
@@ -801,6 +893,7 @@ app.post('/tradetable', function (req, resp) {
             }
         info.currentStock = user.currentStock;
         info.stockNames = configData[0].stocks.split(",");
+
         config.setCol1(configData[0].column1);
         config.setCol2(configData[0].column2);
         config.setCol3(configData[0].column3);
@@ -811,9 +904,32 @@ app.post('/tradetable', function (req, resp) {
 
         let res = decodeURIComponent(stkData.responseContent);
         res = JSON.parse(res);
-        generateData(res, info);
+        generateData(res, info, TransMap);
 
 
+        for (let i in info.transactions) {
+            let tr = info.transactions[i];
+            let arr = tr.expiration.split("-");
+            var a = moment(tr.expiration);
+            var b = moment();
+            let w = a.diff(b, 'days')
+            let strikeMap = res.callExpDateMap
+            if (tr.type == "Put")
+                strikeMap = res.putExpDateMap
+            let strikes = strikeMap[tr.expiration + ":" + (parseInt(w) + 1)];
+
+            for (let idx in strikes) {
+                let elems = strikes[idx];
+                for (let i in elems) {
+                    if (elems[i].strikePrice == tr.strike) {
+                        tr.iv = parseFloat(elems[i]["volatility"]) / 100;
+                        tr.currentPrice = parseFloat(((elems[i]["ask"] + elems[i]["bid"]) / 2).toFixed(2));
+                    }
+                }
+            }
+
+
+        }
         resp.json(info);
     }).catch(function (err) {
         console.log("ERROR ERROR tradetable " + err)
@@ -821,7 +937,8 @@ app.post('/tradetable', function (req, resp) {
     });
 
 
-});
+})
+;
 
 
 var httpServer = http.createServer(app);
@@ -830,27 +947,3 @@ var httpServer = http.createServer(app);
 httpServer.listen(3000);
 
 
-/*********************************
- const getExchangeRate = async (from, to) => {
-  const response = await axios.get('http://data.fixer.io/api/latest?access_key=d32d75de5146611ae7f23de0782ac09b');
-  const euro = 1 / response.data.rates[from];
-  const rate = euro * response.data.rates[to];
-  return rate;
-};
-
- const getCountries = async (currencyCode) => {
-  const response = await axios.get(`https://restcountries.eu/rest/v2/currency/${currencyCode}`);
-  return response.data.map((country) => country.name);
-};
-
- const convertCurrency = async (from, to, amount) => {
-  const rate = await getExchangeRate(from, to);
-  const countries = await getCountries(to);
-  const convertedAmount = (amount * rate).toFixed(2);
-  return `${amount} ${from} is worth ${convertedAmount} ${to}. You can spend it in the following countries: ${countries.join(', ')}`;
-};
-
- convertCurrency('USD', 'USD', 20).then((message) => {
-  console.log(message);
-});
- */

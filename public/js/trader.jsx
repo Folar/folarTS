@@ -383,10 +383,10 @@ function drawOptionGraph(start, end) {
         y1 = 0;
         for (var x in thePositions) {
             draw = true;
+            debugger;
             y1 += calcPrice(i, thePositions[x]);
         }
         y2 = 0;
-
         for (var x in theTransactions) {
             draw = true;
             y2 += calcPrice(i, theTransactions[x]);
@@ -515,7 +515,7 @@ function position(label, type, mid, val, strike, start, end, iv) {
     this.action = this.buy ? "Buy" : "Sell";
     this.mag = Math.abs(val);
 
-    this.iv = iv / 100;
+    this.iv = iv ;//  / 100;
 
 
     if (this.type == 'Call') {
@@ -534,6 +534,7 @@ function position(label, type, mid, val, strike, start, end, iv) {
 
 function addPostions(type, source, rowData, rowId, start, end) {
     var strikePrice = source.localData[rowId]["strikePrice"];
+    debugger;
     var tradeLabel;
     if (rowData["col" + tradeColumn + "a"] != "") {
         tradeLabel = "col" + tradeColumn + "a";
@@ -1274,6 +1275,7 @@ var Trader = React.createClass({
         source2.localData = data.put;
         this.state.maxPeriod = data.tradingPeriodCount;
         theTransactions = data.transactions;
+        debugger;
         repopulateTable();
         for (i = 1; i < 4; i++) {
 
@@ -1539,7 +1541,6 @@ var TraderApp = React.createClass({
         var me = this;
         var transition = function (state, name, fnc) {
 
-            debugger;
             if (state == 1) {
                 if (me.state.fnc == null) {
                     me.setState({fnc: fnc});

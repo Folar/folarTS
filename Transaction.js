@@ -6,8 +6,10 @@ class Transaction {
     constructor(strike, qty, type, action, symbol, price, expiration, transTime, idTrans) {
         this.strike = strike;
         this.qty = qty;
-        this.buy = qty < 0 ? false : true;
-        this.mag = qty < 0 ? -1 * qty : qty;
+        if(action == "Sell")
+            this.qty = qty * -1;
+        this.buy = this.qty < 0 ? false : true;
+        this.mag = this.qty < 0 ? -1 * this.qty : this.qty;
         this.type = type;
         this.action = action;
         this.symbol = symbol;
