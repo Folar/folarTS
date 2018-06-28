@@ -9,6 +9,7 @@ var express = require('express');
 const bp = require("body-parser")
 var mysql = require('mysql');
 var moment = require('moment');
+var currencyFormatter = require('currency-formatter');
 
 const {Result} = require('./Result.js');
 const {MatrixRow} = require('./MatrixRow.js');
@@ -690,7 +691,7 @@ function generateData(res, info, transMap) {
     info.period3 = info.expNames[parseInt(info.offset) + 2].split(":")[0];
     info.expDay3 = "<" + info.expNames[parseInt(info.offset) + 2].split(":")[1] + ">";
     info.call = [];
-    info.put =[]
+    info.put = []
 
     let addRow = false;
     let lowLimit = arr[1];
@@ -854,14 +855,14 @@ app.post('/tradetable', function (req, resp) {
             let qty = parseInt(trdata[i].qty);
             let dt = moment(trdata[i].expiration).format('YYYY-MM-DD');
             let tm = moment(trdata[i].createDate).format('HH:mm:ss');
-            let tr = new Transaction(parseFloat(trdata[i].strike), parseInt(trdata[i].qty), trdata[i].type == "call"?"Call":"Put",
+            let tr = new Transaction(parseFloat(trdata[i].strike), parseInt(trdata[i].qty), trdata[i].type == "call" ? "Call" : "Put",
                 action, user.currentStock, parseFloat(trdata[i].price), dt, tm, 0);
             let finalTR = tr;
             let key = tr.getType().toLowerCase() + ":" + tr.getExpiration() + ":" + tr.getStrike();
             if (TransMap[key] != undefined) {
                 finalTR = TransMap[key];
-                let a = tr.getQty() ;
-                let b = finalTR.getQty() ;
+                let a = tr.getQty();
+                let b = finalTR.getQty();
                 let c = a + b;
                 finalTR.qty = c;
                 finalTR.action = c < 0 ? "Buy" : "Sell";
@@ -906,10 +907,10 @@ app.post('/tradetable', function (req, resp) {
         res = JSON.parse(res);
         generateData(res, info, TransMap);
 
+        user.info.res = res;
 
         for (let i in info.transactions) {
             let tr = info.transactions[i];
-            let arr = tr.expiration.split("-");
             var a = moment(tr.expiration);
             var b = moment();
             let w = a.diff(b, 'days')
@@ -937,9 +938,265 @@ app.post('/tradetable', function (req, resp) {
     });
 
 
-})
-;
+});
+const getAsyncLog = async (con, del) => {
 
+    user.currentPositionId
+    let sql;
+    if (del.length > 0) {
+        // delete transactions
+        let idTrans = del.split(",");
+        for (let i in idTrans) {
+            sql = "DELETE FROM transaction WHERE idtransaction = " + idTrans[i] + ";";
+            let result = await getDataFromDB(con, sql);
+            sql = "DELETE FROM position_transaction WHERE idtransaction = "+idTrans[i]+";";
+            result = await getDataFromDB(con, sql);
+        }
+    }
+    sql = "SELECT name, idposition FROM position2 where iduser =" + user.idUser;
+    const pos = await getDataFromDB(con, sql);
+
+    sql = "SELECT  strike,qty,type,action,symbol,price,expiration, t.idtransaction, t.createDate FROM position_transaction pt" +
+        "  left join transaction t on  pt.idtransaction = t.idtransaction where idposition = " + user.currentPositionId + ";";
+    const trans = await getDataFromDB(con, sql);
+    con.end();
+    return [pos, trans];
+}
+app.post('/tradelog', function (req, resp) {
+    let con = connectToDB();
+    let obj = req.body;
+    let del = obj.del;
+    getAsyncLog(con, del).then((data) => {
+        let  info = user.info;
+        info.positionNames = data[0];
+        for (let i in info.positionNames) {
+            if (user.currentPositionId == info.positionNames[i].idposition) {
+                info.currentPosition = info.positionNames[i].name;
+                break;
+            }
+        }
+        let trdata = data[1];
+        let res = info.res;
+        info.transactions = [];
+        let cost = 0;
+        let currentCost = 0;
+        for (let i in trdata) {
+            let action = trdata[i].action == "buy" ? "Buy" : "Sell";
+            let qty = parseInt(trdata[i].qty);
+            let dt = moment(trdata[i].expiration).format('YYYY-MM-DD');
+            let tm = moment(trdata[i].createDate).format('HH:mm:ss');
+            if (action == "Sell")
+                qty *= -1;
+
+            let tr = new Transaction(parseFloat(trdata[i].strike), qty, trdata[i].type == "call" ? "Call" : "Put",
+                action, user.currentStock, parseFloat(trdata[i].price), dt, tm, trdata[i].idtransaction);
+            a = moment(tr.expiration);
+            var b = moment();
+            let w = a.diff(b, 'days')
+            let strikeMap = res.callExpDateMap
+            if (tr.type == "Put")
+                strikeMap = res.putExpDateMap
+            let strikes = strikeMap[tr.expiration + ":" + (parseInt(w) + 1)];
+
+            for (let idx in strikes) {
+                let elems = strikes[idx];
+                for (let i in elems) {
+                    if (elems[i].strikePrice == tr.strike) {
+                        tr.currentPrice = parseFloat(((elems[i]["ask"] + elems[i]["bid"]) / 2).toFixed(2));
+                    }
+                }
+            }
+
+            cost += qty * tr.price * -1;
+            currentCost += qty * tr.currentPrice ;
+            info.transactions.push(tr);
+        }
+        info.currentValue = currencyFormatter.format(( currentCost - cost) * 100, {code: 'USD'});
+        info.currentCost = currencyFormatter.format(currentCost * 100, {code: 'USD'});
+        info.cost = currencyFormatter.format(cost * 100, {code: 'USD'});
+        info.transcnt = info.transactions.length;
+        resp.json(info);
+    });
+
+    app.post('/editposition', function (req, resp) {
+        let con = connectToDB();
+        let obj = req.body;
+        let name = obj.newName;
+        let sql = "UPDATE position2 SET  name = '"+name+"' where idposition = "+user.currentPositionId;
+        getDataFromDB(con, sql).then((data) => {
+            con.end();
+            for (let i in user.info.positionNames) {
+                if (user.currentPositionId == user.info.positionNames[i].idposition) {
+                     user.info.positionNames[i].name = name;
+                    break;
+                }
+            }
+            user.currentPosition = name;
+            resp.json({data:user.info.positionNames});
+        });
+    });
+
+    const getAsyncDelPosition = async (con, ) => {
+
+        let sql = "delete transaction FROM transaction  inner join position_transaction pt "+
+            " on pt.idtransaction = transaction.idtransaction where idposition ="+ user.currentPositionId+ ";";
+        let res = await getDataFromDB(con, sql);
+
+        sql = "DELETE FROM position_transaction WHERE idposition = "+ user.currentPositionId+";";
+        res = await getDataFromDB(con, sql);
+
+        sql = "DELETE FROM position2 WHERE idposition = "+user.currentPositionId+";";
+        res = await getDataFromDB(con, sql);
+
+        sql = "SELECT name, idposition FROM position2 " + "  where iduser =" + user.idUser +" limit 1";
+        res = await getDataFromDB(con, sql);
+
+        con.end();
+        return res;
+    };
+
+    app.post('/deleteposition', function (req, resp) {
+        let con = connectToDB();
+
+        getAsyncDelPosition(con).then((data) => {
+            user.currentPositionId = data[0].idposition;
+            user.currentPosition = data[0].name;
+            resp.json({success:true});
+        });
+    });
+
+    const getAsyncModTrans = async (con, trans) => {
+        let transactionsStr = trans.split(":");
+        for (let i in transactionsStr) {
+            let transactionStr = transactionsStr[i].split(",");
+            let sql = "UPDATE transaction SET  price = "+transactionStr[1]+", qty = "+
+                transactionStr[2]+" where idtransaction = "+transactionStr[0];
+            let res = await getDataFromDB(con, sql);
+        }
+        con.end();
+        return [];
+    };
+    app.post('/modifytrans', function (req, resp) {
+        let con = connectToDB();
+        let obj = req.body;
+        let trans = obj.modify;
+
+        getAsyncModTrans(con,trans).then((data) => {
+            resp.json({success:true});
+        });
+    });
+    const getAsyncMoveTrans = async (con, copy, move, create, mvpos, name, trans) => {
+        let idNewPosition = 0;
+        let idPosition = user.currentPositionId;
+        let iduser = user.idUser;
+
+        // create the new position
+        let res;
+        if(create){
+
+            let sql = "INSERT INTO position2 (iduser, name, createDate,modifyDate ) VALUES(" +
+                +iduser+"," +
+                "'"+name+"'," +
+                "NOW(),NOW());";
+            res = await getDataFromDB(con, sql);
+            idNewPosition =res.insertId;
+            if( !copy  ) {
+                sql = "UPDATE position_transaction SET  idposition = " + idNewPosition + " where idposition  = " + idPosition +
+                    " AND idtransaction IN (" + trans + ");";
+                res = await getDataFromDB(con, sql);
+            } else {
+                let idTrans = trans.split(",");
+                for (let i = 0; i < idTrans.length; i++) {
+                    let transid = idTrans[i];
+                    sql = "INSERT INTO transaction (iduser, strike,qty,type,action,symbol,price,expiration, opra, createDate,modifyDate ) " +
+                        "SELECT iduser, strike,qty,type,action,symbol,price,expiration, opra, createDate,modifyDate FROM transaction where idtransaction = " +
+                        transid + ";";
+                    res = await getDataFromDB(con, sql);
+                     let idNewTransaction = res.insertId;
+                    sql = "INSERT INTO position_transaction (idposition, idtransaction,  createDate,modifyDate ) VALUES(" +
+                        idNewPosition+"," +
+                        +idNewTransaction+"," +
+                        "NOW(),NOW());";
+                    res = await getDataFromDB(con, sql);
+                }
+            }
+            if( move ) {
+                let idTrans = trans.split(",");
+                for (let i = 0; i < idTrans.length; i++) {
+                    let transid = idTrans[i];
+                    sql = "INSERT INTO transaction (iduser, strike,qty,type,action,symbol,price,expiration, opra, createDate,modifyDate ) " +
+                        "SELECT iduser, strike,qty,type,action,symbol,price,expiration, opra, createDate,modifyDate FROM transaction where idtransaction = " +
+                        transid + ";";
+                    res = await getDataFromDB(con, sql);
+                    let idNewTransaction = res.insertId;
+                    sql = "INSERT INTO position_transaction (idposition, idtransaction,  createDate,modifyDate ) VALUES(" +
+                        mvpos+"," +
+                        +idNewTransaction+"," +
+                        "NOW(),NOW());";
+                    res = await getDataFromDB(con, sql);
+                }
+            }
+
+
+
+
+        }
+        else if(!copy && move){
+            let sql= "UPDATE position_transaction SET  idposition = "+mvpos+" where idposition  = "+idPosition +
+                " AND idtransaction IN ("+trans+");";
+            res = await getDataFromDB(con, sql);
+
+        }else if(move) {
+            let idTrans = trans.split(",");
+            for (let i = 0; i < idTrans.length; i++) {
+                let transid = idTrans[i];
+                let sql = "INSERT INTO transaction (iduser, strike,qty,type,action,symbol,price,expiration, opra, createDate,modifyDate ) " +
+                    "SELECT iduser, strike,qty,type,action,symbol,price,expiration, opra, createDate,modifyDate FROM transaction where idtransaction = " +
+                    transid + ";";
+                res = await getDataFromDB(con, sql);
+                let idNewTransaction = res.insertId;
+                sql = "INSERT INTO position_transaction (idposition, idtransaction,  createDate,modifyDate ) VALUES(" +
+                    mvpos+"," +
+                    +idNewTransaction+"," +
+                    "NOW(),NOW());";
+                res = await getDataFromDB(con, sql);
+
+            }
+        }
+
+
+        con.end();
+        return [];
+    };
+    app.post('/movetrans', function (req, resp) {
+        let con = connectToDB();
+        let obj = req.body;
+        let copy = obj.copy == "true" ;
+        let move = obj.move == "true";
+        let create = obj.create == "true";
+        let trans = obj.trans;
+        let mvpos = obj.id;
+        let name = obj.name;
+        for (let i in user.info.positionNames) {
+            if (mvpos == user.info.positionNames[i].name) {
+                mvpos =user.info.positionNames[i].idposition ;
+                break;
+            }
+        }
+        getAsyncMoveTrans  (con, copy, move, create, mvpos, name, trans).then((data) => {
+            resp.json({success:true});
+        }).catch(function (err) {
+            console.log("ERROR ERROR mmovetrans " + err)
+            return;
+        });
+    })
+    const getAsyncxxxx = async (con, del) => {
+
+
+        con.end();
+        return [];
+    };
+});
 
 var httpServer = http.createServer(app);
 

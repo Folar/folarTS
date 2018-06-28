@@ -1,5 +1,3 @@
-
-
 /** @jsx React.DOM */
 
 
@@ -15,478 +13,562 @@ var Table = ReactBootstrap.Table;
 var theChangedRows = new Array();
 var theChangedRowsIdx = new Array();
 var transSource2 = {
-      localData: [],
-      dataType: "json",
-      updateRow: function (rowId, rowData, commit) {
-            theChangedRows.push(rowData);
-            theChangedRowsIdx.push(rowId);
+    localData: [],
+    dataType: "json",
+    updateRow: function (rowId, rowData, commit) {
+        theChangedRows.push(rowData);
+        theChangedRowsIdx.push(rowId);
 
-       },
+    },
 
-       dataFields: [
-                         { name: 'action', type: 'string' },
-                         { name: 'type', type: 'string' },
-                         { name: 'expiration', type: 'string' },
-                         { name: 'priceDisplay', type: 'string' },
-                         { name: 'currentPrice', type: 'string' },
-                         { name: 'strike', type: 'string' },
-                         { name: 'symbol', type: 'string' },
-                         { name: 'mag', type: 'number' },
-                         { name: 'transTime', type: 'string' }
-                     ]
-  };
-
-
-  var dataAdapter3 = new $.jqx.dataAdapter(transSource2);
-  var transNode2;
-  var transTableDescription2 = {
-         width: 1000,
-          height:400,
-          pageable: false,
-          sortable:true,
-          pagerButtonsCount: 10,
-          source: dataAdapter3,
-          columnsResize: true,
-          editSettings: { saveOnPageChange: true, saveOnBlur: true,
-         saveOnSelectionChange: false, cancelOnEsc: true,
-                                saveOnEnter: true, editOnDoubleClick: true, editOnF2: true },
-        columns: [
-                     { text: 'Type', dataField: 'type', width: 65 ,editable:false },
-                     { text: 'Underlying', dataField: 'symbol', width: 100 ,editable:false },
-                     { text: 'Expiration', dataField: 'expiration', width: 100 ,editable:false },
-                     { text: 'Price', dataField: 'priceDisplay', width: 85,editable:false ,  initEditor: function () { $("#updateT").removeClass("disabled"); }} ,
-                     { text: 'Current Price', dataField: 'currentPrice', width: 120,editable:false ,  initEditor: function () { $("#updateT").removeClass("disabled"); }} ,
-                     { text: 'Strike Price', dataField: 'strike', width: 100,editable:false },
-                     { text: 'Action', dataField: 'action', width: 100,editable:false },
-                     { text: 'Amount', dataField: 'mag', width: 100,editable:true , initEditor: function () { $("#updateT").removeClass("disabled"); }},
-                     { text: 'Event', dataField: 'transTime', width: 200,editable:false }
-                   ]
-  };
+    dataFields: [
+        {name: 'action', type: 'string'},
+        {name: 'type', type: 'string'},
+        {name: 'expiration', type: 'string'},
+        {name: 'priceDisplay', type: 'string'},
+        {name: 'currentPrice', type: 'string'},
+        {name: 'strike', type: 'string'},
+        {name: 'symbol', type: 'string'},
+        {name: 'mag', type: 'number'},
+        {name: 'transTime', type: 'string'}
+    ]
+};
 
 
-var MoveDlg= React.createClass({
-         getInitialState: function () {
-            return {
-                move:(!!this.props.move) || false,
-                copy:(!!this.props.copy) || false,
-                create:(!!this.props.create) || false
-              };
-          },
-          handleChange: function(){
-            this.setState({
-              copy: !this.state.copy
-            });
-          },
-
-         handleChange2: function(){
-              this.setState({
-                create: !this.state.create,
-              });
-         },
-         handleChange3: function(){
-        
-                      this.setState({
-                        move: !this.state.move
-                      });
-                 },
-
-        quit : function(t){
-            this.props.okFunc(this.state.move,this.state.copy,this.state.create,$("#newP")[0].value,  this.refs.nameCombo.getConfigName());
+var dataAdapter3 = new $.jqx.dataAdapter(transSource2);
+var transNode2;
+var transTableDescription2 = {
+    width: 1000,
+    height: 400,
+    pageable: false,
+    sortable: true,
+    pagerButtonsCount: 10,
+    source: dataAdapter3,
+    columnsResize: true,
+    editSettings: {
+        saveOnPageChange: true, saveOnBlur: true,
+        saveOnSelectionChange: false, cancelOnEsc: true,
+        saveOnEnter: true, editOnDoubleClick: true, editOnF2: true
+    },
+    columns: [
+        {text: 'Type', dataField: 'type', width: 65, editable: false},
+        {text: 'Underlying', dataField: 'symbol', width: 100, editable: false},
+        {text: 'Expiration', dataField: 'expiration', width: 100, editable: false},
+        {
+            text: 'Price', dataField: 'priceDisplay', width: 85, editable: false, initEditor: function () {
+            $("#updateT").removeClass("disabled");
+        }
         },
-        switchConfig : function(){
-
+        {
+            text: 'Current Price', dataField: 'currentPrice', width: 120, editable: false, initEditor: function () {
+            $("#updateT").removeClass("disabled");
+        }
         },
-        componentDidMount: function() {
+        {text: 'Strike Price', dataField: 'strike', width: 100, editable: false},
+        {text: 'Action', dataField: 'action', width: 100, editable: false},
+        {
+            text: 'Amount', dataField: 'mag', width: 100, editable: true, initEditor: function () {
+            $("#updateT").removeClass("disabled");
+        }
         },
-        render: function() {
+        {text: 'Event', dataField: 'transTime', width: 200, editable: false}
+    ]
+};
 
 
-        var lbl = "my"+this.props.modal+"Label";
-        var target = "#my"+this.props.modal;
-        var idtarget = "my"+this.props.modal;
+var MoveDlg = React.createClass({
+    getInitialState: function () {
+        return {
+            move: (!!this.props.move) || false,
+            copy: (!!this.props.copy) || false,
+            create: (!!this.props.create) || false
+        };
+    },
+    handleChange: function () {
+        this.setState({
+            copy: !this.state.copy
+        });
+    },
+
+    handleChange2: function () {
+        this.setState({
+            create: !this.state.create,
+        });
+    },
+    handleChange3: function () {
+
+        this.setState({
+            move: !this.state.move
+        });
+    },
+
+    quit: function (t) {
+        this.props.okFunc(this.state.move, this.state.copy, this.state.create, $("#newP")[0].value, this.refs.nameCombo.getConfigName());
+    },
+    switchConfig: function () {
+
+    },
+    componentDidMount: function () {
+    },
+    render: function () {
+
+
+        var lbl = "my" + this.props.modal + "Label";
+        var target = "#my" + this.props.modal;
+        var idtarget = "my" + this.props.modal;
 
         return (
-            <div  xs={10} className="container" >
+            <div xs={10} className="container">
 
-                <button type="button" id="moveTrans" className="btn btn-primary disabled" data-toggle="modal" data-target={target}>
-                 {this.props.buttonLabel}
+                <button type="button" id="moveTrans" className="btn btn-primary disabled" data-toggle="modal"
+                        data-target={target}>
+                    {this.props.buttonLabel}
                 </button>
 
-                <div className="modal fade" id={idtarget} tabindex="-1" role="dialog" aria-labelledby={lbl} aria-hidden="true">
-                  <div className="modal-dialog wide" >
-                    <div className="modal-content">
-                      <div className="modal-header">
-                        <button type="button" className="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span className="sr-only">Close</span></button>
-                        <h4 className="modal-title" id={lbl}>{this.props.title}</h4>
-                      </div>
-                      <div  xs={12} className="modal-body container">
-                      
-                         <Row  xs={12} className="container" >
-                               <Col xs={1} >
-                                              <input id="move"
-                                                type="checkbox"
-                                                defaultChecked={this.state.move}
-                                                ref="move"
-                                                onChange={this.handleChange3}
-                                              />
-                                </Col>
-                                 <Col xs={2} >
-                                    <div className="tMargin">
-                                     Move to Position
-                                    </div>
+                <div className="modal fade" id={idtarget} tabindex="-1" role="dialog" aria-labelledby={lbl}
+                     aria-hidden="true">
+                    <div className="modal-dialog wide">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <button type="button" className="close" data-dismiss="modal"><span
+                                    aria-hidden="true">&times;</span><span className="sr-only">Close</span></button>
+                                <h4 className="modal-title" id={lbl}>{this.props.title}</h4>
+                            </div>
+                            <div xs={12} className="modal-body container">
 
-                                </Col>
-                               <Col xs={3} >
-                                    <ConfigNameCombo id="combo" ref="nameCombo" names={this.props.positionNames} sel={this.props.positionSel}
-                                                          switchConfig={this.switchConfig}/>
-                               </Col>
-                         </Row>
-                         <Row  xs={12} className="container" >
-                               <Col xs={1} >
-                                             <input id="copy"
+                                <Row xs={12} className="container">
+                                    <Col xs={1}>
+                                        <input id="move"
+                                               type="checkbox"
+                                               defaultChecked={this.state.move}
+                                               ref="move"
+                                               onChange={this.handleChange3}
+                                        />
+                                    </Col>
+                                    <Col xs={2}>
+                                        <div className="tMargin">
+                                            Move to Position
+                                        </div>
+
+                                    </Col>
+                                    <Col xs={3}>
+                                        <ConfigNameCombo id="combo" ref="nameCombo" names={this.props.positionNames}
+                                                         sel={this.props.positionSel}
+                                                         switchConfig={this.switchConfig}/>
+                                    </Col>
+                                </Row>
+                                <Row xs={12} className="container">
+                                    <Col xs={1}>
+                                        <input id="copy"
                                                type="checkbox"
                                                defaultChecked={this.state.copy}
                                                ref="copy"
                                                onChange={this.handleChange}
-                                             />
-                               </Col>
-                                <Col xs={2} >
-                                    <div className="tMargin">
-                                    Make a Copy
-                                    </div>
+                                        />
+                                    </Col>
+                                    <Col xs={2}>
+                                        <div className="tMargin">
+                                            Make a Copy
+                                        </div>
 
-                               </Col>
-                         </Row>
+                                    </Col>
+                                </Row>
 
-                          <Row  xs={12} className="container" >
+                                <Row xs={12} className="container">
 
-                                 <Col xs={1} >
-                                               <input id="create"
-                                                 type="checkbox"
-                                                 defaultChecked={this.state.create}
-                                                 ref="create"
-                                                 onChange={this.handleChange2}
-                                               />
-                                 </Col>
-                                  <Col xs={2} >
-                                     <div className="tMargin">
-                                      Create a new Position
-                                     </div>
+                                    <Col xs={1}>
+                                        <input id="create"
+                                               type="checkbox"
+                                               defaultChecked={this.state.create}
+                                               ref="create"
+                                               onChange={this.handleChange2}
+                                        />
+                                    </Col>
+                                    <Col xs={2}>
+                                        <div className="tMargin">
+                                            Create a new Position
+                                        </div>
 
-                                 </Col>
+                                    </Col>
 
-                                <Col xs={3} >
-                                     <input  id="newP" className="searchBox"  ref="postxt"   />
-                               </Col>
-                          </Row>
-                      </div>
-                      <div className="modal-footer">
-                        <button type="button" className="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button type="button" className="btn btn-primary" onClick={this.quit}  data-dismiss="modal" >{this.props.buttonLabel}</button>
-                      </div>
+                                    <Col xs={3}>
+                                        <input id="newP" className="searchBox" ref="postxt"/>
+                                    </Col>
+                                </Row>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="button" className="btn btn-primary" onClick={this.quit}
+                                        data-dismiss="modal">{this.props.buttonLabel}</button>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
             </div>
         );
     }
-    });
+});
 
 var TraderLog = React.createClass({
- getInitialState: function() {
+    getInitialState: function () {
         return {
-            name:"Position",
-            cost:"$0.00",
-            currentValue:"$0.00",
-            currentCost:"$0.00",
-            transcnt :0,
-            positionNames: [{item:"Default",id:9}],
-            positionSel:0,
+            name: "Position",
+            cost: "$0.00",
+            currentValue: "$0.00",
+            currentCost: "$0.00",
+            transcnt: 0,
+            positionNames: [{item: "Default", id: 9}],
+            positionSel: 0,
             editPositionSource: new Collections.editPositionCollection(),
             modifyLogSource: new Collections.modifyTansactionCollection(),
             moveTransSource: new Collections.moveTansactionCollection(),
             deletePositionSource: new Collections.deletePositionCollection(),
             logSource: new Collections.logCollection(),
-            butTrans:"btn btn-primary",
-            modTrans:"btn btn-primary"
+            butTrans: "btn btn-primary",
+            modTrans: "btn btn-primary"
         };
     },
 
-      rowSelectChg:function(){
+    rowSelectChg: function () {
 
-           var selection = transNode.jqxDataTable('getSelection');
-           var trans = this.state.logSource.models[0].attributes.transactions;
+        var selection = transNode.jqxDataTable('getSelection');
+        var trans = this.state.logSource.transactions;
 
-           if (selection.length == 0){
-                $("#delTrans").addClass("disabled");
-                $("#moveTrans").addClass("disabled");
-                $("#exportT").attr("href","export?positions=-1");
-           } else {
-                $("#delTrans").removeClass("disabled");
-                $("#moveTrans").removeClass("disabled");
-                var ft =true;
-                var str = "";
-                for (var i = 0; i < selection.length; i++) {
-                    // get a selected row.
-                    if(!ft)
-                        str += ","
-                    else
-                        ft= false;
-
-                    var idTran = trans[selection[i].uid]["idTrans"];
-                    str += idTran;
-                    $("#exportT").attr("href","export?positions=-1&trans="+str);
-                }
-           }
-      },
-
-    componentDidMount: function() {
-                  transNode = $(this.refs.transtable.getDOMNode());
-                  $(this.refs.transtable.getDOMNode()).jqxDataTable(transTableDescription2);
-                  transTableDescription2.source =  new $.jqx.dataAdapter(transSource2);
-                  $(this.refs.transtable.getDOMNode()).jqxDataTable({ editable:true });
-                  $(this.refs.transtable.getDOMNode()).jqxDataTable({ editSettings:{ saveOnPageChange: true, saveOnBlur: true,
-                  saveOnSelectionChange: true, cancelOnEsc: true, saveOnEnter: true, editOnDoubleClick: true, editOnF2: true } });
-
-                  transNode.on('rowSelect',this.rowSelectChg);
-                  transNode.on('rowUnselect',this.rowSelectChg);
-
-                  this.state.logSource.fetch({ data: {del:"" }, success: this.success, fail: this.fail, type: 'POST' });
-     },
-
-     reload : function(){
-            this.disableButtons();
-            this.state.logSource.fetch({ data: {del:"" }, success: this.success, fail: this.fail, type: 'POST' });
-     },
-
-
-     success: function() {
-
-                  this.setState({name: this.state.logSource.models[0].attributes.name,
-                  currentValue:  this.state.logSource.models[0].attributes.currentValue,currentCost:  this.state.logSource.models[0].attributes.currentCost,
-                  cost:  this.state.logSource.models[0].attributes.cost, transcnt: this.state.logSource.models[0].attributes.transcnt});
-                  transSource2.localData = this.state.logSource.models[0].attributes.transactions;
-                  transTableDescription2.source =  new $.jqx.dataAdapter(transSource2);
-                  transNode.jqxDataTable(transTableDescription2);
-
-                  var id = this.state.logSource.models[0].attributes.idPosition;
-                  var names = this.state.logSource.models[0].attributes.positionNames;
-                  this.setState({positionSel:id,positionNames:names  });
-
-     },
-    fail: function() {
-        this.setState({busy: false});
-    },
-    onClick:function(){
-            this.props.func(4);
-    },
-    okEditPosition : function(val){
-
-                this.setState({name: val });
-                this.state.editPositionSource.fetch({
-                       data: {
-                          newName:val
-
-                       }, success: this.editPosition, fail: this.fail, type: 'POST' });
-    },
-
-    editPosition : function(){
-
-    },
-
-    initVal : function (){
-             return  this.state.name
-
-    },
-
-     exportTrans : function (){
-
-              var trans = this.state.logSource.models[0].attributes.transactions;
-              var ft =true;
-              var str = "";
-              var selection = transNode.jqxDataTable('getSelection');
-                for (var i = 0; i < selection.length; i++) {
-                    // get a selected row.
-                    if(!ft)
-                        str += ","
-                    else
-                        ft= false;
-                    var idTran = trans[selection[i].uid]["idTrans"];
-                    str += idTran;
-                }
-                if(str.length >0)
-                    this.state.logSource.fetch({ data: {del: str }, success: this.success, fail: this.fail, type: 'POST' });
-
-        },
-    deleteTrans : function (){
-          this.disableButtons();
-          var trans = this.state.logSource.models[0].attributes.transactions;
-          var ft =true;
-          var str = "";
-          var selection = transNode.jqxDataTable('getSelection');
+        if (selection.length == 0) {
+            $("#delTrans").addClass("disabled");
+            $("#moveTrans").addClass("disabled");
+            $("#exportT").attr("href", "export?positions=-1");
+        } else {
+            $("#delTrans").removeClass("disabled");
+            $("#moveTrans").removeClass("disabled");
+            var ft = true;
+            var str = "";
             for (var i = 0; i < selection.length; i++) {
                 // get a selected row.
-                if(!ft)
+                if (!ft)
                     str += ","
                 else
-                    ft= false;
+                    ft = false;
+
                 var idTran = trans[selection[i].uid]["idTrans"];
                 str += idTran;
+                $("#exportT").attr("href", "export?positions=-1&trans=" + str);
             }
-            if(str.length >0)
-                this.state.logSource.fetch({ data: {del: str }, success: this.success, fail: this.fail, type: 'POST' });
+        }
+    },
+
+    componentDidMount: function () {
+        transNode = $(this.refs.transtable.getDOMNode());
+        $(this.refs.transtable.getDOMNode()).jqxDataTable(transTableDescription2);
+        transTableDescription2.source = new $.jqx.dataAdapter(transSource2);
+        $(this.refs.transtable.getDOMNode()).jqxDataTable({editable: true});
+        $(this.refs.transtable.getDOMNode()).jqxDataTable({
+            editSettings: {
+                saveOnPageChange: true,
+                saveOnBlur: true,
+                saveOnSelectionChange: true,
+                cancelOnEsc: true,
+                saveOnEnter: true,
+                editOnDoubleClick: true,
+                editOnF2: true
+            }
+        });
+
+        transNode.on('rowSelect', this.rowSelectChg);
+        transNode.on('rowUnselect', this.rowSelectChg);
+        
+
+        var func = this.success;
+        $.post("/tradelog", {del: ""}, function (data) {
+                    func( data);
+            //this.setState({busy: true});
+            }
+        )
+    },
+
+    reload: function () {
+        this.disableButtons();
+        var func = this.success;
+        $.post("/tradelog", {del: ""}, function (data) {
+                func( data);
+                //this.setState({busy: true});
+            }
+        )
+    },
+
+
+    success: function (data) {
+
+        this.setState({
+            name: data.currentPosition,
+            logSource:data,
+            currentValue: data.currentValue,
+            currentCost: data.currentCost,
+            cost: data.cost,
+            transcnt: data.transcnt
+        });
+        transSource2.localData = data.transactions;
+        transTableDescription2.source = new $.jqx.dataAdapter(transSource2);
+        transNode.jqxDataTable(transTableDescription2);
+
+        var id = data.currentPosition;
+        var names = data.positionNames;
+        this.setState({positionSel: id, positionNames: names});
 
     },
-    formatNumber:function (num) {
+    fail: function () {
+        this.setState({busy: false});
+    },
+    onClick: function () {
+        this.props.func(4);
+    },
+    okEditPosition: function (val) {
+        this.setState({name: val});
+        func = this.editPosition;
+        $.post("/editposition", {newName: val}, function (data) {
+                func( data);
+                //this.setState({busy: true});
+            }
+        );
+    },
+
+    editPosition: function (data) {
+        this.setState({ positionNames: data});
+    },
+
+    initVal: function () {
+        return this.state.name
+
+    },
+
+    exportTrans: function () {
+
+        var trans = this.state.logSource.transactions;
+        var ft = true;
+        var str = "";
+        var selection = transNode.jqxDataTable('getSelection');
+        for (var i = 0; i < selection.length; i++) {
+            // get a selected row.
+            if (!ft)
+                str += ","
+            else
+                ft = false;
+            var idTran = trans[selection[i].uid]["idTrans"];
+            str += idTran;
+        }
+        if (str.length > 0)
+            this.state.logSource.fetch({data: {del: str}, success: this.success, fail: this.fail, type: 'POST'});
+
+    },
+    deleteTrans: function () {
+        this.disableButtons();
+        var trans = this.state.logSource.transactions;
+        var ft = true;
+        var str = "";
+        var selection = transNode.jqxDataTable('getSelection');
+        for (var i = 0; i < selection.length; i++) {
+            // get a selected row.
+            if (!ft)
+                str += ","
+            else
+                ft = false;
+            var idTran = trans[selection[i].uid]["idTrans"];
+            str += idTran;
+        }
+        if (str.length > 0) {
+            func = this.success;
+            $.post("/tradelog", {del: str}, function (data) {
+                    func( data);
+                    //this.setState({busy: true});
+                }
+            )
+        }
+    },
+    formatNumber: function (num) {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
     },
 
-    cost : function() {
-        var trans = this.state.logSource.models[0].attributes.transactions;
+    cost: function () {
+        var trans = this.state.logSource.transactions;
         var cnt = 0;
 
         for (var i = 0; i < trans.length; i++) {
-            var t = trans[i].mag *  trans[i].price ;
+            var t = trans[i].mag * trans[i].price;
             cnt += t;
         }
-        if (cnt <0 -1)
-            alert ("The total cost of this position is ($" +  this.formatNumber(100 * -1 * cnt.toFixed(2))+")");
+        if (cnt < 0 - 1)
+            alert("The total cost of this position is ($" + this.formatNumber(100 * -1 * cnt.toFixed(2)) + ")");
         else
-            alert ("The total cost of this position is $" +  this.formatNumber(100 * cnt.toFixed(2)));
+            alert("The total cost of this position is $" + this.formatNumber(100 * cnt.toFixed(2)));
     },
 
 
-    updateTrans : function (){
-              var ft =true;
-              var str = "";
-              for (var x = 0; x < theChangedRows.length; x++) {
-                    if(!ft)
-                        str += ":"
-                    else
-                        ft= false;
+    updateTrans: function () {
+        var ft = true;
+        var str = "";
+        for (var x = 0; x < theChangedRows.length; x++) {
+            if (!ft)
+                str += ":"
+            else
+                ft = false;
 
-                    var trans = this.state.logSource.models[0].attributes.transactions[theChangedRowsIdx[x]];
-                    str += trans.idTrans + "," + theChangedRows[x].priceDisplay +","+ theChangedRows[x].mag;
-              }
-              if(str.length >0)
-                    this.state.modifyLogSource.fetch({ data: {modify: str }, success: this.updateSuccess, fail: this.fail, type: 'POST' });
+            var trans = this.state.logSource.transactions[theChangedRowsIdx[x]];
+            str += trans.idTrans + "," + theChangedRows[x].priceDisplay + "," + theChangedRows[x].mag;
+        }
+        if (str.length > 0) {
+            func = this.updateSuccess;
+            $.post("/modifytrans", {modify: str}, function (data) {
+                    func(data);
+                    //this.setState({busy: true});
+                }
+            );
 
-     },
-    disableButtons : function(){
+        }
+
+    },
+    disableButtons: function () {
         $("#delTrans").addClass("disabled");
         $("#moveTrans").addClass("disabled");
     },
-    moveTrans : function (move,copy,create,posname,  idpos){
-               this.disableButtons();
-               var trans = this.state.logSource.models[0].attributes.transactions;
-               var ft =true;
-               var str = "";
-               var selection = transNode.jqxDataTable('getSelection');
-               for (var i = 0; i < selection.length; i++) {
-                     // get a selected row.
-                     if(!ft)
-                         str += ","
-                     else
-                         ft= false;
-                     var idTran = trans[selection[i].uid]["idTrans"];
-                     str += idTran;
-               }
+    moveTrans: function (move, copy, create, posname, idpos) {
+        this.disableButtons();
+        var trans = this.state.logSource.transactions;
+        var ft = true;
+        var str = "";
+        var selection = transNode.jqxDataTable('getSelection');
+        for (var i = 0; i < selection.length; i++) {
+            // get a selected row.
+            if (!ft)
+                str += ","
+            else
+                ft = false;
+            var idTran = trans[selection[i].uid]["idTrans"];
+            str += idTran;
+        }
 
-               if(str.length >0)
-                    this.state.moveTransSource.fetch({ data: {move: move, copy:copy, create: create, name:posname,id:idpos,trans:str}, success: this.reload, fail: this.fail, type: 'POST' });
+        if (str.length > 0) {
+            let func = this.reload;
+            $.post("/movetrans",
+                {move: move,
+                copy: copy,
+                create: create,
+                name: posname,
+                id: idpos,
+                trans: str},
+                function (data) {
+                    func(data);
+                    //this.setState({busy: true});
+                }
+            );
+
+        }
     },
 
-    updateSuccess : function() {
+    updateSuccess: function () {
         theChangedRows = new Array();
         theChangedRowsIdx = new Array();
         $("#updateT").addClass("disabled");
         this.disableButtons();
-        this.state.logSource.fetch({ data: {del:"" }, success: this.success, fail: this.fail, type: 'POST' });
+        var func = this.success;
+        $.post("/tradelog", {del: ""}, function (data) {
+                func( data);
+                //this.setState({busy: true});
+            }
+        )
     },
 
-    deletePosition : function(){
-        this.state.deletePositionSource.fetch({
-                       data: {
-                       }, success: this.delPosSuccess, fail: this.fail, type: 'POST' });
+    deletePosition: function () {
+
+        func = this.delPosSuccess;
+        $.post("/deleteposition", {}, function (data) {
+                func( data);
+                //this.setState({busy: true});
+            }
+        )
     },
 
-    delPosSuccess : function() {
-        var func  = this.props.func;
-        func(0,"");
+    delPosSuccess: function () {
+        var func = this.props.func;
+        func(0, "");
     },
 
-    render: function() {
+    render: function () {
 
         return (
-            <div  xs={12} className="container" >
+            <div xs={12} className="container">
                 <h1 className="titleFont">Folar Trade Station</h1>
-                <div  xs={12} className="container" >
-                     <Row  xs={12} className="container" >
-                        <Col xs={3} >
-                              <h3 className="lbleft">Position: {this.state.name}</h3>
+                <div xs={12} className="container">
+                    <Row xs={12} className="container">
+                        <Col xs={3}>
+                            <h3 className="lbleft">Position: {this.state.name}</h3>
                         </Col>
 
-                        <Col xs={3}  >
-                              <h3 className="lbleft">Transaction count: {this.state.transcnt}</h3>
+                        <Col xs={3}>
+                            <h3 className="lbleft">Transaction count: {this.state.transcnt}</h3>
                         </Col>
 
-                     </Row>
-                      <Row  xs={12} className="container" >
-                         <Col xs={3} >
-                               <h3 className="lbleft">Original Cost: {this.state.cost}</h3>
-                         </Col>
+                    </Row>
+                    <Row xs={12} className="container">
+                        <Col xs={3}>
+                            <h3 className="lbleft">Original Cost: {this.state.cost}</h3>
+                        </Col>
 
-                         <Col xs={3} >
-                               <h3 className="lbleft">Current Cost: {this.state.currentCost}</h3>
-                         </Col>
+                        <Col xs={3}>
+                            <h3 className="lbleft">Current Cost: {this.state.currentCost}</h3>
+                        </Col>
 
-                          <Col xs={3} >
-                                <h3 className="lbleft">Profit/Loss: {this.state.currentValue}</h3>
-                          </Col>
+                        <Col xs={3}>
+                            <h3 className="lbleft">Profit/Loss: {this.state.currentValue}</h3>
+                        </Col>
 
 
-                      </Row>
-                     <Row  xs={12}>
-                         <br/>
-                     </Row>
-                     <Row  xs={12} className="container" >
+                    </Row>
+                    <Row xs={12}>
+                        <br/>
+                    </Row>
+                    <Row xs={12} className="container">
                         <Col xs={2}>
-                             <NameDlg  buttonLabel="Edit Position Name" title="Edit Position" okFunc= {this.okEditPosition} label="Name"
-                                                                            modal="Modalb" initVal={this.initVal}/>
+                            <NameDlg buttonLabel="Edit Position Name" title="Edit Position" okFunc={this.okEditPosition}
+                                     label="Name"
+                                     modal="Modalb" initVal={this.initVal}/>
                         </Col>
 
                         <Col xs={2}>
-                           <button type="button" id="delTrans" className="btn btn-primary disabled" onClick={this.deleteTrans} >
+                            <button type="button" id="delTrans" className="btn btn-primary disabled"
+                                    onClick={this.deleteTrans}>
                                 Delete Transactions
-                           </button>
+                            </button>
                         </Col>
                         <Col xs={1}>
-                           <button type="button" id="updateT" className="btn btn-primary disabled" onClick={this.updateTrans}>
+                            <button type="button" id="updateT" className="btn btn-primary disabled"
+                                    onClick={this.updateTrans}>
                                 Update
-                           </button>
+                            </button>
                         </Col>
                         <Col xs={1}>
-                           <ImportDlg  buttonLabel="Import" title="Import Transactions" func= {this.reload}
-                                                                                  modal="Modal_import" />
+                            <ImportDlg buttonLabel="Import" title="Import Transactions" func={this.reload}
+                                       modal="Modal_import"/>
                         </Col>
                         <Col xs={1}>
-                              <MoveDlg modal="Modala" buttonLabel="Move"  title="Move/Copy Transactions" okFunc= {this.moveTrans} positionNames={this.state.positionNames} sel={this.state.positionSel}/>
+                            <MoveDlg modal="Modala" buttonLabel="Move" title="Move/Copy Transactions"
+                                     okFunc={this.moveTrans} positionNames={this.state.positionNames}
+                                     sel={this.state.positionSel}/>
                         </Col>
                         <Col xs={2}>
-                           <button type="button" id="delpos" className="btn btn-primary" onClick={this.deletePosition}>
+                            <button type="button" id="delpos" className="btn btn-primary" onClick={this.deletePosition}>
                                 Delete Position
-                           </button>
+                            </button>
                         </Col>
-                        <Col  className='bottomM' xs={1}>
+                        <Col className='bottomM' xs={1}>
                             <a id="exportT" className="btn btn-primary " href="export?positions=-1">Export </a>
                         </Col>
-                     </Row>
-                      <Row  xs={12}>
-                            <br/>
-                      </Row>
-                     <Row xs={12}>
+                    </Row>
+                    <Row xs={12}>
+                        <br/>
+                    </Row>
+                    <Row xs={12}>
                         <div ref="transtable" id="transTable"></div>
-                     </Row>
+                    </Row>
                 </div>
 
 
