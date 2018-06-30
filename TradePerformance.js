@@ -6,8 +6,8 @@ class TradePerformance {
 
     constructor(name, cost, currentCost, id) {
         this.name = name;
-        this.cost = cost * 100;
-        this.currentCost = currentCost * 100;  //lma todo
+        this.cost = cost ;
+        this.currentCost = currentCost ;  //lma todo
         this.id = id;
     }
 }

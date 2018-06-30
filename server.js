@@ -699,7 +699,7 @@ function generateData(res, info, transMap) {
     let cnt1 = 0;
     let cnt2 = 0;
     let cnt3 = 0;
-    for (let i = lowLimit; i <= highLimit; i += 5) {
+    for (let i = lowLimit; i <= highLimit; i += 2.5) {
 
         let callRow = new MatrixRow(info.underlyingLast + "");
         callRow.setStrikePrice("" + i);
@@ -733,7 +733,7 @@ function generateData(res, info, transMap) {
     cnt1 = 0;
     cnt2 = 0;
     cnt3 = 0;
-    for (let i = lowLimit; i <= highLimit; i += 5) {
+    for (let i = lowLimit; i <= highLimit; i += 2.5) {
 
         let putRow = new MatrixRow(info.underlyingLast + "");
         putRow.setStrikePrice("" + i);
@@ -1168,6 +1168,7 @@ app.post('/tradelog', function (req, resp) {
         con.end();
         return [];
     };
+
     app.post('/movetrans', function (req, resp) {
         let con = connectToDB();
         let obj = req.body;
@@ -1189,7 +1190,70 @@ app.post('/tradelog', function (req, resp) {
             console.log("ERROR ERROR mmovetrans " + err)
             return;
         });
-    })
+    });
+    const getAsyncTradePerformance = async (con) => {
+        let info = []
+        let sql = "SELECT  iduser, idposition, name FROM position2 where iduser = "+ user.idUser+";" ;
+        let positions = await getDataFromDB(con, sql);
+        for(let i in positions){
+            let name = positions[i].name;
+            let cost = 0;
+            let res = user.info.res;
+            let currentCost = 0;
+            let id =positions[i].idposition;
+            sql = "SELECT  qty, action,price,expiration,type,strike FROM position_transaction pt"+
+                "  left join transaction t on  pt.idtransaction = t.idtransaction where idposition = "+ id+";" ;
+            let trdata = await getDataFromDB(con, sql);
+            for(let t in trdata){
+                let tr = trdata[t];
+                let action = trdata[t].action == "buy" ? "Buy" : "Sell";
+                let qty = parseInt(trdata[t].qty);
+                if (action == "Sell")
+                    qty *= -1;
+                let dt = moment(trdata[i].expiration).format('YYYY-MM-DD');
+                let tm = moment(trdata[t].createDate).format('HH:mm:ss');
+                let type = trdata[t].type == "call" ? "Call" : "Put";
+                let price = parseFloat(trdata[i].price);
+                let strike = parseFloat(trdata[i].strike);
+                let a = moment(tr.expiration);
+                let b = moment();
+                let w = a.diff(b, 'days');
+                let strikeMap = res.callExpDateMap
+                if (type == "Put")
+                    strikeMap = res.putExpDateMap
+                let strikes = strikeMap[dt + ":" + (parseInt(w) + 1)];
+
+                for (let idx in strikes) {
+                    let elems = strikes[idx];
+                    for (let i in elems) {
+                        if (elems[i].strikePrice == tr.strike) {
+                            currentPrice = parseFloat(((elems[i]["ask"] + elems[i]["bid"]) / 2).toFixed(2));
+                        }
+                    }
+                }
+
+                cost += qty * tr.price ;
+                currentCost += qty * currentPrice  ;
+            }
+            let  c = currencyFormatter.format( cost.toFixed(2)*100 , {code: 'USD'});
+            let  cc = currencyFormatter.format( currentCost.toFixed(2)*100 , {code: 'USD'});
+            info.push(new TradePerformance(name,c,cc,id));
+
+        }
+
+        con.end();
+        return info;
+    };
+    app.post('/report', function (req, resp) {
+        let con = connectToDB();
+
+        getAsyncTradePerformance (con).then((data) => {
+            resp.json({data:data});
+        }).catch(function (err) {
+            console.log("ERROR ERROR tradeperformance " + err)
+            return;
+        });
+    });
     const getAsyncxxxx = async (con, del) => {
 
 

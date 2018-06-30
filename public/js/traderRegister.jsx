@@ -89,8 +89,7 @@ var TraderRegister= React.createClass({
                 phoneErrStr:"Invalid Phone Number",
                 mobileErrStr:"Invalid Mobile Phone Number",
                 zipErrStr:"Invalid Zip Code",
-                pw2ErrStr:"Confirmation Password does't match",
-                regSource: new Collections.regCollection()
+                pw2ErrStr:"Confirmation Password does't match"
             };
     },
     submitText2: function() {
