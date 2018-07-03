@@ -323,9 +323,11 @@ var TraderLog = React.createClass({
         this.props.func(4);
     },
     okEditPosition: function (val) {
+        debugger;
         this.setState({name: val});
         func = this.editPosition;
         $.post("/editposition", {newName: val}, function (data) {
+            debugger;
                 func( data);
                 //this.setState({busy: true});
             }
@@ -333,6 +335,7 @@ var TraderLog = React.createClass({
     },
 
     editPosition: function (data) {
+        debugger;
         this.setState({ positionNames: data});
     },
 

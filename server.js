@@ -1,7 +1,7 @@
 /**
  * Created by lawrenceackner on 5/2/18.
  */
-var fs = require('fs');
+
 var http = require('http');
 var https = require('https');
 var request = require('request');
@@ -1054,7 +1054,69 @@ app.post('/tradelog', function (req, resp) {
         con.end();
         return res;
     };
+    const getAsyncTradePerformance = async (con) => {
+        let info = []
+        let sql = "SELECT  iduser, idposition, name FROM position2 where iduser = "+ user.idUser+";" ;
+        let positions = await getDataFromDB(con, sql);
+        for(let i in positions){
+            let name = positions[i].name;
+            let cost = 0;
+            let res = user.info.res;
+            let currentCost = 0;
+            let id =positions[i].idposition;
+            sql = "SELECT  qty, action,price,expiration,type,strike FROM position_transaction pt"+
+                "  left join transaction t on  pt.idtransaction = t.idtransaction where idposition = "+ id+";" ;
+            let trdata = await getDataFromDB(con, sql);
+            for(let t in trdata){
+                let tr = trdata[t];
+                let action = trdata[t].action == "buy" ? "Buy" : "Sell";
+                let qty = parseInt(trdata[t].qty);
+                if (action == "Sell")
+                    qty *= -1;
+                let dt = moment(tr.expiration).format('YYYY-MM-DD');
+                let tm = moment(tr.createDate).format('HH:mm:ss');
+                let type = tr.type == "call" ? "Call" : "Put";
+                let price = parseFloat(tr.price);
+                let strike = parseFloat(tr.strike);
+                let a = moment(tr.expiration);
+                let b = moment();
+                let w = a.diff(b, 'days');
+                let strikeMap = res.callExpDateMap
+                if (type == "Put")
+                    strikeMap = res.putExpDateMap
+                let strikes = strikeMap[dt + ":" + (parseInt(w) + 1)];
 
+                for (let idx in strikes) {
+                    let elems = strikes[idx];
+                    for (let i in elems) {
+                        if (elems[i].strikePrice == tr.strike) {
+                            currentPrice = parseFloat(((elems[i]["ask"] + elems[i]["bid"]) / 2).toFixed(2));
+                        }
+                    }
+                }
+
+                cost += qty * tr.price ;
+                currentCost += qty * currentPrice  ;
+            }
+            let  c = currencyFormatter.format( cost.toFixed(2)*100 , {code: 'USD'});
+            let  cc = currencyFormatter.format( currentCost.toFixed(2)*100 , {code: 'USD'});
+            info.push(new TradePerformance(name,c,cc,id));
+
+        }
+
+        con.end();
+        return info;
+    };
+    app.post('/report', function (req, resp) {
+        let con = connectToDB();
+
+        getAsyncTradePerformance (con).then((data) => {
+            resp.json({data:data});
+        }).catch(function (err) {
+            console.log("ERROR ERROR tradeperformance " + err)
+            return;
+        });
+    });
     app.post('/deleteposition', function (req, resp) {
         let con = connectToDB();
 
@@ -1191,75 +1253,91 @@ app.post('/tradelog', function (req, resp) {
             return;
         });
     });
-    const getAsyncTradePerformance = async (con) => {
-        let info = []
-        let sql = "SELECT  iduser, idposition, name FROM position2 where iduser = "+ user.idUser+";" ;
-        let positions = await getDataFromDB(con, sql);
-        for(let i in positions){
-            let name = positions[i].name;
-            let cost = 0;
-            let res = user.info.res;
-            let currentCost = 0;
-            let id =positions[i].idposition;
-            sql = "SELECT  qty, action,price,expiration,type,strike FROM position_transaction pt"+
-                "  left join transaction t on  pt.idtransaction = t.idtransaction where idposition = "+ id+";" ;
-            let trdata = await getDataFromDB(con, sql);
-            for(let t in trdata){
-                let tr = trdata[t];
-                let action = trdata[t].action == "buy" ? "Buy" : "Sell";
-                let qty = parseInt(trdata[t].qty);
-                if (action == "Sell")
-                    qty *= -1;
-                let dt = moment(trdata[i].expiration).format('YYYY-MM-DD');
-                let tm = moment(trdata[t].createDate).format('HH:mm:ss');
-                let type = trdata[t].type == "call" ? "Call" : "Put";
-                let price = parseFloat(trdata[i].price);
-                let strike = parseFloat(trdata[i].strike);
-                let a = moment(tr.expiration);
-                let b = moment();
-                let w = a.diff(b, 'days');
-                let strikeMap = res.callExpDateMap
-                if (type == "Put")
-                    strikeMap = res.putExpDateMap
-                let strikes = strikeMap[dt + ":" + (parseInt(w) + 1)];
 
-                for (let idx in strikes) {
-                    let elems = strikes[idx];
-                    for (let i in elems) {
-                        if (elems[i].strikePrice == tr.strike) {
-                            currentPrice = parseFloat(((elems[i]["ask"] + elems[i]["bid"]) / 2).toFixed(2));
-                        }
-                    }
-                }
 
-                cost += qty * tr.price ;
-                currentCost += qty * currentPrice  ;
-            }
-            let  c = currencyFormatter.format( cost.toFixed(2)*100 , {code: 'USD'});
-            let  cc = currencyFormatter.format( currentCost.toFixed(2)*100 , {code: 'USD'});
-            info.push(new TradePerformance(name,c,cc,id));
-
+    const getAsyncExport = async (con, pos, trans) => {
+        if (pos == -1){
+            pos = user.currentPositionId;
+        }
+        let sql = "SELECT  strike,qty,type,action,symbol,price, t.opra,t.createDate FROM position_transaction pt" +
+            "  left join transaction t on  pt.idtransaction = t.idtransaction where idposition in (" + pos + ")";
+        if(trans!=undefined){
+            sql += " and t.idtransaction in (" + trans + ")";
+        }
+        sql += ";";
+        let data = await getDataFromDB(con, sql);
+        con.end();
+        let mm = ["", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+        let froot ="positions_export_"+moment().format('YY-MM-DD_HH-mm')+".csv"
+        let fn = __dirname + "/"+froot;
+        var fs = require('fs');
+        let logStream = fs.createWriteStream(fn, {'flags': 'w'});
+        fs.create
+        await logStream.write("Exec Time,Spread,Side,Qty,Symbol,Exp,Strike,Type,Price,Net Price,Opra\n");
+        let cnt = 0;
+        for (let i in data){
+            let strike = data[i].strike;
+            let qty = data[i].qty;
+            let type = data[i].type =="call"?"CALL":"PUT";
+            let action = data[i].action =="buy"?"BUY":"SELL";
+            let symbol = data[i].symbol;
+            let price = data[i].price;
+            let opra = data[i].opra;
+            let month = opra.substring(symbol.length + 2, symbol.length + 4);
+            month = mm[parseInt(month)];
+            let exp = month + " " + opra.substring(symbol.length + 4, symbol.length + 6);
+            let exec = moment(data[i].createDate).format('YY-MM-DD HH:mm:ss')
+            if (action == "SELL")
+                qty *= -1;
+            let line = exec + ",," + action + "," + qty + "," + symbol + "," + exp + "," + strike + "," +
+                type + "," + price + ",," + opra+"\n";
+            if (cnt == data.length - 1)
+                await logStream.end(line);
+            else
+                await logStream.write(line);
+            cnt++;
         }
 
-        con.end();
-        return info;
-    };
-    app.post('/report', function (req, resp) {
-        let con = connectToDB();
 
-        getAsyncTradePerformance (con).then((data) => {
-            resp.json({data:data});
+        return fn;
+    };
+
+    app.get('/export', function (req, resp) {
+
+        let con = connectToDB();
+        let trans = req.param("trans") ;
+        let positions = parseInt(req.param("positions"));
+
+
+
+        getAsyncExport(con,positions,trans).then((fn) => {
+            setTimeout(function () {
+                resp.download(fn);
+            }, 500);
         }).catch(function (err) {
-            console.log("ERROR ERROR tradeperformance " + err)
+            console.log("ERROR ERROR export " + err)
             return;
         });
     });
-    const getAsyncxxxx = async (con, del) => {
+    const getAsyncUpload = async (con) => {
 
 
         con.end();
         return [];
     };
+
+    app.post('/upload', function (req, resp) {
+
+        let con = connectToDB();
+
+        getAsyncUpload(con,positions,trans).then((data) => {
+
+            resp.json({success:"ok"});
+        }).catch(function (err) {
+            console.log("ERROR ERROR upload " + err)
+            return;
+        });
+    });
 });
 
 var httpServer = http.createServer(app);
