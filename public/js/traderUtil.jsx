@@ -108,9 +108,9 @@ var ImportDlg   = React.createClass({
                 contentType: false,
                 data: formData,
                 success: function(data) {
+              ;
 
-                    var d = JSON.parse(data);
-                    alert (d[0].cnt +" transactions have been created");
+                    alert (data.cnt +" transactions have been created");
                     this.uploadFunc();
                 }.bind(this),
                 error: function(xhr, status, err) {

@@ -38,6 +38,7 @@ function connectToDB() {
 
 }
 let token = '';
+
 app = express();
 app.use(express.static(__dirname + '/public'));
 
@@ -949,7 +950,7 @@ const getAsyncLog = async (con, del) => {
         for (let i in idTrans) {
             sql = "DELETE FROM transaction WHERE idtransaction = " + idTrans[i] + ";";
             let result = await getDataFromDB(con, sql);
-            sql = "DELETE FROM position_transaction WHERE idtransaction = "+idTrans[i]+";";
+            sql = "DELETE FROM position_transaction WHERE idtransaction = " + idTrans[i] + ";";
             result = await getDataFromDB(con, sql);
         }
     }
@@ -967,7 +968,7 @@ app.post('/tradelog', function (req, resp) {
     let obj = req.body;
     let del = obj.del;
     getAsyncLog(con, del).then((data) => {
-        let  info = user.info;
+        let info = user.info;
         info.positionNames = data[0];
         for (let i in info.positionNames) {
             if (user.currentPositionId == info.positionNames[i].idposition) {
@@ -1008,7 +1009,7 @@ app.post('/tradelog', function (req, resp) {
             }
 
             cost += qty * tr.price * -1;
-            currentCost += qty * tr.currentPrice ;
+            currentCost += qty * tr.currentPrice;
             info.transactions.push(tr);
         }
         info.currentValue = currencyFormatter.format(( currentCost - cost) * 100, {code: 'USD'});
@@ -1022,33 +1023,33 @@ app.post('/tradelog', function (req, resp) {
         let con = connectToDB();
         let obj = req.body;
         let name = obj.newName;
-        let sql = "UPDATE position2 SET  name = '"+name+"' where idposition = "+user.currentPositionId;
+        let sql = "UPDATE position2 SET  name = '" + name + "' where idposition = " + user.currentPositionId;
         getDataFromDB(con, sql).then((data) => {
             con.end();
             for (let i in user.info.positionNames) {
                 if (user.currentPositionId == user.info.positionNames[i].idposition) {
-                     user.info.positionNames[i].name = name;
+                    user.info.positionNames[i].name = name;
                     break;
                 }
             }
             user.currentPosition = name;
-            resp.json({data:user.info.positionNames});
+            resp.json({data: user.info.positionNames});
         });
     });
 
-    const getAsyncDelPosition = async (con, ) => {
+    const getAsyncDelPosition = async (con,) => {
 
-        let sql = "delete transaction FROM transaction  inner join position_transaction pt "+
-            " on pt.idtransaction = transaction.idtransaction where idposition ="+ user.currentPositionId+ ";";
+        let sql = "delete transaction FROM transaction  inner join position_transaction pt " +
+            " on pt.idtransaction = transaction.idtransaction where idposition =" + user.currentPositionId + ";";
         let res = await getDataFromDB(con, sql);
 
-        sql = "DELETE FROM position_transaction WHERE idposition = "+ user.currentPositionId+";";
+        sql = "DELETE FROM position_transaction WHERE idposition = " + user.currentPositionId + ";";
         res = await getDataFromDB(con, sql);
 
-        sql = "DELETE FROM position2 WHERE idposition = "+user.currentPositionId+";";
+        sql = "DELETE FROM position2 WHERE idposition = " + user.currentPositionId + ";";
         res = await getDataFromDB(con, sql);
 
-        sql = "SELECT name, idposition FROM position2 " + "  where iduser =" + user.idUser +" limit 1";
+        sql = "SELECT name, idposition FROM position2 " + "  where iduser =" + user.idUser + " limit 1";
         res = await getDataFromDB(con, sql);
 
         con.end();
@@ -1056,18 +1057,18 @@ app.post('/tradelog', function (req, resp) {
     };
     const getAsyncTradePerformance = async (con) => {
         let info = []
-        let sql = "SELECT  iduser, idposition, name FROM position2 where iduser = "+ user.idUser+";" ;
+        let sql = "SELECT  iduser, idposition, name FROM position2 where iduser = " + user.idUser + ";";
         let positions = await getDataFromDB(con, sql);
-        for(let i in positions){
+        for (let i in positions) {
             let name = positions[i].name;
             let cost = 0;
             let res = user.info.res;
             let currentCost = 0;
-            let id =positions[i].idposition;
-            sql = "SELECT  qty, action,price,expiration,type,strike FROM position_transaction pt"+
-                "  left join transaction t on  pt.idtransaction = t.idtransaction where idposition = "+ id+";" ;
+            let id = positions[i].idposition;
+            sql = "SELECT  qty, action,price,expiration,type,strike FROM position_transaction pt" +
+                "  left join transaction t on  pt.idtransaction = t.idtransaction where idposition = " + id + ";";
             let trdata = await getDataFromDB(con, sql);
-            for(let t in trdata){
+            for (let t in trdata) {
                 let tr = trdata[t];
                 let action = trdata[t].action == "buy" ? "Buy" : "Sell";
                 let qty = parseInt(trdata[t].qty);
@@ -1095,12 +1096,12 @@ app.post('/tradelog', function (req, resp) {
                     }
                 }
 
-                cost += qty * tr.price ;
-                currentCost += qty * currentPrice  ;
+                cost += qty * tr.price;
+                currentCost += qty * currentPrice;
             }
-            let  c = currencyFormatter.format( cost.toFixed(2)*100 , {code: 'USD'});
-            let  cc = currencyFormatter.format( currentCost.toFixed(2)*100 , {code: 'USD'});
-            info.push(new TradePerformance(name,c,cc,id));
+            let c = currencyFormatter.format(cost.toFixed(2) * 100, {code: 'USD'});
+            let cc = currencyFormatter.format(currentCost.toFixed(2) * 100, {code: 'USD'});
+            info.push(new TradePerformance(name, c, cc, id));
 
         }
 
@@ -1110,8 +1111,8 @@ app.post('/tradelog', function (req, resp) {
     app.post('/report', function (req, resp) {
         let con = connectToDB();
 
-        getAsyncTradePerformance (con).then((data) => {
-            resp.json({data:data});
+        getAsyncTradePerformance(con).then((data) => {
+            resp.json({data: data});
         }).catch(function (err) {
             console.log("ERROR ERROR tradeperformance " + err)
             return;
@@ -1123,7 +1124,7 @@ app.post('/tradelog', function (req, resp) {
         getAsyncDelPosition(con).then((data) => {
             user.currentPositionId = data[0].idposition;
             user.currentPosition = data[0].name;
-            resp.json({success:true});
+            resp.json({success: true});
         });
     });
 
@@ -1131,8 +1132,8 @@ app.post('/tradelog', function (req, resp) {
         let transactionsStr = trans.split(":");
         for (let i in transactionsStr) {
             let transactionStr = transactionsStr[i].split(",");
-            let sql = "UPDATE transaction SET  price = "+transactionStr[1]+", qty = "+
-                transactionStr[2]+" where idtransaction = "+transactionStr[0];
+            let sql = "UPDATE transaction SET  price = " + transactionStr[1] + ", qty = " +
+                transactionStr[2] + " where idtransaction = " + transactionStr[0];
             let res = await getDataFromDB(con, sql);
         }
         con.end();
@@ -1143,8 +1144,8 @@ app.post('/tradelog', function (req, resp) {
         let obj = req.body;
         let trans = obj.modify;
 
-        getAsyncModTrans(con,trans).then((data) => {
-            resp.json({success:true});
+        getAsyncModTrans(con, trans).then((data) => {
+            resp.json({success: true});
         });
     });
     const getAsyncMoveTrans = async (con, copy, move, create, mvpos, name, trans) => {
@@ -1154,15 +1155,15 @@ app.post('/tradelog', function (req, resp) {
 
         // create the new position
         let res;
-        if(create){
+        if (create) {
 
             let sql = "INSERT INTO position2 (iduser, name, createDate,modifyDate ) VALUES(" +
-                +iduser+"," +
-                "'"+name+"'," +
+                +iduser + "," +
+                "'" + name + "'," +
                 "NOW(),NOW());";
             res = await getDataFromDB(con, sql);
-            idNewPosition =res.insertId;
-            if( !copy  ) {
+            idNewPosition = res.insertId;
+            if (!copy) {
                 sql = "UPDATE position_transaction SET  idposition = " + idNewPosition + " where idposition  = " + idPosition +
                     " AND idtransaction IN (" + trans + ");";
                 res = await getDataFromDB(con, sql);
@@ -1174,15 +1175,15 @@ app.post('/tradelog', function (req, resp) {
                         "SELECT iduser, strike,qty,type,action,symbol,price,expiration, opra, createDate,modifyDate FROM transaction where idtransaction = " +
                         transid + ";";
                     res = await getDataFromDB(con, sql);
-                     let idNewTransaction = res.insertId;
+                    let idNewTransaction = res.insertId;
                     sql = "INSERT INTO position_transaction (idposition, idtransaction,  createDate,modifyDate ) VALUES(" +
-                        idNewPosition+"," +
-                        +idNewTransaction+"," +
+                        idNewPosition + "," +
+                        +idNewTransaction + "," +
                         "NOW(),NOW());";
                     res = await getDataFromDB(con, sql);
                 }
             }
-            if( move ) {
+            if (move) {
                 let idTrans = trans.split(",");
                 for (let i = 0; i < idTrans.length; i++) {
                     let transid = idTrans[i];
@@ -1192,23 +1193,21 @@ app.post('/tradelog', function (req, resp) {
                     res = await getDataFromDB(con, sql);
                     let idNewTransaction = res.insertId;
                     sql = "INSERT INTO position_transaction (idposition, idtransaction,  createDate,modifyDate ) VALUES(" +
-                        mvpos+"," +
-                        +idNewTransaction+"," +
+                        mvpos + "," +
+                        +idNewTransaction + "," +
                         "NOW(),NOW());";
                     res = await getDataFromDB(con, sql);
                 }
             }
 
 
-
-
         }
-        else if(!copy && move){
-            let sql= "UPDATE position_transaction SET  idposition = "+mvpos+" where idposition  = "+idPosition +
-                " AND idtransaction IN ("+trans+");";
+        else if (!copy && move) {
+            let sql = "UPDATE position_transaction SET  idposition = " + mvpos + " where idposition  = " + idPosition +
+                " AND idtransaction IN (" + trans + ");";
             res = await getDataFromDB(con, sql);
 
-        }else if(move) {
+        } else if (move) {
             let idTrans = trans.split(",");
             for (let i = 0; i < idTrans.length; i++) {
                 let transid = idTrans[i];
@@ -1218,8 +1217,8 @@ app.post('/tradelog', function (req, resp) {
                 res = await getDataFromDB(con, sql);
                 let idNewTransaction = res.insertId;
                 sql = "INSERT INTO position_transaction (idposition, idtransaction,  createDate,modifyDate ) VALUES(" +
-                    mvpos+"," +
-                    +idNewTransaction+"," +
+                    mvpos + "," +
+                    +idNewTransaction + "," +
                     "NOW(),NOW());";
                 res = await getDataFromDB(con, sql);
 
@@ -1234,7 +1233,7 @@ app.post('/tradelog', function (req, resp) {
     app.post('/movetrans', function (req, resp) {
         let con = connectToDB();
         let obj = req.body;
-        let copy = obj.copy == "true" ;
+        let copy = obj.copy == "true";
         let move = obj.move == "true";
         let create = obj.create == "true";
         let trans = obj.trans;
@@ -1242,12 +1241,12 @@ app.post('/tradelog', function (req, resp) {
         let name = obj.name;
         for (let i in user.info.positionNames) {
             if (mvpos == user.info.positionNames[i].name) {
-                mvpos =user.info.positionNames[i].idposition ;
+                mvpos = user.info.positionNames[i].idposition;
                 break;
             }
         }
-        getAsyncMoveTrans  (con, copy, move, create, mvpos, name, trans).then((data) => {
-            resp.json({success:true});
+        getAsyncMoveTrans(con, copy, move, create, mvpos, name, trans).then((data) => {
+            resp.json({success: true});
         }).catch(function (err) {
             console.log("ERROR ERROR mmovetrans " + err)
             return;
@@ -1256,41 +1255,42 @@ app.post('/tradelog', function (req, resp) {
 
 
     const getAsyncExport = async (con, pos, trans) => {
-        if (pos == -1){
+        if (pos == -1) {
             pos = user.currentPositionId;
         }
         let sql = "SELECT  strike,qty,type,action,symbol,price, t.opra,t.createDate FROM position_transaction pt" +
             "  left join transaction t on  pt.idtransaction = t.idtransaction where idposition in (" + pos + ")";
-        if(trans!=undefined){
+        if (trans != undefined) {
             sql += " and t.idtransaction in (" + trans + ")";
         }
         sql += ";";
         let data = await getDataFromDB(con, sql);
         con.end();
         let mm = ["", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-        let froot ="positions_export_"+moment().format('YY-MM-DD_HH-mm')+".csv"
-        let fn = __dirname + "/"+froot;
+        let froot = "positions_export_" + moment().format('YY-MM-DD_HH-mm') + ".csv"
+        let fn = __dirname + "/" + froot;
         var fs = require('fs');
         let logStream = fs.createWriteStream(fn, {'flags': 'w'});
-        fs.create
+        await logStream.write("Account Trade History\n");
         await logStream.write("Exec Time,Spread,Side,Qty,Symbol,Exp,Strike,Type,Price,Net Price,Opra\n");
         let cnt = 0;
-        for (let i in data){
+        for (let i in data) {
             let strike = data[i].strike;
             let qty = data[i].qty;
-            let type = data[i].type =="call"?"CALL":"PUT";
-            let action = data[i].action =="buy"?"BUY":"SELL";
+            let type = data[i].type == "call" ? "CALL" : "PUT";
+            let action = data[i].action == "buy" ? "BUY" : "SELL";
             let symbol = data[i].symbol;
             let price = data[i].price;
             let opra = data[i].opra;
             let month = opra.substring(symbol.length + 2, symbol.length + 4);
             month = mm[parseInt(month)];
-            let exp = month + " " + opra.substring(symbol.length + 4, symbol.length + 6);
-            let exec = moment(data[i].createDate).format('YY-MM-DD HH:mm:ss')
+            let exp =  opra.substring(symbol.length + 4, symbol.length + 6) + " " + month +  " "+  opra.substring(symbol.length, symbol.length + 2);
+            let exec = moment(data[i].createDate).format('M/D/YY HH:mm:ss');
             if (action == "SELL")
                 qty *= -1;
+
             let line = exec + ",," + action + "," + qty + "," + symbol + "," + exp + "," + strike + "," +
-                type + "," + price + ",," + opra+"\n";
+                type + "," + price + ","+parseInt(qty)*parseFloat(price)+"," + opra + "\n";
             if (cnt == data.length - 1)
                 await logStream.end(line);
             else
@@ -1305,12 +1305,11 @@ app.post('/tradelog', function (req, resp) {
     app.get('/export', function (req, resp) {
 
         let con = connectToDB();
-        let trans = req.param("trans") ;
+        let trans = req.param("trans");
         let positions = parseInt(req.param("positions"));
 
 
-
-        getAsyncExport(con,positions,trans).then((fn) => {
+        getAsyncExport(con, positions, trans).then((fn) => {
             setTimeout(function () {
                 resp.download(fn);
             }, 500);
@@ -1319,24 +1318,66 @@ app.post('/tradelog', function (req, resp) {
             return;
         });
     });
-    const getAsyncUpload = async (con) => {
+    const getAsyncUpload = async (buf) => {
 
-
+        let con = connectToDB();
+        for (i in buf){
+            let arr = buf[i].split(",");
+            qty = parseInt(arr[3]);
+            if (qty<0)
+                qty *= -1;
+            let sql = "INSERT INTO transaction (iduser, strike,qty,type,action,symbol,price,expiration, opra, createDate,modifyDate ) VALUES(" +
+                +user.idUser+"," +
+                arr[6]+"," +
+               qty+"," +
+                "'" + arr[7].toLowerCase()+"'," +//call,put
+                "'" + arr[2].toLowerCase()+"'," +
+                "'" + arr[4]+"'," +
+                parseFloat(arr[8])+"," +
+                "'" + moment(arr[5],"D MMM YY").format("YY-M-D")+"'," +
+                "'" + arr[10]+"'," +
+                "NOW(),NOW());";
+            let r = await getDataFromDB(con,sql);
+            sql = "INSERT INTO position_transaction (idposition, idtransaction,  createDate,modifyDate ) VALUES(" +
+                +user.currentPositionId+"," +
+                +r.insertId+"," +
+                "NOW(),NOW());";
+            r = await getDataFromDB(con,sql);
+        }
         con.end();
-        return [];
+        return buf.len;
     };
 
     app.post('/upload', function (req, resp) {
 
-        let con = connectToDB();
-
-        getAsyncUpload(con,positions,trans).then((data) => {
-
-            resp.json({success:"ok"});
-        }).catch(function (err) {
-            console.log("ERROR ERROR upload " + err)
-            return;
+        var formidable = require('formidable');
+        var lineReader = require('line-reader');
+        let buf = []
+        var form = new formidable.IncomingForm();
+        form.parse(req, function (err, fields, files) {
+            var fn = files.file;
+            let firstLine = 0;;
+            lineReader.eachLine(fn.path, function (line, last) {
+                if(firstLine == 0){
+                    if (line == "Account Trade History")
+                        firstLine = 1;
+                }else  if(firstLine == 1){
+                    firstLine = 2;
+                } else{
+                    buf.push(line);
+                }
+                if (last){
+                    getAsyncUpload(buf).then((fn) => {
+                        resp.json({cnt: buf.length});
+                    }).catch(function (err) {
+                        console.log("ERROR ERROR upload " + err)
+                        return;
+                    });
+                }
+            });
+            let a = 0;
         });
+
     });
 });
 
