@@ -10,7 +10,7 @@ const bp = require("body-parser")
 var mysql = require('mysql');
 var moment = require('moment');
 var currencyFormatter = require('currency-formatter');
-
+const {Cookies} = require('./Cookies.js');
 const {Result} = require('./Result.js');
 const {MatrixRow} = require('./MatrixRow.js');
 const {Config} = require('./Config.js');
@@ -23,21 +23,21 @@ const {TradeDataRow} = require('./TradeDataRow.js');
 const {TradeDataCache} = require('./TradeDataCache.js');
 const {TradeDataRepository} = require('./TradeDataRepository.js');
 const {TradeDataPeriod} = require('./TradeDataPeriod.js');
-
+const C = new Cookies();
 let dbInfo = {
     host: "localhost",
     user: "root",
-    password: "",
-    database: "Vproduction"
+    password: C.MY_DB_PW,
+    database: C.MY_DB
 
 }
+let token = C.MY_TOKEN;
 function connectToDB() {
     var con = mysql.createConnection(dbInfo);
     con.connect();
     return con;
 
 }
-let token = '';
 
 app = express();
 app.use(express.static(__dirname + '/public'));
@@ -1268,7 +1268,7 @@ app.post('/tradelog', function (req, resp) {
         con.end();
         let mm = ["", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
         let froot = "positions_export_" + moment().format('YY-MM-DD_HH-mm') + ".csv"
-        let fn = __dirname + "/" + froot;
+        let fn = "/tmp/" + froot;
         var fs = require('fs');
         let logStream = fs.createWriteStream(fn, {'flags': 'w'});
         await logStream.write("Account Trade History\n");

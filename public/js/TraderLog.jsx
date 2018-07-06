@@ -219,11 +219,7 @@ var TraderLog = React.createClass({
             transcnt: 0,
             positionNames: [{item: "Default", id: 9}],
             positionSel: 0,
-            editPositionSource: new Collections.editPositionCollection(),
-            modifyLogSource: new Collections.modifyTansactionCollection(),
-            moveTransSource: new Collections.moveTansactionCollection(),
-            deletePositionSource: new Collections.deletePositionCollection(),
-            logSource: new Collections.logCollection(),
+            logSource: null,
             butTrans: "btn btn-primary",
             modTrans: "btn btn-primary"
         };
@@ -344,25 +340,7 @@ var TraderLog = React.createClass({
 
     },
 
-    exportTrans: function () {
 
-        var trans = this.state.logSource.transactions;
-        var ft = true;
-        var str = "";
-        var selection = transNode.jqxDataTable('getSelection');
-        for (var i = 0; i < selection.length; i++) {
-            // get a selected row.
-            if (!ft)
-                str += ","
-            else
-                ft = false;
-            var idTran = trans[selection[i].uid]["idTrans"];
-            str += idTran;
-        }
-        if (str.length > 0)
-            this.state.logSource.fetch({data: {del: str}, success: this.success, fail: this.fail, type: 'POST'});
-
-    },
     deleteTrans: function () {
         this.disableButtons();
         var trans = this.state.logSource.transactions;

@@ -6,7 +6,7 @@
 var Row = ReactBootstrap.Row;
 var Col = ReactBootstrap.Col;
 
-var Models = {}, Collections = {};
+
 
 
 var ColumnCombo = React.createClass({

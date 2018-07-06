@@ -8,7 +8,7 @@
 var Row = ReactBootstrap.Row;
 var Col = ReactBootstrap.Col;
 
-var Models = {}, Collections = {};
+
 
 
 

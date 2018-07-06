@@ -1,56 +1,4 @@
-/** @jsx React.DOM */
 
-var Models = {}, Collections = {};
-
-
-
-
-
-
-
-
-
-Collections.editPositionCollection = Backbone.Collection.extend({
-    model: Models.Reaction,
-    url: '/editposition'
-});
-
-
-
-Collections.modifyTansactionCollection = Backbone.Collection.extend({
-    model: Models.Reaction,
-    url: '/modifytrans'
-});
-
-Collections.moveTansactionCollection = Backbone.Collection.extend({
-    model: Models.Reaction,
-    url: '/movetrans'
-});
-
-
-
-
-
-
-Collections.logCollection = Backbone.Collection.extend({
-    model: Models.Reaction,
-    url: '/tradelog'
-});
-
-Collections.exportCollection = Backbone.Collection.extend({
-    model: Models.Reaction,
-    url: '/export'
-});
-
-Collections.performanceCollection = Backbone.Collection.extend({
-    model: Models.Reaction,
-    url: '/tradeperformance'
-});
-
-Collections.deletePositionCollection = Backbone.Collection.extend({
-    model: Models.Reaction,
-    url: '/deletePosition'
-});
 
 var Row = ReactBootstrap.Row;
 var Col = ReactBootstrap.Col;
@@ -62,10 +10,8 @@ var Input = ReactBootstrap.Input;
 var Table = ReactBootstrap.Table;
 
 var tradeColumn = 5;
-var treeNode = null;
 var lineChartNode = null;
-var drill = false;
-var moleculeData;
+
 var chemData = [];
 var cursor = 0;
 var propertyNode = null;
@@ -228,72 +174,8 @@ var LineChart = React.createClass({
 
 
 var clk = false;
-var PropTabs = React.createClass({
-    getInitialState: function () {
-        return {
-            tabs: [
-                {title: 'Physical'},
-                {title: 'Toxicology'}
-            ],
-            active: 0
-        };
-    },
-    render: function () {
-        return (
-            <div>
-                <TabsSwitcher items={this.state.tabs} active={this.state.active} onTabClick={this.handleTabClick}/>
-            </div>
-        );
-    },
-    componentDidUpdate: function () {
-    },
-    handleTabClick: function (index) {
-        this.setState({active: index});
-        propTableType = index;
-        propDescription.source = new $.jqx.dataAdapter(index == 0 ? source2 : source3, {
-            loadComplete: function () {
-            }
-        });
-        propertyNode.jqxTreeGrid(propDescription);
-        for (var j = 0; j < chemData.length; j++) {
-            setMoleculeProperty(chemData[j], j);
-        }
 
 
-    }
-});
-
-var GraphTabs = React.createClass({
-    getInitialState: function () {
-        return {
-            tabs: [
-                {title: 'Bar', content: <BarChart />},
-                {title: 'Green Score', content: <RadialChart  />}
-            ],
-            active: 1
-        };
-    },
-    render: function () {
-        return (
-            <div>
-                <TabsSwitcher items={this.state.tabs} active={this.state.active} onTabClick={this.handleTabClick}/>
-                <TabsContent items={this.state.tabs} active={this.state.active}/>
-            </div>
-        );
-    },
-    componentDidUpdate: function () {
-        if (chemData && clk)
-            drawGraph();
-        clk = false;
-    },
-    handleTabClick: function (index) {
-        graphType = index;
-        clk = true;
-        this.setState({active: index});
-
-
-    }
-});
 
 var TabsSwitcher = React.createClass({
     render: function () {
