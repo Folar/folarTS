@@ -1,2 +1,3 @@
 Cookies.js
-.idea
+.idea/*
+node_modules/*
