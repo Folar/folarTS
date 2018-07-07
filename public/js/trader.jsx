@@ -415,7 +415,7 @@ function position(label, type, mid, val, strike, start, end, iv) {
 
 function addPostions(type, source, rowData, rowId, start, end) {
     var strikePrice = source.localData[rowId]["strikePrice"];
-
+    console.log("in addPos "+ tradeColumn );
     var tradeLabel;
     if (rowData["col" + tradeColumn + "a"] != "") {
         tradeLabel = "col" + tradeColumn + "a";
@@ -443,7 +443,11 @@ function addPostions(type, source, rowData, rowId, start, end) {
 
     thePositionsArr = new Array();
     for (var i in thePositions) {
-        if (rowData[tradeLabel] == 0) continue;
+        debugger;
+        if (rowData[tradeLabel] == 0 || rowData[tradeLabel] == undefined){
+            thePositions[i].mag =0;
+            continue;
+        }
         thePositionsArr.push(thePositions[i]);
 
     }
