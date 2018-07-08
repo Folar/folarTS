@@ -260,7 +260,7 @@ function drawOptionGraph(start, end) {
     var min = 1000;
     var min2 = 1000;
     var draw = true;
-
+    debugger;
     for (var i = start; i < end; i += 5) {
         y1 = 0;
         for (var x in thePositions) {
@@ -383,6 +383,7 @@ var source =
 var underlyingSymbol = "RUT";
 
 function position(label, type, mid, val, strike, start, end, iv) {
+    
     this.buy = true;
     this.exp = label;
     this.type = type;
@@ -395,7 +396,7 @@ function position(label, type, mid, val, strike, start, end, iv) {
     if (val < 0) this.buy = false;
     this.action = this.buy ? "Buy" : "Sell";
     this.mag = Math.abs(val);
-
+    this.qty = val;
     this.iv = iv ;//  / 100;
 
 
@@ -414,9 +415,10 @@ function position(label, type, mid, val, strike, start, end, iv) {
 
 
 function addPostions(type, source, rowData, rowId, start, end) {
-    var strikePrice = source.localData[rowId]["strikePrice"];
-    console.log("in addPos "+ tradeColumn );
-    var tradeLabel;
+    let strikePrice = source.localData[rowId]["strikePrice"];
+
+    let tradeLabel = "";
+
     if (rowData["col" + tradeColumn + "a"] != "") {
         tradeLabel = "col" + tradeColumn + "a";
         let mid = source.localData[rowId]["mida"];
@@ -440,12 +442,24 @@ function addPostions(type, source, rowData, rowId, start, end) {
         iv = source.localData[rowId]["ivc"];
         thePositions [type + ":" + label3 + ":" + strikePrice] = new position(label3, type, mid, rowData[tradeLabel], strikePrice, start, end, iv);
     }
+    if(tradeLabel.length == 0){
+
+        debugger;
+        let idx = 0;
+        for (var i in thePositions) {
+
+            if (i == (type + ":" + label1 + ":" + strikePrice) || i == (type + ":" + label2 + ":" + strikePrice) ||
+                i == (type + ":" + label3 + ":" + strikePrice)){
+                thePositions = thePositions.splice(idx,1);
+            }
+            idx++;
+        }
+    }
+
 
     thePositionsArr = new Array();
     for (var i in thePositions) {
-        debugger;
-        if (rowData[tradeLabel] == 0 || rowData[tradeLabel] == undefined){
-            thePositions[i].mag =0;
+        if (rowData[tradeLabel] == 0 ){
             continue;
         }
         thePositionsArr.push(thePositions[i]);
