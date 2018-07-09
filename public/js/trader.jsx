@@ -251,16 +251,15 @@ function repopulateTable() {
 
 function drawOptionGraph(start, end) {
 
-    var ser = new Array();
-    var ser2 = new Array();
-    var ser3 = new Array();
-    var y;
-    var y1;
-    var y2;
-    var min = 1000;
-    var min2 = 1000;
-    var draw = true;
-    debugger;
+    let ser = new Array();
+    let ser2 = new Array();
+    let ser3 = new Array();
+    let y;
+    let y1;
+    let y2;
+    let min = 1000;
+    let min2 = 1000;
+    let draw = true;
     for (var i = start; i < end; i += 5) {
         y1 = 0;
         for (var x in thePositions) {
@@ -388,15 +387,15 @@ function position(label, type, mid, val, strike, start, end, iv) {
     this.exp = label;
     this.type = type;
     this.mid = mid;
-    this.val = val;
+    this.val = parseInt( val);
     this.underlying = underlyingSymbol;
-    this.strike = strike;
+    this.strike = parseInt(strike);
 
-    this.price = -1 * val * mid;
+    this.price =   mid;
     if (val < 0) this.buy = false;
     this.action = this.buy ? "Buy" : "Sell";
     this.mag = Math.abs(val);
-    this.qty = val;
+    this.qty = parseInt(val);
     this.iv = iv ;//  / 100;
 
 
@@ -474,22 +473,22 @@ function calcPrice(i, pos) {
     if (pos.mag == 0) return 0;
     if (pos.type == 'Call') {
         if (i <= pos.strike)
-            return pos.price;
+            return pos.price * pos.qty * -1 ;
         else {
             if (pos.buy)
-                return (pos.price + (i - pos.strike) * pos.mag);
+                return (pos.price * pos.qty * -1 + (i - pos.strike) * pos.mag);
             else
-                return (pos.price - (i - pos.strike) * pos.mag);
+                return (pos.price * pos.qty * -1 - (i - pos.strike) * pos.mag);
         }
 
     } else {
         if (i >= pos.strike)
-            return pos.price;
+            return pos.price  * pos.qty * -1;
         else {
             if (!pos.buy) // sell
-                return pos.price - ( pos.strike - i ) * pos.mag;
+                return pos.price  * pos.qty * -1  - ( pos.strike - i ) * pos.mag;
             else
-                return (pos.price + ( pos.strike - i) * pos.mag);
+                return (pos.price * pos.qty * -1  + ( pos.strike - i) * pos.mag);
         }
 
     }

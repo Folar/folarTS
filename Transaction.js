@@ -15,8 +15,8 @@ class Transaction {
         this.symbol = symbol;
         this.priceDisplay = price;
         this.price = price;
-        if (this.buy)
-            this.price *= -1;
+       // if (this.buy)
+       //     this.price *= -1;
         this.expiration = expiration;
         this.transTime = transTime;
         this.idTrans = idTrans;
