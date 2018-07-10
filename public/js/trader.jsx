@@ -249,7 +249,7 @@ function repopulateTable() {
 
 }
 
-function drawOptionGraph(start, end) {
+function drawOptionGraph(start, end,cp) {
 
     let ser = new Array();
     let ser2 = new Array();
@@ -260,7 +260,7 @@ function drawOptionGraph(start, end) {
     let min = 1000;
     let min2 = 1000;
     let draw = true;
-    for (var i = start; i < end; i += 5) {
+    for (var i = start; i < end; i += 1) {
         y1 = 0;
         for (var x in thePositions) {
             draw = true;
@@ -285,7 +285,7 @@ function drawOptionGraph(start, end) {
         c2 += thePositions[x].price * thePositions[x].mag;
     }
 
-    for (var i = start; i < end; i += 5) {
+    for (var i = start; i < end; i += 1) {
         y1 = 0;
         for (var x in thePositions) {
             draw = true;
@@ -293,7 +293,7 @@ function drawOptionGraph(start, end) {
             var now = new Date();
             var timeDiff = Math.abs(exp.getTime() - now.getTime());
             var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-            var v = BlackScholes(thePositions[x].type, i, thePositions[x].strike, diffDays / 365, .02, thePositions[x].iv);
+            var v = BlackScholes(thePositions[x].type, i, thePositions[x].strike, diffDays / 365, .02, thePositions[x].iv );
             var mag = thePositions[x].mag;
 
             if (thePositions[x].action == "Sell")
@@ -320,7 +320,7 @@ function drawOptionGraph(start, end) {
         y = y1 + y2;
 
         if (y < min) min = y;
-        ser3.push(y + c2);
+        ser3.push(y );
     }
 
     chart.yAxis.min = min;
@@ -347,7 +347,7 @@ var source =
             let end = bnds.end;
             addPostions('Call', source, rowData, rowId, start, end);
 
-            drawOptionGraph(start, end);
+            drawOptionGraph(start, end,source2.localData[rowId].currentPrice);
 
 
         },
@@ -513,7 +513,7 @@ var source2 =
             var end = bnds.end;
 
             addPostions('Put', source2, rowData, rowId, start, end);
-            drawOptionGraph(start, end);
+            drawOptionGraph(start, end,source2.localData[rowId].currentPrice);
 
         },
         dataFields: [
@@ -1213,7 +1213,7 @@ var Trader = React.createClass({
         var bnds = calcBounds(source2.localData[0].currentPrice);
         var start = bnds.start;
         var end = bnds.end;
-        drawOptionGraph(start, end);
+        drawOptionGraph(start, end,source2.localData[0].currentPrice);
         tradeTableDescription.source = new $.jqx.dataAdapter(source);
         tradeTableDescription2.source = new $.jqx.dataAdapter(source2);
         tradeNode.jqxDataTable(tradeTableDescription);
@@ -1379,7 +1379,7 @@ var LineChart = React.createClass({
         var bnds = calcBounds(source2.localData[0].currentPrice);
         var start = bnds.start;
         var end = bnds.end;
-        drawOptionGraph(start, end);
+        drawOptionGraph(start, end,source2.localData[0].currentPrice);
     },
     componentDidMount: function () {
         setLineChartNode($(this.refs.lineGraph.getDOMNode()));
