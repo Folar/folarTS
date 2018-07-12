@@ -279,10 +279,13 @@ function drawOptionGraph(start, end,cp) {
     var c2 = 0;
 
     for (var x in theTransactions) {
-        c2 += theTransactions[x].price * theTransactions[x].mag;
+        let mul = theTransactions[x].type == 'Call'?-1:1;
+        c2 += thePositions[x].price * thePositions[x].mag * mul;
     }
     for (var x in thePositions) {
-        c2 += thePositions[x].price * thePositions[x].mag;
+        let mul = thePositions[x].type == 'Call'?-1:1;
+        c2 += thePositions[x].price * thePositions[x].mag * mul;
+
     }
 
     for (var i = start; i < end; i += 1) {
