@@ -1011,7 +1011,7 @@ app.post('/tradelog', function (req, resp) {
             }
 
             cost += qty * tr.price * -1;
-            currentCost += qty * tr.currentPrice;
+            currentCost += qty * tr.currentPrice * -1;
             info.transactions.push(tr);
         }
         info.currentValue = currencyFormatter.format(( currentCost - cost) * 100, {code: 'USD'});

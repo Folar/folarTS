@@ -279,11 +279,18 @@ function drawOptionGraph(start, end,cp) {
     var c2 = 0;
 
     for (var x in theTransactions) {
-        let mul = theTransactions[x].type == 'Call'?-1:1;
-        c2 += thePositions[x].price * thePositions[x].mag * mul;
+        let mul = 1;
+        if (theTransactions[x].type == 'Call' && theTransactions[x].action == 'Sell')
+            mul = -1;
+        else if(theTransactions[x].type == 'Put' && theTransactions[x].action == 'Sell' )
+            mul = -1;
+        c2 += theTransactions[x].price * theTransactions[x].mag * mul;
     }
     for (var x in thePositions) {
-        let mul = thePositions[x].type == 'Call'?-1:1;
+        let mul = 1;
+        if (thePositions[x].type == 'Call' && thePositions[x].action == 'Sell'  ||
+            thePositions[x].type == 'Put' && thePositions[x].action == 'Sell' )
+            mul = -1;
         c2 += thePositions[x].price * thePositions[x].mag * mul;
 
     }
@@ -320,7 +327,7 @@ function drawOptionGraph(start, end,cp) {
             y2 += v * mag;
 
         }
-        y = y1 + y2;
+        y = y1 + y2 -c2;
 
         if (y < min) min = y;
         ser3.push(y );
