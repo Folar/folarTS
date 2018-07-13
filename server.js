@@ -1075,7 +1075,7 @@ const getAsyncTradePerformance = async (con) => {
             let tr = trdata[t];
             let action = trdata[t].action == "buy" ? "Buy" : "Sell";
             let qty = parseInt(trdata[t].qty);
-            if (action == "Sell")
+            if (action == "Buy")
                 qty *= -1;
             let dt = moment(tr.expiration).format('YYYY-MM-DD');
             let tm = moment(tr.createDate).format('HH:mm:ss');
