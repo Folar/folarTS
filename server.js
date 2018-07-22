@@ -824,7 +824,7 @@ function selectColumn(val, tdr, transMap, type, tdp) {
         case "trade":
             return "";
         case "position":
-            if(tdr.strikePrice == undefined )
+            if (tdr.strikePrice == undefined)
                 return "";
             let key = type + ":" + tdp + ":" + tdr.strikePrice;
             if (transMap[key] == undefined || transMap[key].getQty() == 0)
@@ -857,7 +857,7 @@ app.post('/tradetable', function (req, resp) {
             let action = trdata[i].action == "buy" ? "Buy" : "Sell";
             let qty = parseInt(trdata[i].qty);
             let dt = moment(trdata[i].expiration).format('YYYY-MM-DD');
-            let tm = moment(trdata[i].createDate).format('HH:mm:ss');
+            let tm = moment(trdata[i].expiration).format('HH:mm:ss');
             let tr = new Transaction(parseFloat(trdata[i].strike), parseInt(trdata[i].qty), trdata[i].type == "call" ? "Call" : "Put",
                 action, user.currentStock, parseFloat(trdata[i].price), dt, tm, 0);
             let finalTR = tr;
@@ -959,7 +959,7 @@ const getAsyncLog = async (con, del) => {
     sql = "SELECT name, idposition FROM position2 where iduser =" + user.idUser;
     const pos = await getDataFromDB(con, sql);
 
-    sql = "SELECT  strike,qty,type,action,symbol,price,expiration, t.idtransaction, t.createDate FROM position_transaction pt" +
+    sql = "SELECT  strike,qty,type,action,symbol,price,expiration, opra, t.idtransaction, t.createDate FROM position_transaction pt" +
         "  left join transaction t on  pt.idtransaction = t.idtransaction where idposition = " + user.currentPositionId + ";";
     const trans = await getDataFromDB(con, sql);
     con.end();
@@ -983,16 +983,30 @@ app.post('/tradelog', function (req, resp) {
         info.transactions = [];
         let cost = 0;
         let currentCost = 0;
+        let now = moment().format('YYYY-MM-DD');
+        let allExpired = true;
+        let firstOpen = now;
+        let allTrans = [];
         for (let i in trdata) {
             let action = trdata[i].action == "buy" ? "Buy" : "Sell";
             let qty = parseInt(trdata[i].qty);
             let dt = moment(trdata[i].expiration).format('YYYY-MM-DD');
-            let tm = moment(trdata[i].createDate).format('HH:mm:ss');
+            let cd = moment(trdata[i].createDate).format('YYYY-MM-DD');
+            let tm = moment(trdata[i].expiration).format('HH:mm:ss');
+
+            if (cd < firstOpen)
+                firstOpen = cd;
+
+
             if (action == "Sell")
                 qty *= -1;
 
             let tr = new Transaction(parseFloat(trdata[i].strike), qty, trdata[i].type == "call" ? "Call" : "Put",
                 action, user.currentStock, parseFloat(trdata[i].price), dt, tm, trdata[i].idtransaction);
+            allTrans.push(tr);
+        }
+        for (let i in allTrans) {
+            let tr = allTrans[i];
             a = moment(tr.expiration);
             var b = moment();
             let w = a.diff(b, 'days')
@@ -1010,8 +1024,8 @@ app.post('/tradelog', function (req, resp) {
                 }
             }
 
-            cost += qty * tr.price * -1;
-            currentCost += qty * tr.currentPrice * -1;
+            cost += tr.qty * tr.price * -1;
+            currentCost += tr.qty * tr.currentPrice * -1;
             info.transactions.push(tr);
         }
         info.currentValue = currencyFormatter.format(( currentCost - cost) * 100, {code: 'USD'});
@@ -1068,43 +1082,134 @@ const getAsyncTradePerformance = async (con) => {
         let res = user.info.res;
         let currentCost = 0;
         let id = positions[i].idposition;
-        sql = "SELECT  qty, action,price,expiration,type,strike FROM position_transaction pt" +
-            "  left join transaction t on  pt.idtransaction = t.idtransaction where idposition = " + id + ";";
+        sql = "SELECT  qty, action,price,expiration,type,strike,opra,t.createDate FROM position_transaction pt" +
+            "  left join transaction t on  pt.idtransaction = t.idtransaction where idposition = " + id +
+            ";";
         let trdata = await getDataFromDB(con, sql);
+        let now = moment().format('YYYY-MM-DD');
+        let openDate = now;
+        let consolidateTrans = [];
         for (let t in trdata) {
             let tr = trdata[t];
-            let action = trdata[t].action == "buy" ? "Buy" : "Sell";
-            let qty = parseInt(trdata[t].qty);
-            if (action == "Buy")
-                qty *= -1;
-            let dt = moment(tr.expiration).format('YYYY-MM-DD');
-            let tm = moment(tr.createDate).format('HH:mm:ss');
-            let type = tr.type == "call" ? "Call" : "Put";
-            let price = parseFloat(tr.price);
-            let strike = parseFloat(tr.strike);
-            let a = moment(tr.expiration);
-            let b = moment();
-            let w = a.diff(b, 'days');
-            let strikeMap = res.callExpDateMap
-            if (type == "Put")
-                strikeMap = res.putExpDateMap
-            let strikes = strikeMap[dt + ":" + (parseInt(w) + 1)];
 
-            for (let idx in strikes) {
-                let elems = strikes[idx];
-                for (let i in elems) {
-                    if (elems[i].strikePrice == tr.strike) {
-                        currentPrice = parseFloat(((elems[i]["ask"] + elems[i]["bid"]) / 2).toFixed(2));
+            if (consolidateTrans[tr.opra] == undefined)
+                consolidateTrans[tr.opra] = [];
+            consolidateTrans[tr.opra].push(tr);
+            let cd = moment(tr.createDate).format('YYYY-MM-DD');
+            if (cd < openDate)
+                openDate = cd;
+
+        }
+        let closed = true;
+        let realizedSum = 0;
+        for (let t in consolidateTrans) {
+
+
+            let realizedQty = 0;
+            let realizedCost = 0;
+            let pct = 0;
+            for (let ii in consolidateTrans[t]) {
+
+                let tr = consolidateTrans[t][ii];
+
+                let action = tr.action == "buy" ? "Buy" : "Sell";
+                let qty = parseInt(tr.qty);
+                if (action == "Buy")
+                    qty *= -1;
+                if (realizedQty == 0) {
+                    realizedQty = qty;
+                    realizedCost = qty * tr.price;
+                } else {
+                    if ((realizedQty > 0 && qty < 0) || (realizedQty < 0 && qty > 0)) {
+                        if (Math.abs(realizedQty) >= Math.abs(qty)) {
+                            pct = Math.abs(qty) / Math.abs(realizedQty)
+                            realizedSum += pct * realizedCost + qty * tr.price;
+                            realizedCost = pct * realizedCost;
+                            realizedQty = realizedQty + qty;
+                        } else {
+                            realizedSum += realizedCost + realizedQty * tr.price;
+                            realizedCost = (realizedQty + qty) * tr.price;
+                            realizedQty = realizedQty + qty;
+                        }
+
+                    } else {
+                        realizedCost = qty * tr.price;
+                        realizedQty = realizedQty + qty;
                     }
                 }
             }
 
-            cost += qty * tr.price;
-            currentCost += qty * currentPrice;
+            if (realizedQty != 0) {
+                let currentPrice = 0;
+                let tr = consolidateTrans[t][0]
+
+                let dt = moment(tr.expiration).format('YYYY-MM-DD');
+                let type = tr.type == "call" ? "Call" : "Put";
+
+
+                let price = parseFloat(tr.price);
+                let strike = parseFloat(tr.strike);
+                let a = moment(tr.expiration);
+                let b = moment();
+                let w = a.diff(b, 'days');
+                let strikeMap = res.callExpDateMap
+                if (type == "Put")
+                    strikeMap = res.putExpDateMap
+                let strikes = strikeMap[dt + ":" + (parseInt(w) + 1)];
+
+                for (let idx in strikes) {
+                    let elems = strikes[idx];
+                    for (let i in elems) {
+                        if (elems[i].strikePrice == tr.strike) {
+                            currentPrice = parseFloat(((elems[i]["ask"] + elems[i]["bid"]) / 2).toFixed(2));
+                        }
+                    }
+                    }
+                if (dt >now) {
+                    closed = false;
+                    cost += realizedCost;
+                    currentCost += realizedQty * currentPrice;
+                } else { // expired
+                    if(type == "Call"){
+                        if (action == "Buy"){
+                            if (tr.strike < info.underlyingLast){
+                                realizedSum += (info.underlyingLast - tr.strike) * realizedQty - Math.abs(realizedCost);
+
+                            } else {
+                                realizedSum -= Math.abs(realizedCost);
+                            }
+                        } else{
+                            if (tr.strike < info.underlyingLast) {
+                                realizedSum += Math.abs(realizedCost);
+                            } else {
+                                realizedSum -= ( info.underlyingLast - tr.strike  ) * realizedQty + Math.abs(realizedCost);
+                            }
+
+                        }
+                    } else {
+                        if (action == "Buy"){ // put
+                            if (tr.strike  >info.underlyingLast){
+                                realizedSum += (info.underlyingLast - tr.strike) * realizedQty - Math.abs(realizedCost);
+
+                            } else {
+                                realizedSum -= Math.abs(realizedCost);
+                            }
+                        } else{ // sell
+                            if (tr.strike > info.underlyingLast) {
+                                realizedSum += Math.abs(realizedCost);
+                            } else {
+                                realizedSum -= (info.underlyingLast - tr.strike) * realizedQty + Math.abs(realizedCost);
+                            }
+
+                        }
+                    }
+
+                }
+            }
         }
         let c = currencyFormatter.format(cost.toFixed(2) * 100, {code: 'USD'});
         let cc = currencyFormatter.format(currentCost.toFixed(2) * 100, {code: 'USD'});
-        info.push(new TradePerformance(name, c, cc, id));
+        info.push(new TradePerformance(name, c, cc, id, openDate, closed));
 
     }
 

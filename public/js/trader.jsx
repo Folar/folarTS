@@ -1345,7 +1345,7 @@ var chart = {
         },
         series: {
             pointStart: 0,
-            pointInterval: 5
+            pointInterval: 1
         }
     },
     series: [{

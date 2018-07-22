@@ -19,7 +19,9 @@ var perfomanceSource2 = {
     dataFields: [
         {name: 'name', type: 'string'},
         {name: 'cost', type: 'string'},
-        {name: 'currentCost', type: 'string'}
+        {name: 'currentCost', type: 'string'},
+        {name: 'openDate', type: 'string'},
+        {name: 'status', type: 'string'},
     ]
 };
 
@@ -27,7 +29,7 @@ var perfomanceSource2 = {
 var dataAdapter3 = new $.jqx.dataAdapter(perfomanceSource2);
 var transNode2;
 var perfomanceTableDescription2 = {
-    width: 400,
+    width: 600,
     height: 400,
     pageable: false,
     sortable: true,
@@ -38,7 +40,9 @@ var perfomanceTableDescription2 = {
     columns: [
         {text: 'Position Name', dataField: 'name', width: 200, editable: false},
         {text: 'Value', dataField: 'cost', width: 100, editable: false},
-        {text: 'Current Value', dataField: 'currentCost', width: 100, editable: false}
+        {text: 'Current Value', dataField: 'currentCost', width: 100, editable: false},
+        {text: 'Open Date', dataField: 'openDate', width: 100, editable: false},
+        {text: 'Status', dataField: 'status', width: 100, editable: false}
     ]
 };
 
