@@ -1119,7 +1119,6 @@ function calcPerformance(name,id,trdata){
                     } else {
                         realizedSum += realizedCost + realizedQty * tr.price *
                             (realizedQty>0?-1:1);
-                        realizedSum = realizedSum.toFixed(2)
                         realizedCost = (realizedQty + qty) * tr.price;
                         realizedQty = realizedQty + qty;
                     }
@@ -1199,6 +1198,7 @@ function calcPerformance(name,id,trdata){
             }
         }
     }
+    realizedSum = currencyFormatter.format(realizedSum.toFixed(2)* 100, {code: 'USD'});
     let c = currencyFormatter.format(cost.toFixed(2) * 100, {code: 'USD'});
     let cc = currencyFormatter.format(currentCost.toFixed(2) * 100, {code: 'USD'});
     return new TradePerformance(name, c, cc, id, openDate, closed,realizedSum);
