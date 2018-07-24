@@ -1156,40 +1156,41 @@ function calcPerformance(name,id,trdata){
                     }
                 }
             }
-            if (dt >now) {
+            if (  dt >now) {
                 closed = false;
                 cost += realizedCost;
                 currentCost += realizedQty * currentPrice;
             } else { // expired
+                let action = tr.action == "buy" ? "Buy" : "Sell";
                 if(type == "Call"){
                     if (action == "Buy"){
-                        if (tr.strike < info.underlyingLast){
-                            realizedSum += (info.underlyingLast - tr.strike) * realizedQty - Math.abs(realizedCost);
+                        if (tr.strike < user.info.underlyingLast){
+                            realizedSum += (user.info.underlyingLast - tr.strike) * Math.abs(realizedQty) - Math.abs(realizedCost);
 
                         } else {
                             realizedSum -= Math.abs(realizedCost);
                         }
                     } else{
-                        if (tr.strike < info.underlyingLast) {
+                        if (tr.strike > user.info.underlyingLast) {
                             realizedSum += Math.abs(realizedCost);
                         } else {
-                            realizedSum -= ( info.underlyingLast - tr.strike  ) * realizedQty + Math.abs(realizedCost);
+                            realizedSum += -1* ( user.info.underlyingLast - tr.strike  ) *  Math.abs(realizedQty)  + Math.abs(realizedCost);
                         }
 
                     }
                 } else {
                     if (action == "Buy"){ // put
-                        if (tr.strike  >info.underlyingLast){
-                            realizedSum += (info.underlyingLast - tr.strike) * realizedQty - Math.abs(realizedCost);
+                        if (tr.strike  <user.info.underlyingLast){
+                            realizedSum += (user.info.underlyingLast - tr.strike) *  Math.abs(realizedQty) - Math.abs(realizedCost);
 
                         } else {
-                            realizedSum -= Math.abs(realizedCost);
+                            realizedSum += -1 * Math.abs(realizedCost);
                         }
                     } else{ // sell
-                        if (tr.strike > info.underlyingLast) {
+                        if (tr.strike > user.info.underlyingLast) {
                             realizedSum += Math.abs(realizedCost);
                         } else {
-                            realizedSum -= (info.underlyingLast - tr.strike) * realizedQty + Math.abs(realizedCost);
+                            realizedSum += -1 * (user.info.underlyingLast - tr.strike) *  Math.abs(realizedQty) + Math.abs(realizedCost);
                         }
 
                     }

@@ -22,6 +22,7 @@ var perfomanceSource2 = {
         {name: 'currentCost', type: 'string'},
         {name: 'openDate', type: 'string'},
         {name: 'status', type: 'string'},
+        {name: 'realized', type: 'string'},
     ]
 };
 
@@ -29,7 +30,7 @@ var perfomanceSource2 = {
 var dataAdapter3 = new $.jqx.dataAdapter(perfomanceSource2);
 var transNode2;
 var perfomanceTableDescription2 = {
-    width: 600,
+    width: 730,
     height: 400,
     pageable: false,
     sortable: true,
@@ -42,7 +43,8 @@ var perfomanceTableDescription2 = {
         {text: 'Value', dataField: 'cost', width: 100, editable: false},
         {text: 'Current Value', dataField: 'currentCost', width: 100, editable: false},
         {text: 'Open Date', dataField: 'openDate', width: 100, editable: false},
-        {text: 'Status', dataField: 'status', width: 100, editable: false}
+        {text: 'Status', dataField: 'status', width: 100, editable: false},
+        {text: 'Profit/Loss', dataField: 'realized', width: 100, editable: false}
     ]
 };
 

@@ -149,7 +149,7 @@ var LineChart = React.createClass({
             tooltip: {
                 headerFormat: '<span style="font-size:10px">{point.key}</span>',
                 pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.2f} </b></td></tr>',
+                '<td style="padding:0"><b>{point.x:.2f} </b></td></tr>',
                 footerFormat: '',
                 shared: true,
                 useHTML: true
@@ -1331,7 +1331,7 @@ var chart = {
     tooltip: {
         headerFormat: '<span style="font-size:10px">{point.key}</span>',
         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-        '<td style="padding:0"><b>{point.y:.2f} </b></td></tr>',
+        '<td style="padding:0"><b>{point.x:.2f} </b></td></tr>',
         footerFormat: '',
         shared: true,
         useHTML: true
