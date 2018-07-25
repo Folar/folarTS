@@ -857,7 +857,7 @@ app.post('/tradetable', function (req, resp) {
             let action = trdata[i].action == "buy" ? "Buy" : "Sell";
             let qty = parseInt(trdata[i].qty);
             let dt = moment(trdata[i].expiration).format('YYYY-MM-DD');
-            let tm = moment(trdata[i].expiration).format('HH:mm:ss');
+            let tm = moment(trdata[i].createDate).format('YYYY-MM-DD HH:mm:ss');
             let tr = new Transaction(parseFloat(trdata[i].strike), parseInt(trdata[i].qty), trdata[i].type == "call" ? "Call" : "Put",
                 action, user.currentStock, parseFloat(trdata[i].price), dt, tm, 0);
             let finalTR = tr;
@@ -992,7 +992,7 @@ app.post('/tradelog', function (req, resp) {
             let qty = parseInt(trdata[i].qty);
             let dt = moment(trdata[i].expiration).format('YYYY-MM-DD');
             let cd = moment(trdata[i].createDate).format('YYYY-MM-DD');
-            let tm = moment(trdata[i].expiration).format('HH:mm:ss');
+            let tm = moment(trdata[i].createDate).format('YYYY-MM-DD HH:mm:ss');
 
             if (cd < firstOpen)
                 firstOpen = cd;
@@ -1474,7 +1474,7 @@ app.post('/upload', function (req, resp) {
     form.parse(req, function (err, fields, files) {
         var fn = files.file;
         let firstLine = 0;
-        ;
+        let continueToRead = false;
         lineReader.eachLine(fn.path, function (line, last) {
             if (firstLine == 0) {
                 if (line == "Account Trade History")
@@ -1482,7 +1482,10 @@ app.post('/upload', function (req, resp) {
             } else if (firstLine == 1) {
                 firstLine = 2;
             } else {
-                buf.push(line);
+                if(line.length != 0 && continueToRead)
+                    buf.push(line);
+                else
+                    continueToRead = false;
             }
             if (last) {
                 getAsyncUpload(buf).then((fn) => {

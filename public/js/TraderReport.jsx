@@ -37,6 +37,8 @@ var perfomanceTableDescription2 = {
     pagerButtonsCount: 10,
     source: dataAdapter3,
     columnsResize: true,
+    editable : false,
+    selectionMode: 'multiplerows',
 
     columns: [
         {text: 'Position Name', dataField: 'name', width: 200, editable: false},
@@ -58,9 +60,10 @@ var TraderReport = React.createClass({
     },
     componentDidMount: function () {
         transNode = $(this.refs.perfomanceTable.getDOMNode());
-        $(this.refs.perfomanceTable.getDOMNode()).jqxDataTable(perfomanceTableDescription2);
+       transNode.jqxDataTable(perfomanceTableDescription2);
         perfomanceTableDescription2.source = new $.jqx.dataAdapter(perfomanceSource2);
-        $(this.refs.perfomanceTable.getDOMNode()).jqxDataTable({editable: false});
+        transNode.jqxDataTable({editable: false});
+        transNode.jqxDataTable({selectionMode: 'multiplerows'});
 
         transNode.on('rowSelect', this.rowSelectChg);
         transNode.on('rowUnselect', this.rowSelectChg);
@@ -120,13 +123,13 @@ var TraderReport = React.createClass({
             <div xs={12} className="container">
                 <h1 className="titleFont">Folar Trade Station</h1>
                 <div xs={12} className="container">
-                    <Row>
+                    {/*<Row>*/}
 
-                        <Col className='bottomM' xs={2}>
-                            <a id="exportT" className="btn btn-primary disabled "
-                               href="export?positions=467">Export </a>
-                        </Col>
-                    </Row>
+                        {/*<Col className='bottomM' xs={2}>*/}
+                            {/*<a id="exportT" className="btn btn-primary disabled "*/}
+                               {/*href="export?positions=467">Export </a>*/}
+                        {/*</Col>*/}
+                    {/*</Row>*/}
                     <Row xs={12}>
                         <div ref="perfomanceTable" id="perfomanceTable"></div>
                     </Row>
