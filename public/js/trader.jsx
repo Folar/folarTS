@@ -1166,7 +1166,7 @@ var Trader = React.createClass({
 
         var sid = data.currentStock;
         var snames = data.stockNames;
-        var underlyingSymbol = sid;
+        underlyingSymbol = sid;
 
 
         this.props.setCol(data.config, data.idConfig, data.configNames);

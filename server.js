@@ -105,7 +105,7 @@ const chkDuplicateUser = async (con, data) => {
 };
 
 const createUser = async (con, data) => {
-    var sql = "INSERT INTO user (userName, userPassword, currentConfig, currentPosition, createDate,modifyDate ) VALUES(" +
+    var sql = "INSERT INTO user (userName, userPassword, currentConfig, currentPosition,currentStock createDate,modifyDate ) VALUES(" +
         "'" + data.email + "'," +
         "'" + data.pw + "'," +
         "0," +
@@ -218,7 +218,7 @@ const register = async (con, data) => {
     user.info.currentConfigId = user.currentConfigId = cdc.insertId;
     user.info.config = user.config = new Config();
     ;
-    user.currentStock = "RUT";
+    user.currentStock = cu.currentStock;
     user.currentPositionId = cdp.insertId;
 
     let result = {user: data.email, duplicateUser: false};
