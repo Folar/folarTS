@@ -1474,7 +1474,7 @@ app.post('/upload', function (req, resp) {
     form.parse(req, function (err, fields, files) {
         var fn = files.file;
         let firstLine = 0;
-        let continueToRead = false;
+        let continueToRead = true;
         lineReader.eachLine(fn.path, function (line, last) {
             if (firstLine == 0) {
                 if (line == "Account Trade History")
