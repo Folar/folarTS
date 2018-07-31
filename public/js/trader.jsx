@@ -453,7 +453,6 @@ function addPostions(type, source, rowData, rowId, start, end) {
     }
     if(tradeLabel.length == 0){
 
-        debugger;
         let idx = 0;
         for (var i in thePositions) {
 
@@ -875,6 +874,7 @@ var Trader = React.createClass({
 
     getInitialState: function () {
         return {
+            showModal:false,
             dataSource: null,
             offset: 0,
             lastPrice: 500,
@@ -883,8 +883,15 @@ var Trader = React.createClass({
             stockNames: [{item: "Default", id: 9}],
             stockSel: '00',
             klassName: "showError",
-            maxPeriod: 0
+            maxPeriod: 0,
+            importTransData:[]
         };
+    },
+    handleHideModal: function(){
+        this.setState( {showModal: false})
+    },
+    handleShowModal: function(){
+        this.setState( {showModal: true})
     },
     back: function () {
         if (this.state.offset == 0) return;
@@ -1046,6 +1053,10 @@ var Trader = React.createClass({
     initValEmpty: function () {
         return "";
     },
+    displayImportTrans: function (data) {
+        this.setState({importTransData:data.importTrans, showModal: true})
+        //this.handleShowModal();
+    },
     render: function () {
 
         if (this.state.dataSource != null) {
@@ -1063,6 +1074,11 @@ var Trader = React.createClass({
 
             <div className="analyzer  marg10">
                 <div xs={12} className="container">
+
+                    <div className="row">
+                       {this.state.showModal ? <ImportTransDlg  data={this.state.importTransData}
+                                                                handleHideModal={this.handleHideModal}/> : null}
+                    </div>
                     <Row xs={12} className="container">
                         <Col xs={1} className="positionLbl">
                             Position:
@@ -1082,7 +1098,9 @@ var Trader = React.createClass({
                                       modal="Modal_trans"/>
                         </Col>
                         <Col xs={1}>
-                            <ImportDlg buttonLabel="Import" title="Import Transactions" func={this.reload}
+
+                            <ImportDlg buttonLabel="Import" title="Import Transactions"
+                                       func={this.displayImportTrans}
                                        modal="Modal_import"/>
                         </Col>
 

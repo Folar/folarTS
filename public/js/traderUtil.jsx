@@ -90,6 +90,147 @@ var ConfigNameCombo = React.createClass({
 
 });
 var  dlgTxt = null;
+var importSource = {
+    localData: [],
+    dataType: "json",
+    dataFields: [
+        {name: 'action', type: 'string'},
+        {name: 'type', type: 'string'},
+        {name: 'exp', type: 'string'},
+        {name: 'price', type: 'string'},
+        {name: 'strike', type: 'string'},
+        {name: 'underlying', type: 'string'},
+        {name: 'mag', type: 'number'}
+    ]
+};
+
+var importTableDescription = {
+    width: 650,
+    height: 231,
+    pageable: false,
+    pagerButtonsCount: 10,
+    source: new $.jqx.dataAdapter(importSource),
+    columnsResize: true,
+    editSettings: {
+        saveOnPageChange: true, saveOnBlur: true,
+        saveOnSelectionChange: false, cancelOnEsc: true,
+        saveOnEnter: true, editOnDoubleClick: true, editOnF2: true
+    },
+    columns: [
+        {text: 'Type', dataField: 'type', width: 65, editable: false},
+        {text: 'Underlying', dataField: 'underlying', width: 100, editable: false},
+        {text: 'Expiration', dataField: 'exp', width: 100, editable: false},
+        {text: 'Price', dataField: 'price', width: 85, editable: false},
+        {text: 'Strike Price', dataField: 'strike', width: 100, editable: false},
+        {text: 'Action', dataField: 'action', width: 100, editable: false},
+        {text: 'Amount', dataField: 'mag', width: 100, editable: false}
+    ]
+};
+var newArray = null;
+var ImportTransDlg = React.createClass({
+    getInitialState: function () {
+        return {
+            positionNames: [{item: "Default", id: 9}],
+            positionSel: 0,
+            stockNames: [{item: "Default", id: 9}],
+            stockSel: 'All',
+            exps: [{item: "Default", id: 9}],
+            expsSel: 'All',
+            klassName: "showError"
+        };
+    },
+    quit: function (t) {
+        this.props.handleHideModal();
+    },
+    switchStocks: function () {
+        var id = this.refs.stockCombo.getConfigName();
+        this.setState({stockSel : id});
+        debugger;
+    },
+    switchExps: function () {
+
+        var id = this.refs.expsCombo.getConfigName();
+        this.setState({expsSel : id});
+        debugger;
+    },
+    componentDidMount: function () {
+        $(this.refs.importtable.getDOMNode()).jqxDataTable(importTableDescription);
+        importTableDescription.source = new $.jqx.dataAdapter(importSource);
+        $(this.getDOMNode()).modal('show');
+        this.setState({stockNames:this.props.data.syms,
+            exps:this.props.data.exps})
+    },
+    render: function () {
+        newArray = this.props.data.buf;
+        if (this.refs.stockCombo != undefined) {
+            var id = this.refs.stockCombo.getConfigName();
+            newArray = this.props.data.buf.filter(function (el) {
+                if (id == "All") return true;
+                if (el.underlying == id) return true;
+                return false;
+            });
+            id = this.refs.expsCombo.getConfigName();
+            newArray = newArray.filter(function (el) {
+                if (id == "All") return true;
+                if (el.exp == id) return true;
+                return false;
+            });
+            if (id!=undefined) {
+                importSource.localData = newArray;
+                importTableDescription.source = new $.jqx.dataAdapter(importSource);
+                $(this.refs.importtable.getDOMNode()).jqxDataTable(importTableDescription);
+            }
+        }
+        importSource.localData= newArray;
+        importTableDescription.source = new $.jqx.dataAdapter(importSource);
+
+
+        return (
+
+
+                <div className="modal fade"  >
+                    <div className="modal-dialog wide">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <Row xs={12} className="container">
+                                    <Col xs={1} className={this.state.klassName}>
+                                        Stocks:
+                                    </Col>
+                                    <Col xs={1} className={this.state.klassName}>
+                                        <StockNameCombo ref="stockCombo" names={this.state.stockNames}
+                                                        sel={this.state.stockSel }
+                                                        switchConfig={this.switchStocks}/>
+                                    </Col>
+                                    <Col xs={1}/>
+                                    <Col xs={1} className={this.state.klassName}>
+                                        Expirations:
+                                    </Col>
+                                    <Col xs={1} className={this.state.klassName}>
+                                        <StockNameCombo ref="expsCombo" names={this.state.exps}
+                                                        sel={this.state.expsSel }
+                                                        switchConfig={this.switchExps}/>
+                                    </Col>
+
+                                </Row>
+
+                                <h4 className="modal-title" id="myimporttrans">Choose Transactions to Import</h4>
+                            </div>
+                            <div className="modal-body">
+                                <div ref="importtable" id="importTable"></div>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-default" onClick={this.quit}>Cancel</button>
+                                <button type="button" className="btn btn-primary" onClick={this.quit}
+                                        >Import</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        );
+    }
+});
+
 
 var ImportDlg   = React.createClass({
         getInitialState: function() {
@@ -108,10 +249,9 @@ var ImportDlg   = React.createClass({
                 contentType: false,
                 data: formData,
                 success: function(data) {
-              ;
 
-                    alert (data.cnt +" transactions have been created");
-                    this.uploadFunc();
+                    //alert (data.cnt +" transactions have been created");
+                    this.uploadFunc(data);
                 }.bind(this),
                 error: function(xhr, status, err) {
                     // do stuff
@@ -133,8 +273,7 @@ var ImportDlg   = React.createClass({
             reader.readAsDataURL(file);
         },
         uploadFunc : function(t){
-
-            this.props.func();
+            this.props.func(t);
         },
         render: function() {
 

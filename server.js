@@ -488,7 +488,7 @@ const getStockData = async () => {
     return new Promise((resolve, reject) => {
         request(
             'https://smartdocs.tdameritrade.com/smartdocs/v1/sendrequest?targeturl=https%3A%2F%2Fapi.tdameritrade.com%2Fv1%2Fmarketdata%2Fchains%3Fapikey%3DFOLARTS%2540AMER.OAUTHAP%26symbol%3D'
-            + user.currentStock + '%26strikeCount%3D' + 30 + '&_=' + token, function (error, response, body) {
+            + user.currentStock + '%26strikeCount%3D' + 40 + '&_=' + token, function (error, response, body) {
                 if (!error && response.statusCode == 200) {
 
                     let res = null;
@@ -1464,13 +1464,33 @@ const getAsyncUpload = async (buf) => {
     con.end();
     return buf.len;
 };
+class ImportTrans {
 
+    constructor(cnt,line) {
+        let arr = line.split(",");
+        this.cnt = cnt;
+        this.type = arr[7];
+        this.underlying  = arr[4];
+        this.exp = arr[5];
+        this.price = arr[8];
+        this.strike = arr[6];
+        this.action = arr[2];
+        this.qty = arr[3];
+        if (this.action == "SELL")
+            this.qty = this.qty * -1;
+        this.mag = this.qty < 0 ? -1 * this.qty : this.qty;
+
+    }
+}
 app.post('/upload', function (req, resp) {
 
-    var formidable = require('formidable');
-    var lineReader = require('line-reader');
-    let buf = []
-    var form = new formidable.IncomingForm();
+    let formidable = require('formidable');
+    let lineReader = require('line-reader');
+    let buf = [];
+    let syms= [];
+    let exps = [];
+    let form = new formidable.IncomingForm();
+    let cnt = 0;
     form.parse(req, function (err, fields, files) {
         var fn = files.file;
         let firstLine = 0;
@@ -1482,18 +1502,31 @@ app.post('/upload', function (req, resp) {
             } else if (firstLine == 1) {
                 firstLine = 2;
             } else {
-                if(line.length != 0 && continueToRead)
-                    buf.push(line);
+                if(line.length != 0 && continueToRead) {
+                    let it = new ImportTrans(cnt++, line);
+                    if (!exps.includes(it.exp))
+                        exps.push(it.exp);
+                    if (!syms.includes(it.underlying))
+                        syms.push(it.underlying);
+                    buf.push(it);
+                }
                 else
                     continueToRead = false;
             }
             if (last) {
-                getAsyncUpload(buf).then((fn) => {
-                    resp.json({cnt: buf.length});
-                }).catch(function (err) {
-                    console.log("ERROR ERROR upload " + err)
-                    return;
-                });
+                user.importTrans = {};
+                user.importTrans.buf = buf;
+                exps.splice(0, 0,"All");
+                user.importTrans.exps = exps;
+                syms.splice(0, 0,"All");
+                user.importTrans.syms = syms;
+                resp.json({importTrans: user.importTrans});
+                // getAsyncUpload(buf).then((fn) => {
+                //     resp.json({cnt: buf.length});
+                // }).catch(function (err) {
+                //     console.log("ERROR ERROR upload " + err)
+                //     return;
+                // });
             }
         });
         let a = 0;
