@@ -1435,34 +1435,57 @@ app.get('/export', function (req, resp) {
         return;
     });
 });
-const getAsyncUpload = async (buf) => {
+const getAsyncUpload = async (sel,pos,val) => {
 
     let con = connectToDB();
-    for (i in buf) {
-        let arr = buf[i].split(",");
-        qty = parseInt(arr[3]);
-        if (qty < 0)
-            qty *= -1;
+    let res;
+    let idPosition;
+    if (pos == "Create...") {
+
+        let sql = "INSERT INTO position2 (iduser, name, createDate,modifyDate ) VALUES(" +
+            +user.idUser + "," +
+            "'" + val + "'," +
+            "NOW(),NOW());";
+        res = await getDataFromDB(con, sql);
+        idPosition = res.insertId;
+        user.info.positionNames.push({name:val,idposition:idPosition})
+    } else {
+        for (let i in user.info.positionNames) {
+            if (pos == user.info.positionNames[i].name) {
+                idPosition = user.info.positionNames[i].idposition;
+                break;
+            }
+        }
+    }
+    let arr = sel.split(",");
+    for (i in arr) {
+        let idx = parseInt(arr[i]);
+        let  it = user.importTrans.buf[idx];
+        let exp =moment(it.exp).format('YYYY-MM-DD');
+        let opra = it.underlying;
+        let dt = exp.split("-");
+        opra += dt[0].substring(2) + dt[1] + dt[2] +
+            it.type.substring(0,1) + it.strike;
         let sql = "INSERT INTO transaction (iduser, strike,qty,type,action,symbol,price,expiration, opra, createDate,modifyDate ) VALUES(" +
             +user.idUser + "," +
-            arr[6] + "," +
-            qty + "," +
-            "'" + arr[7].toLowerCase() + "'," +//call,put
-            "'" + arr[2].toLowerCase() + "'," +
-            "'" + arr[4] + "'," +
-            parseFloat(arr[8]) + "," +
-            "'" + moment(arr[5], "D MMM YY").format("YY-M-D") + "'," +
-            "'" + arr[10] + "'," +
+            it.strike+ "," +
+            it.mag + "," +
+            "'" + it.type.toLowerCase() + "'," +//call,put
+            "'" + it.action.toLowerCase() + "'," +
+            "'" + it.underlying + "'," +
+            parseFloat(it.price) + "," +
+            "'" + exp + "'," +
+            "'" + opra + "'," +
             "NOW(),NOW());";
         let r = await getDataFromDB(con, sql);
         sql = "INSERT INTO position_transaction (idposition, idtransaction,  createDate,modifyDate ) VALUES(" +
-            +user.currentPositionId + "," +
+            +idPosition + "," +
             +r.insertId + "," +
             "NOW(),NOW());";
         r = await getDataFromDB(con, sql);
     }
     con.end();
-    return buf.len;
+    return arr.length;
 };
 class ImportTrans {
 
@@ -1482,6 +1505,20 @@ class ImportTrans {
 
     }
 }
+
+app.post('/import', function (req, resp) {
+    let sel = req.param("sel");
+    let pos = req.param("pos");
+    let val = req.param("val");
+    getAsyncUpload(sel,pos,val).then(function(cnt)  {
+        resp.json({cnt: cnt});
+    }).catch(function (err) {
+        console.log("ERROR ERROR upload " + err)
+        return;
+    });
+
+
+});
 app.post('/upload', function (req, resp) {
 
     let formidable = require('formidable');
@@ -1520,13 +1557,12 @@ app.post('/upload', function (req, resp) {
                 user.importTrans.exps = exps;
                 syms.splice(0, 0,"All");
                 user.importTrans.syms = syms;
+                var clonedArray = JSON.parse(JSON.stringify(user.info.positionNames));
+                clonedArray.push({name: "Create...", idposition: 0})
+                user.importTrans.positionNames = clonedArray;
+                user.importTrans.currentPosition = user.info.currentPosition;
                 resp.json({importTrans: user.importTrans});
-                // getAsyncUpload(buf).then((fn) => {
-                //     resp.json({cnt: buf.length});
-                // }).catch(function (err) {
-                //     console.log("ERROR ERROR upload " + err)
-                //     return;
-                // });
+
             }
         });
         let a = 0;

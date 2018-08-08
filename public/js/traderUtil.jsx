@@ -113,7 +113,7 @@ var importTableDescription = {
     columnsResize: true,
     editSettings: {
         saveOnPageChange: true, saveOnBlur: true,
-        saveOnSelectionChange: false, cancelOnEsc: true,
+        saveOnSelectionChange: true, cancelOnEsc: true,
         saveOnEnter: true, editOnDoubleClick: true, editOnF2: true
     },
     columns: [
@@ -136,6 +136,7 @@ var ImportTransDlg = React.createClass({
             stockSel: 'All',
             exps: [{item: "Default", id: 9}],
             expsSel: 'All',
+            showNewPos:false,
             klassName: "showError"
         };
     },
@@ -145,23 +146,73 @@ var ImportTransDlg = React.createClass({
     switchStocks: function () {
         var id = this.refs.stockCombo.getConfigName();
         this.setState({stockSel : id});
-        debugger;
     },
     switchExps: function () {
 
         var id = this.refs.expsCombo.getConfigName();
         this.setState({expsSel : id});
-        debugger;
     },
     componentDidMount: function () {
         $(this.refs.importtable.getDOMNode()).jqxDataTable(importTableDescription);
         importTableDescription.source = new $.jqx.dataAdapter(importSource);
         $(this.getDOMNode()).modal('show');
-        this.setState({stockNames:this.props.data.syms,
+        this.setState({stockNames:this.props.data.syms,positionNames:this.props.data.positionNames,
+            positionSel:this.props.data.currentPosition,
             exps:this.props.data.exps})
+    },
+    switchPosition: function () {
+        var id = this.refs.nameCombo.getConfigName();
+        this.setState({showNewPos:id == "Create..."})
+
+        this.setState({positionSel: id});
+    },
+    import: function () {
+        var val = "";
+        let newPosition = false;
+        if(this.state.showNewPos){
+            val = $("#newP")[0].value;
+            newPosition = true;
+        }
+        var ft = true;
+        var str = "";
+        let importNode = $(this.refs.importtable.getDOMNode());
+        var selection = importNode.jqxDataTable('getSelection');
+        for (var i = 0; i < selection.length; i++) {
+            // get a selected row.
+            if (!ft)
+                str += ","
+            else
+                ft = false;
+            if(newArray.length == 0)
+                newArray = this.props.data.buf;
+            var idTran = newArray[selection[i].uid]["cnt"];
+            str += idTran;
+        }
+        if (selection.length == 0){
+            if(newArray.length == 0)
+                newArray = this.props.data.buf;
+            for (var i = 0; i < newArray.length; i++) {
+                // get a selected row.
+                if (!ft)
+                    str += ","
+                else
+                    ft = false;
+                if(newArray.length == 0)
+                    newArray = this.props.data.buf;
+                var idTran = newArray[i]["cnt"];
+                str += idTran;
+            }
+        }
+        var func = this.success;
+        $.post("/import", {sel: str,newPosition:newPosition,val:val,pos:this.state.positionSel}, function (data) {
+                alert(data.cnt + " transaction(s) have been imported");
+
+            }
+        )
     },
     render: function () {
         newArray = this.props.data.buf;
+
         if (this.refs.stockCombo != undefined) {
             var id = this.refs.stockCombo.getConfigName();
             newArray = this.props.data.buf.filter(function (el) {
@@ -218,13 +269,33 @@ var ImportTransDlg = React.createClass({
                             <div className="modal-body">
                                 <div ref="importtable" id="importTable"></div>
                             </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-default" onClick={this.quit}>Cancel</button>
-                                <button type="button" className="btn btn-primary" onClick={this.quit}
-                                        >Import</button>
+                            <div>
+                                <Row>
+                                    <Col xs={1}/>
+                                    <Col xs={1}>
+                                        Import to:
+                                    </Col>
+                                    <Col xs={2} className={this.state.klassName}>
+                                        <ConfigNameCombo ref="nameCombo" names={this.state.positionNames}
+                                                 sel={this.state.positionSel}
+                                                 switchConfig={this.switchPosition}/>
+                                    </Col>
+                                    <Col xs={2}>
+                                        {this.state.showNewPos ? <input id="newP" className="searchBox" ref="postxt"/> : null}
+                                    </Col>
+                                    <Col xs={1} className={this.state.klassName}/>
+                                    <Col xs={2} className={this.state.klassName}>
+                                        <button type="button" className="btn btn-default" onClick={this.quit}>Close</button>
+                                    </Col>
+                                    <Col xs={2} className={this.state.klassName}>
+                                        <button type="button" className="btn btn-primary" onClick={this.import}>Import</button>
+                                    </Col>
+                                </Row>
+
+                            </div>
                             </div>
                         </div>
-                    </div>
+                    <div/>
                 </div>
 
         );

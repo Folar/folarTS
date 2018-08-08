@@ -526,10 +526,7 @@ var TraderLog = React.createClass({
                                 Update
                             </button>
                         </Col>
-                        <Col xs={1}>
-                            <ImportDlg buttonLabel="Import" title="Import Transactions" func={this.reload}
-                                       modal="Modal_import"/>
-                        </Col>
+
                         <Col xs={1}>
                             <MoveDlg modal="Modala" buttonLabel="Move" title="Move/Copy Transactions"
                                      okFunc={this.moveTrans} positionNames={this.state.positionNames}

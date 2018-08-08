@@ -888,7 +888,8 @@ var Trader = React.createClass({
         };
     },
     handleHideModal: function(){
-        this.setState( {showModal: false})
+        this.setState( {showModal: false});
+        this.fetch("");
     },
     handleShowModal: function(){
         this.setState( {showModal: true})
@@ -1055,7 +1056,7 @@ var Trader = React.createClass({
     },
     displayImportTrans: function (data) {
         this.setState({importTransData:data.importTrans, showModal: true})
-        //this.handleShowModal();
+
     },
     render: function () {
 
