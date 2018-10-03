@@ -25,8 +25,8 @@ const {TradeDataRepository} = require('./TradeDataRepository.js');
 const {TradeDataPeriod} = require('./TradeDataPeriod.js');
 const C = new Cookies();
 let dbInfo = {
-    host: "localhost",
-    user: "root",
+    host: C.MY_HOST,
+    user: C.MY_USER,
     password: C.MY_DB_PW,
     database: C.MY_DB
 
@@ -105,11 +105,12 @@ const chkDuplicateUser = async (con, data) => {
 };
 
 const createUser = async (con, data) => {
-    var sql = "INSERT INTO user (userName, userPassword, currentConfig, currentPosition,currentStock createDate,modifyDate ) VALUES(" +
+    var sql = "INSERT INTO user (userName, userPassword, currentConfig, currentPosition,currentStock, createDate,modifyDate ) VALUES(" +
         "'" + data.email + "'," +
         "'" + data.pw + "'," +
         "0," +
         "0," +
+        "'RUT'," +
         "NOW(),NOW());"
     return new Promise((resolve, reject) => {
         con.query(sql, "", (err, rows) => {
@@ -217,8 +218,8 @@ const register = async (con, data) => {
     user.info = new TradeInfo();
     user.info.currentConfigId = user.currentConfigId = cdc.insertId;
     user.info.config = user.config = new Config();
-    ;
-    user.currentStock = cu.currentStock;
+
+    //user.currentStock = 'RUT';
     user.currentPositionId = cdp.insertId;
 
     let result = {user: data.email, duplicateUser: false};
@@ -563,6 +564,8 @@ const getAsyncData = async (con, user, trans, underlying) => {
         const result = await getDataFromDB(con,
             "UPDATE user SET  currentStock = '" + underlying + "' where iduser = " + user.idUser);
     }
+    if (!user.info.stkData )
+        user.info.stkData = [];
     let stkData = user.info.stkData;
 
     const configNames = await  getConfigNames(con, user.idUser);
