@@ -12,15 +12,12 @@ var Table = ReactBootstrap.Table;
 var tradeColumn = 5;
 var lineChartNode = null;
 
-var chemData = [];
 var cursor = 0;
 var propertyNode = null;
 var tradeNode = null;
 var transNode = null;
 var tradeNode2 = null;
-var graphType = 1;
-var searchText;
-var propTableType = 0;
+
 
 
 function setLineChartNode(v) {
@@ -44,11 +41,19 @@ var thePositions = new Array();
 var thePositionsArr = new Array();
 var theTransactions = new Array();
 
+const WEB_STATE_TRADE = 0;
+const WEB_STATE_LOG = 1;
+const WEB_STATE_REPORT = 2;
+const WEB_STATE_JOURNAL = 3;
+const WEB_STATE_CONFIG = 4;
+const WEB_STATE_REG = 5;
+const WEB_STATE_LOGIN = 6;
+
 
 var MenuExample = React.createClass({
 
     getInitialState: function () {
-        return {focused: 0};
+        return {focused: this.props.focus};
     },
 
     clicked: function (index) {
@@ -1433,7 +1438,7 @@ var LineChart = React.createClass({
 var TraderApp = React.createClass({
     getInitialState: function () {
         return {
-            webState: 6,
+            webState: WEB_STATE_LOGIN,
             firstTime: 1,
             userName: 'Ed',
             configNames: [{item: "Default", id: 9}],
@@ -1453,7 +1458,7 @@ var TraderApp = React.createClass({
         thePositions = new Array();
         thePositionsArr = new Array();
         transSource.localData = thePositionsArr;
-        this.setState({webState: 6, firstTime: 1});
+        this.setState({webState: WEB_STATE_LOGIN, firstTime: 1});
     },
 
     setOffset: function (os) {
@@ -1473,11 +1478,11 @@ var TraderApp = React.createClass({
                     me.setState({fnc: fnc});
                 }
             }
-            if (state == 0 && me.state.webState == 1) {
+            if (state == WEB_STATE_TRADE && me.state.webState == 1) {
                 // make sure the tab is correct after deleting the position
                 me.state.fnc()
             }
-            if (me.state.webState == 6 || me.state.webState == 5) {
+            if (me.state.webState == WEB_STATE_LOGIN || me.state.webState == WEB_STATE_REG) {
                 me.setState({userName: name});
             }
 
@@ -1486,37 +1491,40 @@ var TraderApp = React.createClass({
 
         var page = <Trader ofunc={this.setOffset} setCol={this.setColumns} firstTime={this.state.firstTime}
                            offset={this.state.offset}/>;
-        if (this.state.webState == 3) {
+        if (this.state.webState == WEB_STATE_CONFIG) {
 
             page = <TraderConfig ref="config"/>;
-        } else if (this.state.webState == 1) {
+        } else if (this.state.webState == WEB_STATE_LOG) {
 
             page = <TraderLog func={transition}/>;
-        } else if (this.state.webState == 2) {
+        } else if (this.state.webState == WEB_STATE_REPORT) {
 
             page = <TraderReport />;
+        } else if (this.state.webState == WEB_STATE_JOURNAL) {
+            page = <TraderJournal/>
         }
+
+        //alert (this.state.webState);
         switch (this.state.webState) {
 
-
-            case 5:
+            case WEB_STATE_REG:
                 return (
                     <div className="whiteBG" xs={12}>
                         <TraderRegister func={transition}/>
                     </div>
                 );
 
-            case 6:
+            case WEB_STATE_LOGIN:
                 return (
                     <div className="whiteBG" xs={12}>
                         <TraderLogin func={transition}/>
                     </div>
                 );
-
-            case 0:
-            case 1:
-            case 2:
-            case 3:
+            case WEB_STATE_TRADE:
+            case WEB_STATE_LOG:
+            case WEB_STATE_REPORT:
+            case WEB_STATE_JOURNAL:
+            case WEB_STATE_CONFIG:
                 return (
                     <div>
                         <div xs={12} className="container">
@@ -1525,8 +1533,8 @@ var TraderApp = React.createClass({
                                     <h3 className="titleFont2">Folar Trade Station</h3>
                                 </Col>
                                 <Col xs={6}>
-                                    <MenuExample func={transition}
-                                                 items={ ['Trade', 'Transaction Log', 'Report', 'Settings'] }/>
+                                    <MenuExample func={transition} focus ="0"
+                                                 items={ ['Trade', 'Transaction Log', 'Report', "Journal",'Settings'] }/>
                                 </Col>
                                 <Col xs={4} className="menuSuffix">
                                     <span className="exit"> Hi {this.state.userName} &nbsp;&nbsp;  <img className="exit"
