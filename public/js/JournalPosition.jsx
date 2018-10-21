@@ -8,58 +8,7 @@ var Panel = ReactBootstrap.Panel;
 var Input = ReactBootstrap.Input;
 var Table = ReactBootstrap.Table;
 
-const data = {
-    currentId: 2,
-    dates:[
-        // {
-        //     date: "Oct Monday 15",
-        //     text :"First"
-        // },
-        // {
-        //     date: "Oct Tuesday 16",
-        //     text :"second"
-        // },
-        // {
-        //     date: "Oct Wednesday 17",
-        //     text :""
-        // },
-        // {
-        //     date: "Oct Thursday 18",
-        //     text :"forth"
-        // },
-        // {
-        //     date: "Oct Friday 19",
-        //     text: "fifth"
-        // }
-    ],
-    positions: [
-        // {
-        //     name: "RHINONOV18",
-        //     id: 1
-        // },
-        // {
-        //     name: "BUTNOV18",
-        //     id: 2
-        // },
-        // {
-        //     name: "BEARNOV18",
-        //     id: 3
-        // },
-        // {
-        //     name: "BARBNOV18",
-        //     id: 4
-        // },
-        // {
-        //     name: "FROGNOV18",
-        //     id: 5
-        // },
-        // {
-        //     name: "COWNOV18",
-        //     id: 6
-        // }
-    ]
 
-};
 
 
 var JournalPosition = React.createClass({
@@ -84,9 +33,15 @@ var JournalPosition = React.createClass({
 
     success: function (data) {
        this.setState({currentId:data.currentId,positions:data.positions,dates:data.dates});
+       this.scrollToBottom();
 
     },
-
+    scrollToBottom: function() {
+        const scrollHeight = this.messageList.scrollHeight;
+        const height = this.messageList.clientHeight;
+        const maxScrollTop = scrollHeight - height;
+        this.messageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+    },
     fail: function () {
 
     },
@@ -127,10 +82,7 @@ var JournalPosition = React.createClass({
         })
     },
     render: function () {
-        var transition = function (state, name, fnc) {
 
-
-        };
         let positionBoxes =
             this.state.positions.map((item, index) => {
 
@@ -148,7 +100,7 @@ var JournalPosition = React.createClass({
                     <Row xs={12} className="container">
                         <Note bg="#c0c0c0" fs="18px" fg="black" date={item.date} text={item.text}
                               buttonText={this.getButtonText(item)} id={item.id} saveNote= {this.saveNote}
-                              dt = {item.dt}
+                              dt = {item.dt} idx={index}
                               mode={this.getMode(item)} expand={this.getExpand(item)}/>
                     </Row>
                 )
@@ -169,7 +121,10 @@ var JournalPosition = React.createClass({
                         <h3> Notes </h3>
                     </Row>
                     <div xs={11} className="container" style={{fontSize:"18px",alignItems:"left", overflow:"auto",
-                    height:'300px'}}>
+                    height:'400px'}}
+                         ref={(div) => {
+                             this.messageList = div;
+                         }}>
                         {notes }
                     </div>
                 </div>

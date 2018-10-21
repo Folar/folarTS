@@ -1254,7 +1254,7 @@ const getAsyncTradePerformance = async (con, journal, specficId, modNote, noteId
     let pid = -1;
     let openDate;
     let positionAssigned = false;
-    let sid = specficId != -1 ? specficId : user.currentPosition;
+    let sid = specficId != -1 ? specficId : user.currentPositionId;
     for (let tp in info) {
         if (info[tp].status == "Open") {
             if (!positionAssigned) {
@@ -1287,7 +1287,7 @@ const getAsyncTradePerformance = async (con, journal, specficId, modNote, noteId
         let item = jdata[idx];
 
         while (start <= end) {
-            if (start.format('ddd') !== 'Sat' && start.format('ddd') !== 'Sun') {
+            if (true|| start.format('ddd') !== 'Sat' && start.format('ddd') !== 'Sun') {
                 weekdayCounter++; //add 1 to your counter if its not a weekend day
                 let x = {
                     date: moment(start).format('dddd MMMM Do'),
@@ -1295,7 +1295,7 @@ const getAsyncTradePerformance = async (con, journal, specficId, modNote, noteId
                     text: "",
                     dt:start.format('YYYY-MM-DD')
                 };
-                if (moment(item.tr_date).format('YYYY-MM-DD') == start.format('YYYY-MM-DD')) {
+                if (item && moment(item.tr_date).format('YYYY-MM-DD') == start.format('YYYY-MM-DD')) {
                     x.id = item.id;
                     x.text = item.entry;
                     if (jdata.length - 1 > idx)

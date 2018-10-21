@@ -42,6 +42,10 @@ var Note = React.createClass({
     },
     handleChange: function (e) {
         this.setState({newText: e.target.value});
+        if (e.target.value == this.state.text)
+            $("#"+this.props.idx).addClass("disabled");
+        else
+            $("#"+this.props.idx).removeClass("disabled");
     },
 
     // mode
@@ -71,6 +75,10 @@ var Note = React.createClass({
             t = "SAVE";
 
         }
+        if (t == "SAVE")
+            $("#"+this.props.idx).addClass("disabled");
+        else
+            $("#"+this.props.idx).removeClass("disabled");
 
         this.setState({
             mode: m,
@@ -107,9 +115,11 @@ var Note = React.createClass({
                 m = 0;
                 t = "ADD";
             }
-
         }
-
+        if (t == "SAVE")
+            $("#"+this.props.idx).addClass("disabled");
+        else
+            $("#"+this.props.idx).removeClass("disabled");
         this.setState({
             mode: m,
             buttonText: t,
@@ -141,7 +151,8 @@ var Note = React.createClass({
                     <Col xs={1}>
                     </Col>
                     <Col xs={1}>
-                        <button type="button" style={{backgroundColor: "blue", color: "white"}}
+                        <button id={this.props.idx} type="button" className="btn btn-primary"
+                                style={{backgroundColor: "blue", color: "white"}}
                                 onClick={this.setMode}>{this.state.buttonText}</button>
                     </Col>
                 </Row>
