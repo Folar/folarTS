@@ -11,16 +11,14 @@ var Input = ReactBootstrap.Input;
 var Table = ReactBootstrap.Table;
 
 
-
-
-var Note= React.createClass({
+var Note = React.createClass({
     getInitialState: function () {
         return {
             mode: this.props.mode,
             buttonText: this.props.buttonText,
             open: false,
-            text:this.props.text,
-            newText:this.props.text
+            text: this.props.text,
+            newText: this.props.text
 
         };
     },
@@ -42,23 +40,27 @@ var Note= React.createClass({
     fail: function () {
 
     },
-    handleChange: function(e) {
-        this.setState({ newText: e.target.value });
+    handleChange: function (e) {
+        this.setState({newText: e.target.value});
     },
 
     // mode
     // 0 - no text
     // 1 - text read only
     // 2 - edit mode
-       setMode: function () {
-        let m =2;
+    setMode: function () {
+        let m = 2;
         let o = true;
         let t = "SAVE"
         if (this.state.mode == 2) {
             m = 1;
-            this.setState({ text: this.state.newText });
+
+            if (this.state.text != this.state.newText) {
+                this.setState({text: this.state.newText});
+                this.props.saveNote(this.props.id, this.state.newText,this.props.dt);
+            }
             t = "EDIT";
-            if(this.state.newText.length == 0){
+            if (this.state.newText.length == 0) {
                 m = 0;
                 t = "ADD";
 
@@ -72,8 +74,8 @@ var Note= React.createClass({
 
         this.setState({
             mode: m,
-            buttonText:t,
-            o : true
+            buttonText: t,
+            o: true
         });
 
         // this.setState((prevState) => {
@@ -88,26 +90,30 @@ var Note= React.createClass({
 
     expandCollapse: function () {
         let o = !this.state.open;
-        let t = "SAVE"
+        let t = "SAVE";
+        let m = 2;
         if (this.state.mode == 2) {
             m = 1;
             t = "EDIT";
-            if(this.state.text.length == 0){
+            if (this.state.text.length == 0) {
                 m = 0;
                 t = "ADD";
-
             }
         }
         if (this.state.mode == 1) {
             m = 2;
             t = "SAVE";
+            if (this.state.text.length == 0) {
+                m = 0;
+                t = "ADD";
+            }
 
         }
 
         this.setState({
             mode: m,
-            buttonText:t,
-            open : o
+            buttonText: t,
+            open: o
         });
 
         // this.setState((prevState) => {
@@ -123,36 +129,42 @@ var Note= React.createClass({
 
         return (
             <div xs={10}
-                 style={{fontSize:this.props.fs,alignItems:"left",
-                     backgroundColor:this.props.bg,
-                     color:this.props.fg,height:"40px"}}>
-                <Row xs={10} >
-                    <Col xs={2} >
+                 style={{
+                     fontSize: this.props.fs, alignItems: "left",
+                     backgroundColor: this.props.bg,
+                     color: this.props.fg, height: "40px"
+                 }}>
+                <Row xs={10}>
+                    <Col xs={3}>
                         <div onClick={this.expandCollapse}>{this.props.date}</div>
                     </Col>
-                    <Col xs={1} >
+                    <Col xs={1}>
                     </Col>
-                    <Col xs={1} >
-                        <button type="button" style={{ backgroundColor:"blue",color:"white"}} onClick={this.setMode}>{this.state.buttonText}</button>
+                    <Col xs={1}>
+                        <button type="button" style={{backgroundColor: "blue", color: "white"}}
+                                onClick={this.setMode}>{this.state.buttonText}</button>
                     </Col>
                 </Row>
                 {this.state.mode == 2 &&
                 <Row xs={10}>
-                    <Col xs={1} >
+                    <Col xs={1}>
 
                     </Col>
-                    <Col xs={7} >
-                        <textarea  onChange={ this.handleChange } defaultValue={this.state.text}  style={{ height:"80px", marginBottom:"10px"}}
+                    <Col xs={9}>
+                        <textarea onChange={ this.handleChange } defaultValue={this.state.text}
+                                  style={{height: "80px", marginBottom: "10px"}}
                         />
                     </Col>
                 </Row>}
                 {this.state.mode == 1 &&
                 <Row xs={10}>
-                    <Col xs={1} >
+                    <Col xs={1}>
 
                     </Col>
-                    <Col xs={2} >
-                        <div>{this.state.text}</div>
+                    <Col xs={9}>
+                        <textarea readOnly="true" defaultValue={this.state.text}
+                                  style={{height: "80px", marginBottom: "10px", backgroundColor: "lightGray"}}
+                        />
                     </Col>
                 </Row>}
             </div>

@@ -39,13 +39,16 @@ var Card= React.createClass({
 
     },
 
-
+    switchPosition: function () {
+        this.props.switchPosition(this.props.id);
+    },
 
     render: function () {
 
         return (
-            <div xs={12}  style={{fontSize:this.props.fs,alignItems:"left",backgroundColor:this.props.bg, color:this.props.fg,
-                                                       height:this.props.height, width:this.props.width}}>
+            <div xs={12}  onClick={this.switchPosition} style={{fontSize:this.props.fs,alignItems:"left",backgroundColor:this.props.bg,
+                                  color:this.props.fg,
+                                  height:this.props.height, width:this.props.width}}>
 
             <div  >{this.props.name}</div>
 

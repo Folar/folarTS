@@ -564,7 +564,7 @@ const getAsyncData = async (con, user, trans, underlying) => {
         const result = await getDataFromDB(con,
             "UPDATE user SET  currentStock = '" + underlying + "' where iduser = " + user.idUser);
     }
-    if (!user.info.stkData )
+    if (!user.info.stkData)
         user.info.stkData = [];
     let stkData = user.info.stkData;
 
@@ -1030,7 +1030,7 @@ app.post('/tradelog', function (req, resp) {
 
             info.transactions.push(tr);
         }
-        let perf = calcPerformance("x",0,trdata)
+        let perf = calcPerformance("x", 0, trdata)
         info.currentValue = perf.realized;
         info.currentCost = perf.currentCost;
         info.cost = perf.cost;
@@ -1075,7 +1075,7 @@ const getAsyncDelPosition = async (con,) => {
     con.end();
     return res;
 };
-function calcPerformance(name,id,trdata){
+function calcPerformance(name, id, trdata) {
     let res = user.info.res;
     let now = moment().format('YYYY-MM-DD');
     let openDate = now;
@@ -1121,7 +1121,7 @@ function calcPerformance(name,id,trdata){
                         realizedQty = realizedQty + qty;
                     } else {
                         realizedSum += realizedCost + realizedQty * tr.price *
-                            (realizedQty>0?-1:1);
+                            (realizedQty > 0 ? -1 : 1);
                         realizedCost = (realizedQty + qty) * tr.price;
                         realizedQty = realizedQty + qty;
                     }
@@ -1159,41 +1159,41 @@ function calcPerformance(name,id,trdata){
                     }
                 }
             }
-            if (  dt >now) {
+            if (dt > now) {
                 closed = false;
                 cost += realizedCost;
                 currentCost += realizedQty * currentPrice;
             } else { // expired
                 let action = tr.action == "buy" ? "Buy" : "Sell";
-                if(type == "Call"){
-                    if (action == "Buy"){
-                        if (tr.strike < user.info.underlyingLast){
+                if (type == "Call") {
+                    if (action == "Buy") {
+                        if (tr.strike < user.info.underlyingLast) {
                             realizedSum += (user.info.underlyingLast - tr.strike) * Math.abs(realizedQty) - Math.abs(realizedCost);
 
                         } else {
                             realizedSum -= Math.abs(realizedCost);
                         }
-                    } else{
+                    } else {
                         if (tr.strike > user.info.underlyingLast) {
                             realizedSum += Math.abs(realizedCost);
                         } else {
-                            realizedSum += -1* ( user.info.underlyingLast - tr.strike  ) *  Math.abs(realizedQty)  + Math.abs(realizedCost);
+                            realizedSum += -1 * ( user.info.underlyingLast - tr.strike  ) * Math.abs(realizedQty) + Math.abs(realizedCost);
                         }
 
                     }
                 } else {
-                    if (action == "Buy"){ // put
-                        if (tr.strike  <user.info.underlyingLast){
-                            realizedSum += (user.info.underlyingLast - tr.strike) *  Math.abs(realizedQty) - Math.abs(realizedCost);
+                    if (action == "Buy") { // put
+                        if (tr.strike < user.info.underlyingLast) {
+                            realizedSum += (user.info.underlyingLast - tr.strike) * Math.abs(realizedQty) - Math.abs(realizedCost);
 
                         } else {
                             realizedSum += -1 * Math.abs(realizedCost);
                         }
-                    } else{ // sell
+                    } else { // sell
                         if (tr.strike > user.info.underlyingLast) {
                             realizedSum += Math.abs(realizedCost);
                         } else {
-                            realizedSum += -1 * (user.info.underlyingLast - tr.strike) *  Math.abs(realizedQty) + Math.abs(realizedCost);
+                            realizedSum += -1 * (user.info.underlyingLast - tr.strike) * Math.abs(realizedQty) + Math.abs(realizedCost);
                         }
 
                     }
@@ -1202,12 +1202,12 @@ function calcPerformance(name,id,trdata){
             }
         }
     }
-    realizedSum = currencyFormatter.format(realizedSum.toFixed(2)* 100, {code: 'USD'});
+    realizedSum = currencyFormatter.format(realizedSum.toFixed(2) * 100, {code: 'USD'});
     let c = currencyFormatter.format(cost.toFixed(2) * 100, {code: 'USD'});
     let cc = currencyFormatter.format(currentCost.toFixed(2) * 100, {code: 'USD'});
-    return new TradePerformance(name, c, cc, id, openDate, closed,realizedSum);
+    return new TradePerformance(name, c, cc, id, openDate, closed, realizedSum);
 }
-const getAsyncTradePerformance = async (con) => {
+const getAsyncTradePerformance = async (con, journal, specficId, modNote, noteId, text,dt) => {
     let info = []
     let sql = "SELECT  iduser, idposition, name FROM position2 where iduser = " + user.idUser + ";";
     let positions = await getDataFromDB(con, sql);
@@ -1221,17 +1221,132 @@ const getAsyncTradePerformance = async (con) => {
         let trdata = await getDataFromDB(con, sql);
 
 
-        info.push(calcPerformance(name,id,trdata));
+        info.push(calcPerformance(name, id, trdata));
 
     }
 
+
+    if (!journal) {
+        con.end();
+        return info;
+    }
+    if (modNote) {
+        if (noteId == -1) {
+            if (text.length != 0) {
+                sql = "INSERT INTO tr_journal_entries ( create_date,modified_date,tr_date,entry,position_id )"
+                +" VALUES( NOW(),NOW(),'" +dt+"','"+text+"',"+specficId+");";
+                await getDataFromDB(con, sql);
+            }
+
+        } else {
+            if (text.length == 0) {
+                sql = "DELETE FROM tr_journal_entries WHERE id = " + noteId + ";";
+                await getDataFromDB(con, sql);
+            }
+            else {
+                sql = "UPDATE tr_journal_entries SET  entry = '" + text + "' WHERE id = " + noteId + ";";
+                 await getDataFromDB(con, sql);
+            }
+
+        }
+    }
+    let ops = [];
+    let pid = -1;
+    let openDate;
+    let positionAssigned = false;
+    let sid = specficId != -1 ? specficId : user.currentPosition;
+    for (let tp in info) {
+        if (info[tp].status == "Open") {
+            if (!positionAssigned) {
+                positionAssigned = true;
+                pid = info[tp].id;
+                openDate = info[tp].openDate;
+            }
+
+            if (info[tp].id == sid) {
+                pid = sid;
+                openDate = info[tp].openDate;
+            }
+            ops.push({
+                id: info[tp].id,
+                name: info[tp].name
+            })
+        }
+
+    }
+    let retJournal = [];
+    if (positionAssigned) {
+
+
+        let start = moment(openDate, 'YYYY-MM-DD'); //Pick any format
+        let end = moment(); //right now (or define an end date yourself)
+        let weekdayCounter = 0;
+        sql = "SELECT * FROM tr_journal_entries where position_id =" + pid + " ORDER BY tr_date ASC;";
+        let jdata = await getDataFromDB(con, sql);
+        let idx = 0;
+        let item = jdata[idx];
+
+        while (start <= end) {
+            if (start.format('ddd') !== 'Sat' && start.format('ddd') !== 'Sun') {
+                weekdayCounter++; //add 1 to your counter if its not a weekend day
+                let x = {
+                    date: moment(start).format('dddd MMMM Do'),
+                    id: -1,
+                    text: "",
+                    dt:start.format('YYYY-MM-DD')
+                };
+                if (moment(item.tr_date).format('YYYY-MM-DD') == start.format('YYYY-MM-DD')) {
+                    x.id = item.id;
+                    x.text = item.entry;
+                    if (jdata.length - 1 > idx)
+                        idx++;
+                    item = jdata[idx];
+                }
+                retJournal.push(x);
+            }
+            start = moment(start, 'YYYY-MM-DD').add(1, 'days'); //increment by one day
+        }
+
+    }
     con.end();
-    return info;
+    return [pid, ops, retJournal];
 };
+
+app.post('/switchPosition', function (req, resp) {
+    let con = connectToDB();
+    let obj = req.body;
+    getAsyncTradePerformance(con, true, obj.pid, false, 0, "","2018-10-09").then((data) => {
+        resp.json({currentId: data[0], positions: data[1], dates: data[2]});
+    }).catch(function (err) {
+        console.log("ERROR ERROR tradeperformance " + err)
+        return;
+    });
+});
+app.post('/saveNote', function (req, resp) {
+    let con = connectToDB();
+    let obj = req.body;
+    getAsyncTradePerformance(con, true, obj.pid, true, obj.id, obj.text,obj.dt).then((data) => {
+        resp.json({currentId: data[0], positions: data[1], dates: data[2]});
+    }).catch(function (err) {
+        console.log("ERROR ERROR tradeperformance " + err)
+        return;
+    });
+});
+app.post('/journal', function (req, resp) {
+    let con = connectToDB();
+
+    getAsyncTradePerformance(con, true, -1, false, 0, "","2018-10-09").then((data) => {
+        resp.json({currentId: data[0], positions: data[1], dates: data[2]});
+    }).catch(function (err) {
+        console.log("ERROR ERROR tradeperformance " + err)
+        return;
+    });
+});
+
 app.post('/report', function (req, resp) {
     let con = connectToDB();
 
-    getAsyncTradePerformance(con).then((data) => {
+    getAsyncTradePerformance(con, false, -1, false, 0, "","2018-10-09").then((data) => {
         resp.json({data: data});
     }).catch(function (err) {
         console.log("ERROR ERROR tradeperformance " + err)
@@ -1438,7 +1553,7 @@ app.get('/export', function (req, resp) {
         return;
     });
 });
-const getAsyncUpload = async (sel,pos,val) => {
+const getAsyncUpload = async (sel, pos, val) => {
 
     let con = connectToDB();
     let res;
@@ -1451,7 +1566,7 @@ const getAsyncUpload = async (sel,pos,val) => {
             "NOW(),NOW());";
         res = await getDataFromDB(con, sql);
         idPosition = res.insertId;
-        user.info.positionNames.push({name:val,idposition:idPosition})
+        user.info.positionNames.push({name: val, idposition: idPosition})
     } else {
         for (let i in user.info.positionNames) {
             if (pos == user.info.positionNames[i].name) {
@@ -1463,15 +1578,15 @@ const getAsyncUpload = async (sel,pos,val) => {
     let arr = sel.split(",");
     for (i in arr) {
         let idx = parseInt(arr[i]);
-        let  it = user.importTrans.buf[idx];
-        let exp =moment(it.exp).format('YYYY-MM-DD');
+        let it = user.importTrans.buf[idx];
+        let exp = moment(it.exp).format('YYYY-MM-DD');
         let opra = it.underlying;
         let dt = exp.split("-");
         opra += dt[0].substring(2) + dt[1] + dt[2] +
-            it.type.substring(0,1) + it.strike;
+            it.type.substring(0, 1) + it.strike;
         let sql = "INSERT INTO transaction (iduser, strike,qty,type,action,symbol,price,expiration, opra, createDate,modifyDate ) VALUES(" +
             +user.idUser + "," +
-            it.strike+ "," +
+            it.strike + "," +
             it.mag + "," +
             "'" + it.type.toLowerCase() + "'," +//call,put
             "'" + it.action.toLowerCase() + "'," +
@@ -1492,11 +1607,11 @@ const getAsyncUpload = async (sel,pos,val) => {
 };
 class ImportTrans {
 
-    constructor(cnt,line) {
+    constructor(cnt, line) {
         let arr = line.split(",");
         this.cnt = cnt;
         this.type = arr[7];
-        this.underlying  = arr[4];
+        this.underlying = arr[4];
         this.exp = arr[5];
         this.price = arr[8];
         this.strike = arr[6];
@@ -1513,7 +1628,7 @@ app.post('/import', function (req, resp) {
     let sel = req.param("sel");
     let pos = req.param("pos");
     let val = req.param("val");
-    getAsyncUpload(sel,pos,val).then(function(cnt)  {
+    getAsyncUpload(sel, pos, val).then(function (cnt) {
         resp.json({cnt: cnt});
     }).catch(function (err) {
         console.log("ERROR ERROR upload " + err)
@@ -1527,7 +1642,7 @@ app.post('/upload', function (req, resp) {
     let formidable = require('formidable');
     let lineReader = require('line-reader');
     let buf = [];
-    let syms= [];
+    let syms = [];
     let exps = [];
     let form = new formidable.IncomingForm();
     let cnt = 0;
@@ -1542,7 +1657,7 @@ app.post('/upload', function (req, resp) {
             } else if (firstLine == 1) {
                 firstLine = 2;
             } else {
-                if(line.length != 0 && continueToRead) {
+                if (line.length != 0 && continueToRead) {
                     let it = new ImportTrans(cnt++, line);
                     if (!exps.includes(it.exp))
                         exps.push(it.exp);
@@ -1556,9 +1671,9 @@ app.post('/upload', function (req, resp) {
             if (last) {
                 user.importTrans = {};
                 user.importTrans.buf = buf;
-                exps.splice(0, 0,"All");
+                exps.splice(0, 0, "All");
                 user.importTrans.exps = exps;
-                syms.splice(0, 0,"All");
+                syms.splice(0, 0, "All");
                 user.importTrans.syms = syms;
                 var clonedArray = JSON.parse(JSON.stringify(user.info.positionNames));
                 clonedArray.push({name: "Create...", idposition: 0})

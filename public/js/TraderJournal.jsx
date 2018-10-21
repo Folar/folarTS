@@ -11,9 +11,7 @@ var Input = ReactBootstrap.Input;
 var Table = ReactBootstrap.Table;
 
 
-
-
-var TraderJournal= React.createClass({
+var TraderJournal = React.createClass({
     getInitialState: function () {
         return {
             logSource: null
@@ -40,7 +38,6 @@ var TraderJournal= React.createClass({
     },
 
 
-
     render: function () {
         var transition = function (state, name, fnc) {
 
@@ -51,7 +48,7 @@ var TraderJournal= React.createClass({
                 <div xs={12} className="container">
                     <MenuExample func={transition} focus="0"
                                  items={ ['By Position', 'By Date'] }/>
-<JournalPosition/>
+                    <JournalPosition/>
                 </div>
 
 
