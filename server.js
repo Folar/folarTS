@@ -1309,7 +1309,7 @@ const getAsyncTradePerformance = async (con, journal, specficId, modNote, noteId
 
     }
     con.end();
-    return [pid, ops, retJournal];
+    return [sid, ops, retJournal];
 };
 
 app.post('/switchPosition', function (req, resp) {

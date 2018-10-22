@@ -33,7 +33,7 @@ var JournalPosition = React.createClass({
 
     success: function (data) {
        this.setState({currentId:data.currentId,positions:data.positions,dates:data.dates});
-       this.scrollToBottom();
+      // this.scrollToBottom();
 
     },
     scrollToBottom: function() {
@@ -100,7 +100,7 @@ var JournalPosition = React.createClass({
                     <Row xs={12} className="container">
                         <Note bg="#c0c0c0" fs="18px" fg="black" date={item.date} text={item.text}
                               buttonText={this.getButtonText(item)} id={item.id} saveNote= {this.saveNote}
-                              dt = {item.dt} idx={index}
+                              dt = {item.dt} idx={index} key={item.id+item.dt}
                               mode={this.getMode(item)} expand={this.getExpand(item)}/>
                     </Row>
                 )

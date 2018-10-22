@@ -11,9 +11,7 @@ var Input = ReactBootstrap.Input;
 var Table = ReactBootstrap.Table;
 
 
-
-
-var Card= React.createClass({
+var Card = React.createClass({
     getInitialState: function () {
         return {
             logSource: null
@@ -46,15 +44,18 @@ var Card= React.createClass({
     render: function () {
 
         return (
-            <div xs={12}  onClick={this.switchPosition} style={{fontSize:this.props.fs,alignItems:"left",backgroundColor:this.props.bg,
-                                  color:this.props.fg,
-                                  height:this.props.height, width:this.props.width}}>
-
-            <div  >{this.props.name}</div>
 
 
+                <button id={this.props.idx} type="button"
+                        className="btn"
+                        onClick={this.switchPosition}
+                        style={{
+                            backgroundColor: this.props.bg,
+                            color: this.props.fg
+                        }}>{this.props.name}
 
-            </div>
+                        </button>
+
         );
     }
 
