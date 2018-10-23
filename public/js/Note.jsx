@@ -135,6 +135,10 @@ var Note = React.createClass({
         // });
     },
 
+    nl2br:function(str) {
+       return str;//str.replace(/(?:\r\n|\r|\n)/g, '<p/>');
+    },
+
     render: function () {
 
         return (
@@ -168,6 +172,17 @@ var Note = React.createClass({
                     </Col>
                 </Row>}
                 {this.state.mode == 1 &&
+                <Row xs={10}>
+                    <Col xs={1}>
+
+                    </Col>
+                    <Col xs={9}>
+                        <p  style={{padding:"3px",whiteSpace: "pre-wrap", marginBottom: "10px", backgroundColor: "lightGray"}}>
+                            {this.state.text}
+                        </p>
+                    </Col>
+                </Row>}
+                {this.state.mode == 3 &&
                 <Row xs={10}>
                     <Col xs={1}>
 
