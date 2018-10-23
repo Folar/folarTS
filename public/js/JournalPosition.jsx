@@ -121,7 +121,7 @@ var JournalPosition = React.createClass({
                         <h3> Notes </h3>
                     </Row>
                     <div xs={11} className="container" style={{fontSize:"18px",alignItems:"left", overflow:"auto",
-                    height:'400px'}}
+                    height:'60vh'}}
                          ref={(div) => {
                              this.messageList = div;
                          }}>
