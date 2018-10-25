@@ -1652,7 +1652,7 @@ app.post('/upload', function (req, resp) {
         let continueToRead = true;
         lineReader.eachLine(fn.path, function (line, last) {
             if (firstLine == 0) {
-                if (line == "Account Trade History")
+                if (line.includes ("Account Trade History"))
                     firstLine = 1;
             } else if (firstLine == 1) {
                 firstLine = 2;
