@@ -590,7 +590,7 @@ const getAsyncData = async (con, user, trans, underlying) => {
             let dt = transactionStr[R.EXP].split("-");
             opra += dt[0].substring(2) + dt[1] + dt[2] +
                 transactionStr[R.T_TYPE].substring(0, 1) + transactionStr[R.STRIKE];
-            let sql = "INSERT INTO transaction (iduser, strike,qty,type,action,symbol,price,expiration,opra, createDate,modifyDate ) VALUES(" +
+            let sql = "INSERT INTO transaction (iduser, strike,qty,type,action,symbol,price,expiration,opra,transaction_time, createDate,modifyDate ) VALUES(" +
                 +iduser + "," +
                 transactionStr[R.STRIKE] + "," +
                 transactionStr[R.MAG] + "," +
@@ -600,7 +600,7 @@ const getAsyncData = async (con, user, trans, underlying) => {
                 transactionStr[R.MID] + "," +
                 "'" + transactionStr[R.EXP] + "'," +
                 "'" + opra + "'," +
-                "NOW(),NOW());";
+                "NOW(),NOW(),NOW());";
 
             let resu = await getDataFromDB(con, sql);
             let idtrans = resu.insertId;
@@ -962,7 +962,7 @@ const getAsyncLog = async (con, del) => {
     sql = "SELECT name, idposition FROM position2 where iduser =" + user.idUser;
     const pos = await getDataFromDB(con, sql);
 
-    sql = "SELECT  strike,qty,type,action,symbol,price,expiration, opra, t.idtransaction, t.createDate FROM position_transaction pt" +
+    sql = "SELECT  strike,qty,type,action,symbol,price,expiration, opra, t.idtransaction, t.transaction_time FROM position_transaction pt" +
         "  left join transaction t on  pt.idtransaction = t.idtransaction where idposition = " + user.currentPositionId + ";";
     const trans = await getDataFromDB(con, sql);
     con.end();
@@ -995,7 +995,7 @@ app.post('/tradelog', function (req, resp) {
             let qty = parseInt(trdata[i].qty);
             let dt = moment(trdata[i].expiration).format('YYYY-MM-DD');
             let cd = moment(trdata[i].createDate).format('YYYY-MM-DD');
-            let tm = moment(trdata[i].createDate).format('YYYY-MM-DD HH:mm:ss');
+            let tm = moment(trdata[i].transaction_time).format('YYYY-MM-DD HH:mm:ss');
 
             if (cd < firstOpen)
                 firstOpen = cd;
@@ -1406,8 +1406,8 @@ const getAsyncMoveTrans = async (con, copy, move, create, mvpos, name, trans) =>
             let idTrans = trans.split(",");
             for (let i = 0; i < idTrans.length; i++) {
                 let transid = idTrans[i];
-                sql = "INSERT INTO transaction (iduser, strike,qty,type,action,symbol,price,expiration, opra, createDate,modifyDate ) " +
-                    "SELECT iduser, strike,qty,type,action,symbol,price,expiration, opra, createDate,modifyDate FROM transaction where idtransaction = " +
+                sql = "INSERT INTO transaction (iduser, strike,qty,type,action,symbol,price,expiration, opra, transaction_time,createDate,modifyDate ) " +
+                    "SELECT iduser, strike,qty,type,action,symbol,price,expiration, opra,transaction_time, NOW(),NOW() FROM transaction where idtransaction = " +
                     transid + ";";
                 res = await getDataFromDB(con, sql);
                 let idNewTransaction = res.insertId;
@@ -1422,8 +1422,8 @@ const getAsyncMoveTrans = async (con, copy, move, create, mvpos, name, trans) =>
             let idTrans = trans.split(",");
             for (let i = 0; i < idTrans.length; i++) {
                 let transid = idTrans[i];
-                sql = "INSERT INTO transaction (iduser, strike,qty,type,action,symbol,price,expiration, opra, createDate,modifyDate ) " +
-                    "SELECT iduser, strike,qty,type,action,symbol,price,expiration, opra, createDate,modifyDate FROM transaction where idtransaction = " +
+                sql = "INSERT INTO transaction (iduser, strike,qty,type,action,symbol,price,expiration, opra, transaction_time,createDate,modifyDate ) " +
+                    "SELECT iduser, strike,qty,type,action,symbol,price,expiration, opra,transaction_time, NOW(),NOW() FROM transaction where idtransaction = " +
                     transid + ";";
                 res = await getDataFromDB(con, sql);
                 let idNewTransaction = res.insertId;
@@ -1446,8 +1446,9 @@ const getAsyncMoveTrans = async (con, copy, move, create, mvpos, name, trans) =>
         let idTrans = trans.split(",");
         for (let i = 0; i < idTrans.length; i++) {
             let transid = idTrans[i];
-            let sql = "INSERT INTO transaction (iduser, strike,qty,type,action,symbol,price,expiration, opra, createDate,modifyDate ) " +
-                "SELECT iduser, strike,qty,type,action,symbol,price,expiration, opra, createDate,modifyDate FROM transaction where idtransaction = " +
+            let sql = "INSERT INTO transaction (iduser, strike,qty,type,action,symbol,price,expiration, opra, transaction_time," +
+                        "createDate,modifyDate ) " +
+                "SELECT iduser, strike,qty,type,action,symbol,price,expiration, opra,transaction_time, createDate,modifyDate FROM transaction where idtransaction = " +
                 transid + ";";
             res = await getDataFromDB(con, sql);
             let idNewTransaction = res.insertId;
@@ -1493,7 +1494,7 @@ const getAsyncExport = async (con, pos, trans) => {
     if (pos == -1) {
         pos = user.currentPositionId;
     }
-    let sql = "SELECT  strike,qty,type,action,symbol,price, t.opra,t.createDate FROM position_transaction pt" +
+    let sql = "SELECT  strike,qty,type,action,symbol,price, t.opra,t.transaction_time FROM position_transaction pt" +
         "  left join transaction t on  pt.idtransaction = t.idtransaction where idposition in (" + pos + ")";
     if (trans != undefined) {
         sql += " and t.idtransaction in (" + trans + ")";
@@ -1520,7 +1521,7 @@ const getAsyncExport = async (con, pos, trans) => {
         let month = opra.substring(symbol.length + 2, symbol.length + 4);
         month = mm[parseInt(month)];
         let exp = opra.substring(symbol.length + 4, symbol.length + 6) + " " + month + " " + opra.substring(symbol.length, symbol.length + 2);
-        let exec = moment(data[i].createDate).format('M/D/YY HH:mm:ss');
+        let exec =  moment(data[i].transaction_time).format('YYYY-MM-DD HH:mm:ss');
         if (action == "SELL")
             qty *= -1;
 
@@ -1584,7 +1585,8 @@ const getAsyncUpload = async (sel, pos, val) => {
         let dt = exp.split("-");
         opra += dt[0].substring(2) + dt[1] + dt[2] +
             it.type.substring(0, 1) + it.strike;
-        let sql = "INSERT INTO transaction (iduser, strike,qty,type,action,symbol,price,expiration, opra, createDate,modifyDate ) VALUES(" +
+        let sql = "INSERT INTO transaction (iduser, strike,qty,type,action,symbol,price,expiration, opra," +
+            "transaction_time, createDate,modifyDate ) VALUES(" +
             +user.idUser + "," +
             it.strike + "," +
             it.mag + "," +
@@ -1594,6 +1596,7 @@ const getAsyncUpload = async (sel, pos, val) => {
             parseFloat(it.price) + "," +
             "'" + exp + "'," +
             "'" + opra + "'," +
+            "'" + it.transaction_time + "'," +
             "NOW(),NOW());";
         let r = await getDataFromDB(con, sql);
         sql = "INSERT INTO position_transaction (idposition, idtransaction,  createDate,modifyDate ) VALUES(" +
@@ -1605,11 +1608,16 @@ const getAsyncUpload = async (sel, pos, val) => {
     con.end();
     return arr.length;
 };
+let lastTransTime = 0
 class ImportTrans {
 
     constructor(cnt, line) {
         let arr = line.split(",");
         this.cnt = cnt;
+        if(arr[0].length<2)
+            this.transaction_time = lastTransTime;
+        else
+            lastTransTime = this.transaction_time = arr[0];
         this.type = arr[7];
         this.underlying = arr[4];
         this.exp = arr[5];
@@ -1644,6 +1652,7 @@ app.post('/upload', function (req, resp) {
     let buf = [];
     let syms = [];
     let exps = [];
+    let trade_days = [];
     let form = new formidable.IncomingForm();
     let cnt = 0;
     form.parse(req, function (err, fields, files) {
@@ -1663,6 +1672,10 @@ app.post('/upload', function (req, resp) {
                         exps.push(it.exp);
                     if (!syms.includes(it.underlying))
                         syms.push(it.underlying);
+                    let td = it.transaction_time.split(" ")[0];
+                    if(!trade_days.includes(td)){
+                        trade_days.push(td);
+                    }
                     buf.push(it);
                 }
                 else
@@ -1675,6 +1688,8 @@ app.post('/upload', function (req, resp) {
                 user.importTrans.exps = exps;
                 syms.splice(0, 0, "All");
                 user.importTrans.syms = syms;
+                trade_days.splice(0, 0, "All");
+                user.importTrans.trade_days = trade_days;
                 var clonedArray = JSON.parse(JSON.stringify(user.info.positionNames));
                 clonedArray.push({name: "Create...", idposition: 0})
                 user.importTrans.positionNames = clonedArray;

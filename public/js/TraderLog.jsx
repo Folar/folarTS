@@ -64,14 +64,15 @@ var transTableDescription2 = {
             $("#updateT").removeClass("disabled");
         }
         },
-        {text: 'Strike Price', dataField: 'strike', width: 100, editable: false},
+        {text: 'Transaction Time', dataField: 'transTime', width: 200, editable: false},
+
         {text: 'Action', dataField: 'action', width: 100, editable: false},
         {
             text: 'Amount', dataField: 'mag', width: 100, editable: true, initEditor: function () {
             $("#updateT").removeClass("disabled");
         }
         },
-        {text: 'Event', dataField: 'transTime', width: 200, editable: false}
+        {text: 'Strike Price', dataField: 'strike', width: 100, editable: false}
     ]
 };
 
@@ -272,12 +273,12 @@ var TraderLog = React.createClass({
 
         transNode.on('rowSelect', this.rowSelectChg);
         transNode.on('rowUnselect', this.rowSelectChg);
-        
+
 
         var func = this.success;
         $.post("/tradelog", {del: ""}, function (data) {
-                    func( data);
-            //this.setState({busy: true});
+                func(data);
+                //this.setState({busy: true});
             }
         )
     },
@@ -286,7 +287,7 @@ var TraderLog = React.createClass({
         this.disableButtons();
         var func = this.success;
         $.post("/tradelog", {del: ""}, function (data) {
-                func( data);
+                func(data);
                 //this.setState({busy: true});
             }
         )
@@ -297,7 +298,7 @@ var TraderLog = React.createClass({
 
         this.setState({
             name: data.currentPosition,
-            logSource:data,
+            logSource: data,
             currentValue: data.currentValue,
             currentCost: data.currentCost,
             cost: data.cost,
@@ -323,8 +324,8 @@ var TraderLog = React.createClass({
         this.setState({name: val});
         func = this.editPosition;
         $.post("/editposition", {newName: val}, function (data) {
-            debugger;
-                func( data);
+                debugger;
+                func(data);
                 //this.setState({busy: true});
             }
         );
@@ -332,7 +333,7 @@ var TraderLog = React.createClass({
 
     editPosition: function (data) {
         debugger;
-        this.setState({ positionNames: data});
+        this.setState({positionNames: data});
     },
 
     initVal: function () {
@@ -359,7 +360,7 @@ var TraderLog = React.createClass({
         if (str.length > 0) {
             func = this.success;
             $.post("/tradelog", {del: str}, function (data) {
-                    func( data);
+                    func(data);
                     //this.setState({busy: true});
                 }
             )
@@ -430,12 +431,14 @@ var TraderLog = React.createClass({
         if (str.length > 0) {
             let func = this.reload;
             $.post("/movetrans",
-                {move: move,
-                copy: copy,
-                create: create,
-                name: posname,
-                id: idpos,
-                trans: str},
+                {
+                    move: move,
+                    copy: copy,
+                    create: create,
+                    name: posname,
+                    id: idpos,
+                    trans: str
+                },
                 function (data) {
                     func(data);
                     //this.setState({busy: true});
@@ -452,7 +455,7 @@ var TraderLog = React.createClass({
         this.disableButtons();
         var func = this.success;
         $.post("/tradelog", {del: ""}, function (data) {
-                func( data);
+                func(data);
                 //this.setState({busy: true});
             }
         )
@@ -462,7 +465,7 @@ var TraderLog = React.createClass({
 
         func = this.delPosSuccess;
         $.post("/deleteposition", {}, function (data) {
-                func( data);
+                func(data);
                 //this.setState({busy: true});
             }
         )
