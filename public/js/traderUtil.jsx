@@ -100,12 +100,13 @@ var importSource = {
         {name: 'price', type: 'string'},
         {name: 'strike', type: 'string'},
         {name: 'underlying', type: 'string'},
+        {name: 'transaction_time', type: 'string'},
         {name: 'mag', type: 'number'}
     ]
 };
 
 var importTableDescription = {
-    width: 650,
+    width: 800,
     height: 231,
     pageable: false,
     pagerButtonsCount: 10,
@@ -120,9 +121,10 @@ var importTableDescription = {
         {text: 'Type', dataField: 'type', width: 65, editable: false},
         {text: 'Underlying', dataField: 'underlying', width: 100, editable: false},
         {text: 'Expiration', dataField: 'exp', width: 100, editable: false},
-        {text: 'Price', dataField: 'price', width: 85, editable: false},
+        {text: 'Trade Time', dataField: 'transaction_time', width: 150, editable: false},
         {text: 'Strike Price', dataField: 'strike', width: 100, editable: false},
         {text: 'Action', dataField: 'action', width: 100, editable: false},
+        {text: 'Price', dataField: 'price', width: 85, editable: false},
         {text: 'Amount', dataField: 'mag', width: 100, editable: false}
     ]
 };
@@ -136,6 +138,8 @@ var ImportTransDlg = React.createClass({
             stockSel: 'All',
             exps: [{item: "Default", id: 9}],
             expsSel: 'All',
+            days: [{item: "Default", id: 9}],
+            daysSel: 'All',
             showNewPos:false,
             klassName: "showError"
         };
@@ -152,13 +156,18 @@ var ImportTransDlg = React.createClass({
         var id = this.refs.expsCombo.getConfigName();
         this.setState({expsSel : id});
     },
+    switchDays: function () {
+
+        var id = this.refs.daysCombo.getConfigName();
+        this.setState({daysSel : id});
+    },
     componentDidMount: function () {
         $(this.refs.importtable.getDOMNode()).jqxDataTable(importTableDescription);
         importTableDescription.source = new $.jqx.dataAdapter(importSource);
         $(this.getDOMNode()).modal('show');
         this.setState({stockNames:this.props.data.syms,positionNames:this.props.data.positionNames,
             positionSel:this.props.data.currentPosition,
-            exps:this.props.data.exps})
+            exps:this.props.data.exps,days:this.props.data.trade_days})
     },
     switchPosition: function () {
         var id = this.refs.nameCombo.getConfigName();
@@ -226,6 +235,13 @@ var ImportTransDlg = React.createClass({
                 if (el.exp == id) return true;
                 return false;
             });
+           id = this.refs.daysCombo.getConfigName();
+            newArray = newArray.filter(function (el) {
+                if (id == "All") return true;
+                debugger;
+                if (el.transaction_time.split(' ')[0] == id) return true;
+                return false;
+            });
             if (id!=undefined) {
                 importSource.localData = newArray;
                 importTableDescription.source = new $.jqx.dataAdapter(importSource);
@@ -240,7 +256,7 @@ var ImportTransDlg = React.createClass({
 
 
                 <div className="modal fade"  >
-                    <div className="modal-dialog wide">
+                    <div className="modal-dialog modal-lg">
                         <div className="modal-content">
                             <div className="modal-header">
                                 <Row xs={12} className="container">
@@ -261,7 +277,16 @@ var ImportTransDlg = React.createClass({
                                                         sel={this.state.expsSel }
                                                         switchConfig={this.switchExps}/>
                                     </Col>
+                                    <Col xs={1} className={this.state.klassName}/>
+                                    <Col xs={1} className={this.state.klassName}>
+                                        Trade Day:
+                                    </Col>
+                                    <Col xs={1} className={this.state.klassName}>
 
+                                        <StockNameCombo ref="daysCombo" names={this.state.days}
+                                                        sel={this.state.daysSel }
+                                                        switchConfig={this.switchDays}/>
+                                    </Col>
                                 </Row>
 
                                 <h4 className="modal-title" id="myimporttrans">Choose Transactions to Import</h4>

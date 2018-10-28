@@ -1580,11 +1580,12 @@ const getAsyncUpload = async (sel, pos, val) => {
     for (i in arr) {
         let idx = parseInt(arr[i]);
         let it = user.importTrans.buf[idx];
-        let exp = moment(it.exp).format('YYYY-MM-DD');
+        let exp = moment(it.exp,'YYYY-MM-DD').format('YYYY-MM-DD');
         let opra = it.underlying;
         let dt = exp.split("-");
         opra += dt[0].substring(2) + dt[1] + dt[2] +
             it.type.substring(0, 1) + it.strike;
+        let ttime= it.transaction_time;
         let sql = "INSERT INTO transaction (iduser, strike,qty,type,action,symbol,price,expiration, opra," +
             "transaction_time, createDate,modifyDate ) VALUES(" +
             +user.idUser + "," +
@@ -1596,7 +1597,9 @@ const getAsyncUpload = async (sel, pos, val) => {
             parseFloat(it.price) + "," +
             "'" + exp + "'," +
             "'" + opra + "'," +
-            "'" + it.transaction_time + "'," +
+            "'" +
+            ttime +
+            "'," +
             "NOW(),NOW());";
         let r = await getDataFromDB(con, sql);
         sql = "INSERT INTO position_transaction (idposition, idtransaction,  createDate,modifyDate ) VALUES(" +
@@ -1616,11 +1619,18 @@ class ImportTrans {
         this.cnt = cnt;
         if(arr[0].length<2)
             this.transaction_time = lastTransTime;
-        else
-            lastTransTime = this.transaction_time = arr[0];
+        else {
+            let ttime= arr[0];
+            if(ttime.length <18)
+                ttime =moment(ttime,"MM/D/YY HH:mm:ss").format('YYYY-MM-DD HH:mm:ss');
+            lastTransTime = this.transaction_time = ttime;
+        }
         this.type = arr[7];
         this.underlying = arr[4];
-        this.exp = arr[5];
+        if(arr[5].includes(' ')){
+            this.exp = moment(arr[5],"D MMM YY").format('YYYY-MM-DD')
+        } else
+            this.exp = arr[5];
         this.price = arr[8];
         this.strike = arr[6];
         this.action = arr[2];
@@ -1633,9 +1643,9 @@ class ImportTrans {
 }
 
 app.post('/import', function (req, resp) {
-    let sel = req.param("sel");
-    let pos = req.param("pos");
-    let val = req.param("val");
+    let sel = req.body.sel;
+    let pos = req.body.pos;
+    let val = req.body.val;
     getAsyncUpload(sel, pos, val).then(function (cnt) {
         resp.json({cnt: cnt});
     }).catch(function (err) {
