@@ -257,7 +257,6 @@ function repopulateTable() {
 function drawOptionGraph(start, end,cp) {
 
     let ser = new Array();
-    let ser2 = new Array();
     let ser3 = new Array();
     let y;
     let y1;
@@ -265,14 +264,16 @@ function drawOptionGraph(start, end,cp) {
     let min = 1000;
     let min2 = 1000;
     let draw = true;
+
+    // figure out series1
     for (var i = start; i < end; i += 1) {
         y1 = 0;
-        for (var x in thePositions) {
+        for (var x in thePositions) {  // positions are the entries not in the database
             draw = true;
             y1 += calcPrice(i, thePositions[x]);
         }
         y2 = 0;
-        for (var x in theTransactions) {
+        for (var x in theTransactions) { // transactions are from the database
             draw = true;
             y2 += calcPrice(i, theTransactions[x]);
         }
@@ -280,21 +281,21 @@ function drawOptionGraph(start, end,cp) {
         if (y < min) min = y
         ser.push(y);
     }
+
+    // figure out series 2
     var ind = 0;
     var c2 = 0;
 
+    // calculate the cost
     for (var x in theTransactions) {
         let mul = 1;
-        if (theTransactions[x].type == 'Call' && theTransactions[x].action == 'Sell')
-            mul = -1;
-        else if(theTransactions[x].type == 'Put' && theTransactions[x].action == 'Sell' )
+        if ( theTransactions[x].action == 'Sell')
             mul = -1;
         c2 += theTransactions[x].price * theTransactions[x].mag * mul;
     }
     for (var x in thePositions) {
         let mul = 1;
-        if (thePositions[x].type == 'Call' && thePositions[x].action == 'Sell'  ||
-            thePositions[x].type == 'Put' && thePositions[x].action == 'Sell' )
+        if ( thePositions[x].action == 'Sell')
             mul = -1;
         c2 += thePositions[x].price * thePositions[x].mag * mul;
 
