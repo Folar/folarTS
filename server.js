@@ -489,7 +489,7 @@ const getStockData = async () => {
     return new Promise((resolve, reject) => {
         request(
             'https://smartdocs.tdameritrade.com/smartdocs/v1/sendrequest?targeturl=https%3A%2F%2Fapi.tdameritrade.com%2Fv1%2Fmarketdata%2Fchains%3Fapikey%3DFOLARTS%2540AMER.OAUTHAP%26symbol%3D'
-            + user.currentStock + '%26strikeCount%3D' + 40 + '&_=' + token, function (error, response, body) {
+            + user.currentStock + '%26strikeCount%3D' + 80 + '&_=' + token, function (error, response, body) {
                 if (!error && response.statusCode == 200) {
 
                     let res = null;
@@ -1082,6 +1082,7 @@ function calcPerformance(name, id, trdata) {
     let consolidateTrans = [];
     let cost = 0;
     let currentCost = 0;
+    let closed = true;
     for (let t in trdata) {
         let tr = trdata[t];
 
@@ -1093,7 +1094,7 @@ function calcPerformance(name, id, trdata) {
             openDate = cd;
 
     }
-    let closed = true;
+
     let realizedSum = 0;
     for (let t in consolidateTrans) {
 
@@ -1134,6 +1135,8 @@ function calcPerformance(name, id, trdata) {
         }
 
         if (realizedQty != 0) {
+
+
             let currentPrice = 0;
             let tr = consolidateTrans[t][0]
 
@@ -1205,6 +1208,8 @@ function calcPerformance(name, id, trdata) {
     realizedSum = currencyFormatter.format(realizedSum.toFixed(2) * 100, {code: 'USD'});
     let c = currencyFormatter.format(cost.toFixed(2) * 100, {code: 'USD'});
     let cc = currencyFormatter.format(currentCost.toFixed(2) * 100, {code: 'USD'});
+    if (trdata.length == 0)
+        closed = false;
     return new TradePerformance(name, c, cc, id, openDate, closed, realizedSum);
 }
 const getAsyncTradePerformance = async (con, journal, specficId, modNote, noteId, text,dt) => {

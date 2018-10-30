@@ -107,7 +107,7 @@ var importSource = {
 
 var importTableDescription = {
     width: 800,
-    height: 231,
+    height: 400,
     pageable: false,
     pagerButtonsCount: 10,
     source: new $.jqx.dataAdapter(importSource),
@@ -119,13 +119,13 @@ var importTableDescription = {
     },
     columns: [
         {text: 'Type', dataField: 'type', width: 65, editable: false},
-        {text: 'Underlying', dataField: 'underlying', width: 100, editable: false},
+        {text: 'Underlying', dataField: 'underlying', width: 70, editable: false},
         {text: 'Expiration', dataField: 'exp', width: 100, editable: false},
-        {text: 'Trade Time', dataField: 'transaction_time', width: 150, editable: false},
-        {text: 'Strike Price', dataField: 'strike', width: 100, editable: false},
+        {text: 'Trade Time', dataField: 'transaction_time', width: 210, editable: false},
+        {text: 'Strike Price', dataField: 'strike', width: 70, editable: false},
         {text: 'Action', dataField: 'action', width: 100, editable: false},
         {text: 'Price', dataField: 'price', width: 85, editable: false},
-        {text: 'Amount', dataField: 'mag', width: 100, editable: false}
+        {text: 'Amount', dataField: 'mag', width: 70, editable: false}
     ]
 };
 var newArray = null;
