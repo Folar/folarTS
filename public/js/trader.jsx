@@ -944,6 +944,9 @@ var Trader = React.createClass({
                 name: val
             },
             function (data) {
+                    if(data.dupName){
+                        alert('Position  '+data.dupName+ ' already exists!')
+                    }
                 func(data);
 
             }

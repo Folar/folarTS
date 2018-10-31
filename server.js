@@ -346,7 +346,15 @@ const newPosition = async (con, name, c1, c2, c3, c4, c5, stocks) => {
 app.post('/newPosition', function (req, res) {
     let con = connectToDB();
     let name = req.body.name;
-
+    let info2 = user.info;
+    for (let i in info2.positionNames) {
+        if (name == info2.positionNames[i].name) {
+            let result = {dupName: name}
+            res.json(result);
+            con.end();
+            return;
+        }
+    }
     newPosition(con, name).then(function (data) {
         let info = user.info;
         info.currentPosition = user.currentPosition = name;
