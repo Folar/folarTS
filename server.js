@@ -1220,6 +1220,16 @@ function calcPerformance(name, id, trdata) {
         closed = false;
     return new TradePerformance(name, c, cc, id, openDate, closed, realizedSum);
 }
+
+const getDataFromDBParam = async (con, sql,params) => {
+    return new Promise((resolve, reject) => {
+        con.query(sql, params, (err, rows) => {
+            if (err)
+                return reject(err);
+            resolve(rows);
+        });
+    });
+};
 const getAsyncTradePerformance = async (con, journal, specficId, modNote, noteId, text,dt) => {
     let info = []
     let sql = "SELECT  iduser, idposition, name FROM position2 where iduser = " + user.idUser + ";";
@@ -1247,8 +1257,8 @@ const getAsyncTradePerformance = async (con, journal, specficId, modNote, noteId
         if (noteId == -1) {
             if (text.length != 0) {
                 sql = "INSERT INTO tr_journal_entries ( create_date,modified_date,tr_date,entry,position_id )"
-                +" VALUES( NOW(),NOW(),'" +dt+"','"+text+"',"+specficId+");";
-                await getDataFromDB(con, sql);
+                +" VALUES( NOW(),NOW(),'" +dt+"',?,"+specficId+");";
+                await getDataFromDBParam(con, sql,[text]);
             }
 
         } else {
@@ -1257,8 +1267,8 @@ const getAsyncTradePerformance = async (con, journal, specficId, modNote, noteId
                 await getDataFromDB(con, sql);
             }
             else {
-                sql = "UPDATE tr_journal_entries SET  entry = '" + text + "' WHERE id = " + noteId + ";";
-                 await getDataFromDB(con, sql);
+                sql = "UPDATE tr_journal_entries SET  entry = ? WHERE id = " + noteId + ";";
+                 await getDataFromDBParam(con, sql,[text]);
             }
 
         }
