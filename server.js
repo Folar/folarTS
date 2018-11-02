@@ -1232,7 +1232,7 @@ const getDataFromDBParam = async (con, sql,params) => {
 };
 const getAsyncTradePerformance = async (con, journal, specficId, modNote, noteId, text,dt) => {
     let info = []
-    let sql = "SELECT  iduser, idposition, name FROM position2 where iduser = " + user.idUser + ";";
+    let sql = "SELECT  iduser, idposition, name, createDate FROM position2 where iduser = " + user.idUser + ";";
     let positions = await getDataFromDB(con, sql);
     for (let i in positions) {
         let name = positions[i].name;
@@ -1299,10 +1299,17 @@ const getAsyncTradePerformance = async (con, journal, specficId, modNote, noteId
     }
     let retJournal = [];
     if (positionAssigned) {
+        let start = moment(openDate, 'YYYY-MM-DD');
 
+        for (let i in positions) {
+            if(pid == positions[i].idposition) {
+                start = moment(positions[i].createDate, 'YYYY-MM-DD HH:mm:ss');
+                break;
+            }
 
-        let start = moment(openDate, 'YYYY-MM-DD'); //Pick any format
-        let end = moment(); //right now (or define an end date yourself)
+        }
+        let end = moment().format("YYYY-MM-DD")  + " 23:59:59";
+        end = moment(end, 'YYYY-MM-DD HH:mm:ss');
         let weekdayCounter = 0;
         sql = "SELECT * FROM tr_journal_entries where position_id =" + pid + " ORDER BY tr_date ASC;";
         let jdata = await getDataFromDB(con, sql);
