@@ -159,13 +159,13 @@ const createPosition = async (con, name) => {
 const createDefaultPosition = async (con) => {
     let sql = "INSERT INTO position2 (iduser,  createDate,modifyDate ) VALUES( " +
         +user.idUser + " , NOW(),NOW());";
-    return new Promise((resolve, reject) => {
-        con.query(sql, "", (err, rows) => {
-            if (err)
-                return reject(err);
-            resolve(rows);
-        });
-    });
+
+    let data = await getDataFromDB(con, sql);
+
+    sql = "INSERT INTO journal (name, openDate, createDate,modifyDate ,idposition,iduser) VALUES( '"  + "First Position" +
+        "' ,NOW(), NOW(),NOW(),"+data.insertId+","+user.idUser+");";
+    let r = await getDataFromDB(con, sql);
+    return data;
 };
 const createDefaultConfig = async (con) => {
     var sql = "INSERT INTO user_config (iduser,  createDate,modifyDate ) VALUES(" +
@@ -337,10 +337,15 @@ app.post('/chgposition', function (req, res) {
     });
 });
 const newPosition = async (con, name, c1, c2, c3, c4, c5, stocks) => {
-
-    let data = await createPosition(con, name);
-
-    let r = await updateCurrentPosition(con, data.insertId);
+    let sql = "INSERT INTO position2 (iduser, name, createDate,modifyDate ) VALUES( " +
+        +user.idUser + ",'" + name + "' , NOW(),NOW());";
+    let data = await getDataFromDB(con, sql);
+    sql = "UPDATE user SET   currentPosition =" +  data.insertId +
+        " where iduser = " + user.idUser;
+    let r = await getDataFromDB(con, sql);
+    sql = "INSERT INTO journal (name, openDate, createDate,modifyDate ,idposition,iduser) VALUES( '"  + name +
+                              "' ,NOW(), NOW(),NOW(),"+data.insertId+","+user.idUser+");";
+    r = await getDataFromDB(con, sql);
     return data;
 }
 app.post('/newPosition', function (req, res) {
@@ -371,6 +376,36 @@ app.post('/newPosition', function (req, res) {
 
 });
 
+const newJournal = async (con, name, c1, c2, c3, c4, c5, stocks) => {
+
+    sql = "INSERT INTO journal (name, openDate, createDate,modifyDate ,idposition,iduser) VALUES( '"  + name +
+        "' ,NOW(), NOW(),NOW(),0,"+user.idUser+");";
+    r = await getDataFromDB(con, sql);
+    return r.insertId;
+}
+app.post('/newJournal', function (req, res) {
+    let con = connectToDB();
+    let name = req.body.name;
+    let info2 = user.info;
+    for (let i in info2.positionNames) {
+        if (name == info2.positionNames[i].name) {
+            let result = {dupName: name}
+            res.json(result);
+            con.end();
+            return;
+        }
+    }
+    newJournal(con, name).then(function (data) {
+        con.end();
+        let result = {jid: data}
+        res.json(result);
+    }).catch(function (err) {
+        console.log("ERROR ERROR createjournal " + err)
+        return;
+    });
+
+
+});
 
 const newConfig = async (con, name, c1, c2, c3, c4, c5, stocks) => {
 
@@ -620,7 +655,7 @@ const getAsyncData = async (con, user, trans, underlying) => {
         }
     }
     // get transactions and merge
-    let sql = "SELECT  strike,qty,type,action,symbol,price,expiration, t.createDate FROM position_transaction pt" +
+    let sql = "SELECT  opra,strike,qty,type,action,symbol,price,expiration, t.createDate FROM position_transaction pt" +
         "  left join transaction t on  pt.idtransaction = t.idtransaction where idposition = " + user.currentPositionId + ";";
     resultSet = await getDataFromDB(con, sql);
 
@@ -872,6 +907,7 @@ app.post('/tradetable', function (req, resp) {
             let tr = new Transaction(parseFloat(trdata[i].strike), parseInt(trdata[i].qty), trdata[i].type == "call" ? "Call" : "Put",
                 action, user.currentStock, parseFloat(trdata[i].price), dt, tm, 0);
             let finalTR = tr;
+            tr.opra = trdata[i].opra;
             let key = tr.getType().toLowerCase() + ":" + tr.getExpiration() + ":" + tr.getStrike();
             if (TransMap[key] != undefined) {
                 finalTR = TransMap[key];
@@ -1097,7 +1133,7 @@ function calcPerformance(name, id, trdata) {
         if (consolidateTrans[tr.opra] == undefined)
             consolidateTrans[tr.opra] = [];
         consolidateTrans[tr.opra].push(tr);
-        let cd = moment(tr.createDate).format('YYYY-MM-DD');
+        let cd = moment(tr.transaction_time).format('YYYY-MM-DD');
         if (cd < openDate)
             openDate = cd;
 
@@ -1230,16 +1266,19 @@ const getDataFromDBParam = async (con, sql,params) => {
         });
     });
 };
-const getAsyncTradePerformance = async (con, journal, specficId, modNote, noteId, text,dt) => {
-    let info = []
+const getAsyncTradePerformance = async (con, journal, specificJID,specificPID, modNote, noteId, text,dt) => {
+    let info = [];
+    
+    // figure out which positions are open
     let sql = "SELECT  iduser, idposition, name, createDate FROM position2 where iduser = " + user.idUser + ";";
     let positions = await getDataFromDB(con, sql);
     for (let i in positions) {
         let name = positions[i].name;
 
         let id = positions[i].idposition;
-        sql = "SELECT  qty, action,price,expiration,type,strike,opra,t.createDate FROM position_transaction pt" +
-            "  left join transaction t on  pt.idtransaction = t.idtransaction where idposition = " + id +
+        sql = "SELECT  qty, action,price,expiration,type,strike,opra,t.createDate,t.transaction_time FROM position_transaction pt" +
+            "  left join transaction t on  pt.idtransaction = t.idtransaction " +
+            " where pt.idposition = " + id +
             ";";
         let trdata = await getDataFromDB(con, sql);
 
@@ -1253,11 +1292,15 @@ const getAsyncTradePerformance = async (con, journal, specficId, modNote, noteId
         con.end();
         return info;
     }
+    
+    // journal only code
     if (modNote) {
+        // edit a note in the journal
+        
         if (noteId == -1) {
             if (text.length != 0) {
-                sql = "INSERT INTO tr_journal_entries ( create_date,modified_date,tr_date,entry,position_id )"
-                +" VALUES( NOW(),NOW(),'" +dt+"',?,"+specficId+");";
+                sql = "INSERT INTO tr_journal_entries ( create_date,modified_date,tr_date,entry,journal_id )"
+                +" VALUES( NOW(),NOW(),'" +dt+"',?,"+specificJID+");";
                 await getDataFromDBParam(con, sql,[text]);
             }
 
@@ -1276,46 +1319,82 @@ const getAsyncTradePerformance = async (con, journal, specficId, modNote, noteId
     let ops = [];
     let pid = -1;
     let openDate;
-    let positionAssigned = false;
-    let sid = specficId != -1 ? specficId : user.currentPositionId;
+
+    let journalAssigned = false;
+    let spid = specificPID != -1 ? specificPID : user.currentPositionId;
+    let jid = specificJID;
+    let gjDate = null;
+    // figure out the journal buttons
     for (let tp in info) {
         if (info[tp].status == "Open") {
-            if (!positionAssigned) {
-                positionAssigned = true;
+            if (!journalAssigned) {
+                journalAssigned = true;
                 pid = info[tp].id;
                 openDate = info[tp].openDate;
             }
 
-            if (info[tp].id == sid) {
-                pid = sid;
+            if (info[tp].id == spid) {
+                pid = spid;
                 openDate = info[tp].openDate;
             }
+            sql = "SELECT  idjournal FROM journal where idposition = " + info[tp].id + ";";
+            let r =  await getDataFromDB(con, sql);
+            if(pid == info[tp].id)
+                jid = r[0].idjournal;
             ops.push({
                 id: info[tp].id,
+                jid:r[0].idjournal,
                 name: info[tp].name
             })
         }
+    }
+    // get the general journals
+    sql = "SELECT  idjournal, idposition, name,createDate FROM journal  where iduser = " + user.idUser +
+        " AND idposition = 0;"
 
+    let journals = await getDataFromDB(con, sql);
+    for (let i in journals) {
+        if(!journalAssigned && jid == -1 ) {
+            jid = journals[i].idjournal;
+            gjDate = journals[i].createDate;
+        }
+        if(specificJID == journals[i].idjournal) {
+            jid = specificJID;
+            gjDate = journals[i].createDate;
+        }
+        journalAssigned = true;
+        ops.push({
+            id: 0,
+            jid: journals[i].idjournal,
+            name: journals[i].name
+        });
     }
     let retJournal = [];
-    if (positionAssigned) {
-        let start = moment(openDate, 'YYYY-MM-DD');
+    let start ;
+    if (journalAssigned) {
+        if (gjDate == null) {
+            start = moment(openDate, 'YYYY-MM-DD');
 
-        for (let i in positions) {
-            if(pid == positions[i].idposition) {
-                start = moment(positions[i].createDate, 'YYYY-MM-DD HH:mm:ss');
-                break;
+            for (let i in positions) {
+                if (pid == positions[i].idposition) {
+                    start = moment(positions[i].createDate, 'YYYY-MM-DD HH:mm:ss');
+                    break;
+                }
+
             }
-
+            if (moment(openDate, "YYYY-MM-DD") < start)
+                start = openDate;
+        }else{
+            start = moment(gjDate, 'YYYY-MM-DD HH:mm:ss');
         }
         let end = moment().format("YYYY-MM-DD")  + " 23:59:59";
         end = moment(end, 'YYYY-MM-DD HH:mm:ss');
         let weekdayCounter = 0;
-        sql = "SELECT * FROM tr_journal_entries where position_id =" + pid + " ORDER BY tr_date ASC;";
+        sql = "SELECT * FROM tr_journal_entries where  journal_id ="+jid+" ORDER BY tr_date ASC;";
         let jdata = await getDataFromDB(con, sql);
         let idx = 0;
         let item = jdata[idx];
-
+        start = moment(start,"YYYY-MM-DD")
         while (start <= end) {
             if (true|| start.format('ddd') !== 'Sat' && start.format('ddd') !== 'Sun') {
                 weekdayCounter++; //add 1 to your counter if its not a weekend day
@@ -1339,23 +1418,23 @@ const getAsyncTradePerformance = async (con, journal, specficId, modNote, noteId
 
     }
     con.end();
-    return [pid, ops, retJournal];
+    return [jid, ops, retJournal];
 };
 
-app.post('/switchPosition', function (req, resp) {
+app.post('/switchPosition', function (req, resp) { // switch journal
     let con = connectToDB();
     let obj = req.body;
-    getAsyncTradePerformance(con, true, obj.pid, false, 0, "","2018-10-09").then((data) => {
+    getAsyncTradePerformance(con, true, obj.jid,obj.pid, false, 0, "","2018-10-09").then((data) => {
         resp.json({currentId: data[0], positions: data[1], dates: data[2]});
     }).catch(function (err) {
-        console.log("ERROR ERROR tradeperformance " + err)
+        console.log("ERROR ERROR tradeperformance " + err);
         return;
     });
 });
 app.post('/saveNote', function (req, resp) {
     let con = connectToDB();
     let obj = req.body;
-    getAsyncTradePerformance(con, true, obj.pid, true, obj.id, obj.text,obj.dt).then((data) => {
+    getAsyncTradePerformance(con, true, obj.jid,obj.pid, true, obj.id, obj.text,obj.dt).then((data) => {
         resp.json({currentId: data[0], positions: data[1], dates: data[2]});
     }).catch(function (err) {
         console.log("ERROR ERROR tradeperformance " + err)
@@ -1365,7 +1444,7 @@ app.post('/saveNote', function (req, resp) {
 app.post('/journal', function (req, resp) {
     let con = connectToDB();
 
-    getAsyncTradePerformance(con, true, -1, false, 0, "","2018-10-09").then((data) => {
+    getAsyncTradePerformance(con, true, -1,-1, false, 0, "","2018-10-09").then((data) => {
         resp.json({currentId: data[0], positions: data[1], dates: data[2]});
     }).catch(function (err) {
         console.log("ERROR ERROR tradeperformance " + err)
@@ -1376,7 +1455,7 @@ app.post('/journal', function (req, resp) {
 app.post('/report', function (req, resp) {
     let con = connectToDB();
 
-    getAsyncTradePerformance(con, false, -1, false, 0, "","2018-10-09").then((data) => {
+    getAsyncTradePerformance(con, false, -1,-1, false, 0, "","2018-10-09").then((data) => {
         resp.json({data: data});
     }).catch(function (err) {
         console.log("ERROR ERROR tradeperformance " + err)
@@ -1428,6 +1507,9 @@ const getAsyncMoveTrans = async (con, copy, move, create, mvpos, name, trans) =>
             "NOW(),NOW());";
         res = await getDataFromDB(con, sql);
         idNewPosition = res.insertId;
+        sql = "INSERT INTO journal (name, openDate, createDate,modifyDate ,idposition,iduser) VALUES( '"  + name +
+            "' ,NOW(), NOW(),NOW(),"+res.insertId+","+user.idUser+");";
+        await getDataFromDB(con, sql);
         if (!copy) {
             sql = "UPDATE position_transaction SET  idposition = " + idNewPosition + " where idposition  = " + idPosition +
                 " AND idtransaction IN (" + trans + ");";
@@ -1598,6 +1680,9 @@ const getAsyncUpload = async (sel, pos, val) => {
         res = await getDataFromDB(con, sql);
         idPosition = res.insertId;
         user.info.positionNames.push({name: val, idposition: idPosition})
+        sql = "INSERT INTO journal (name, openDate, createDate,modifyDate ,idposition,iduser) VALUES( '"  + val +
+            "' ,NOW(), NOW(),NOW(),"+idPosition+","+user.idUser+");";
+        let rr = await getDataFromDB(con, sql);
     } else {
         for (let i in user.info.positionNames) {
             if (pos == user.info.positionNames[i].name) {

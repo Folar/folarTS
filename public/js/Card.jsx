@@ -38,7 +38,7 @@ var Card = React.createClass({
     },
 
     switchPosition: function () {
-        this.props.switchPosition(this.props.id);
+        this.props.switchPosition(this.props.id,this.props.jid);
     },
 
     render: function () {
