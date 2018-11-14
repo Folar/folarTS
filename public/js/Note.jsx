@@ -18,7 +18,8 @@ var Note = React.createClass({
             buttonText: this.props.buttonText,
             open: false,
             text: this.props.text,
-            newText: this.props.text
+            newText: this.props.text,
+            textHeight : "80px"
 
         };
     },
@@ -71,6 +72,7 @@ var Note = React.createClass({
             }
         }
         if (this.state.mode == 1) {
+            this.adjustHeight();
             m = 2;
             t = "SAVE";
 
@@ -114,6 +116,8 @@ var Note = React.createClass({
             if (this.state.text.length == 0) {
                 m = 0;
                 t = "ADD";
+            }else{
+                this.adjustHeight();
             }
         }
         if (t == "SAVE")
@@ -135,8 +139,15 @@ var Note = React.createClass({
         // });
     },
 
-    nl2br:function(str) {
-       return str;//str.replace(/(?:\r\n|\r|\n)/g, '<p/>');
+    adjustHeight:function() {
+        let len =this.state.text.split(/r\n|\r|\n/).length;
+        if (len < 2)
+            this.setState({textHeight:"90px"});
+        else{
+            len = (len + 2) * 30;
+            this.setState({textHeight:len})
+
+        }
     },
 
     render: function () {
@@ -167,7 +178,7 @@ var Note = React.createClass({
                     </Col>
                     <Col xs={9}>
                         <textarea onChange={ this.handleChange } defaultValue={this.state.text}
-                                  style={{height: "80px", marginBottom: "10px"}}
+                                  style={{height: this.state.textHeight , marginBottom: "10px"}}
                         />
                     </Col>
                 </Row>}
