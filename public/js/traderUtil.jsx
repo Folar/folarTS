@@ -1,5 +1,3 @@
-
-
 /** @jsx React.DOM */
 
 
@@ -9,36 +7,33 @@ var Row = ReactBootstrap.Row;
 var Col = ReactBootstrap.Col;
 
 
-
-
-
 var StockNameCombo = React.createClass({
-    getInitialState: function() {
+    getInitialState: function () {
         return {
-            test :0
+            test: 0
         };
     },
-    getConfigName:function(){
+    getConfigName: function () {
 
-        var node=$(this.getDOMNode()).context.children[0];
+        var node = $(this.getDOMNode()).context.children[0];
         return node.value;
     },
 
-    setConfigName:function(val){
+    setConfigName: function (val) {
 
-        var node=$(this.getDOMNode()).context.children[0];
+        var node = $(this.getDOMNode()).context.children[0];
         node.value = val;
     },
-    render: function() {
+    render: function () {
 
-        var items = this.props.names.map(function(item, index) {
-            return <option value={item} > {item} </option>;
+        var items = this.props.names.map(function (item, index) {
+            return <option value={item}> {item} </option>;
         });
 
 
-        if (items.length >1)
+        if (items.length > 1)
             return <div>
-                <select value = {this.props.sel}  onChange={ this.props.switchConfig} >
+                <select value={this.props.sel} onChange={ this.props.switchConfig}>
                     {items}
                 </select>
             </div>;
@@ -52,44 +47,44 @@ var StockNameCombo = React.createClass({
 
 
 var ConfigNameCombo = React.createClass({
-     getInitialState: function() {
-            return {
-                test :0
-            };
-     },
-    getConfigName:function(){
+    getInitialState: function () {
+        return {
+            test: 0
+        };
+    },
+    getConfigName: function () {
 
-         var node=$(this.getDOMNode()).context.children[0];
-         return node.value;
+        var node = $(this.getDOMNode()).context.children[0];
+        return node.value;
     },
 
-    setConfigName:function(val){
+    setConfigName: function (val) {
 
-             var node=$(this.getDOMNode()).context.children[0];
-             node.value = val;
+        var node = $(this.getDOMNode()).context.children[0];
+        node.value = val;
     },
-	render: function() {
+    render: function () {
 
-		var items = this.props.names.map(function(item, index) {
+        var items = this.props.names.map(function (item, index) {
 
-			return <option value={item.id} > {item.name} </option>;
-		});
+            return <option value={item.id}> {item.name} </option>;
+        });
 
-       console.log("co = "+this.props.sel+  " " +items.length)
-		if (items.length >1)
-		    return <div>
-		          <select value = {this.props.sel}  onChange={ this.props.switchConfig} >
-		              {items}
-		          </select>
-		       </div>;
+        console.log("co = " + this.props.sel + " " + items.length)
+        if (items.length > 1)
+            return <div>
+                <select value={this.props.sel} onChange={ this.props.switchConfig}>
+                    {items}
+                </select>
+            </div>;
 
-		    return <div>
-               <span> {this.props.sel} </span>
-		       </div>;
-	}
+        return <div>
+            <span> {this.props.sel} </span>
+        </div>;
+    }
 
 });
-var  dlgTxt = null;
+var dlgTxt = null;
 var importSource = {
     localData: [],
     dataType: "json",
@@ -140,7 +135,7 @@ var ImportTransDlg = React.createClass({
             expsSel: 'All',
             days: [{item: "Default", id: 9}],
             daysSel: 'All',
-            showNewPos:false,
+            showNewPos: false,
             klassName: "showError"
         };
     },
@@ -149,36 +144,38 @@ var ImportTransDlg = React.createClass({
     },
     switchStocks: function () {
         var id = this.refs.stockCombo.getConfigName();
-        this.setState({stockSel : id});
+        this.setState({stockSel: id});
     },
     switchExps: function () {
 
         var id = this.refs.expsCombo.getConfigName();
-        this.setState({expsSel : id});
+        this.setState({expsSel: id});
     },
     switchDays: function () {
 
         var id = this.refs.daysCombo.getConfigName();
-        this.setState({daysSel : id});
+        this.setState({daysSel: id});
     },
     componentDidMount: function () {
         $(this.refs.importtable.getDOMNode()).jqxDataTable(importTableDescription);
         importTableDescription.source = new $.jqx.dataAdapter(importSource);
         $(this.getDOMNode()).modal('show');
-        this.setState({stockNames:this.props.data.syms,positionNames:this.props.data.positionNames,
-            positionSel:this.props.data.currentPosition,
-            exps:this.props.data.exps,days:this.props.data.trade_days})
+        this.setState({
+            stockNames: this.props.data.syms, positionNames: this.props.data.positionNames,
+            positionSel: this.props.data.currentPosition,
+            exps: this.props.data.exps, days: this.props.data.trade_days
+        })
     },
     switchPosition: function () {
         var id = this.refs.nameCombo.getConfigName();
-        this.setState({showNewPos:id == "Create..."})
+        this.setState({showNewPos: id == "Create..."})
 
         this.setState({positionSel: id});
     },
     import: function () {
         var val = "";
         let newPosition = false;
-        if(this.state.showNewPos){
+        if (this.state.showNewPos) {
             val = $("#newP")[0].value;
             newPosition = true;
         }
@@ -192,13 +189,13 @@ var ImportTransDlg = React.createClass({
                 str += ","
             else
                 ft = false;
-            if(newArray.length == 0)
+            if (newArray.length == 0)
                 newArray = this.props.data.buf;
             var idTran = newArray[selection[i].uid]["cnt"];
             str += idTran;
         }
-        if (selection.length == 0){
-            if(newArray.length == 0)
+        if (selection.length == 0) {
+            if (newArray.length == 0)
                 newArray = this.props.data.buf;
             for (var i = 0; i < newArray.length; i++) {
                 // get a selected row.
@@ -206,14 +203,14 @@ var ImportTransDlg = React.createClass({
                     str += ","
                 else
                     ft = false;
-                if(newArray.length == 0)
+                if (newArray.length == 0)
                     newArray = this.props.data.buf;
                 var idTran = newArray[i]["cnt"];
                 str += idTran;
             }
         }
         var func = this.success;
-        $.post("/import", {sel: str,newPosition:newPosition,val:val,pos:this.state.positionSel}, function (data) {
+        $.post("/import", {sel: str, newPosition: newPosition, val: val, pos: this.state.positionSel}, function (data) {
                 alert(data.cnt + " transaction(s) have been imported");
 
             }
@@ -235,224 +232,262 @@ var ImportTransDlg = React.createClass({
                 if (el.exp == id) return true;
                 return false;
             });
-           id = this.refs.daysCombo.getConfigName();
+            id = this.refs.daysCombo.getConfigName();
             newArray = newArray.filter(function (el) {
                 if (id == "All") return true;
                 debugger;
                 if (el.transaction_time.split(' ')[0] == id) return true;
                 return false;
             });
-            if (id!=undefined) {
+            if (id != undefined) {
                 importSource.localData = newArray;
                 importTableDescription.source = new $.jqx.dataAdapter(importSource);
                 $(this.refs.importtable.getDOMNode()).jqxDataTable(importTableDescription);
             }
         }
-        importSource.localData= newArray;
+        importSource.localData = newArray;
         importTableDescription.source = new $.jqx.dataAdapter(importSource);
 
 
         return (
 
 
-                <div className="modal fade"  >
-                    <div className="modal-dialog modal-lg">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <Row xs={12} className="container">
-                                    <Col xs={1} className={this.state.klassName}>
-                                        Stocks:
-                                    </Col>
-                                    <Col xs={1} className={this.state.klassName}>
-                                        <StockNameCombo ref="stockCombo" names={this.state.stockNames}
-                                                        sel={this.state.stockSel }
-                                                        switchConfig={this.switchStocks}/>
-                                    </Col>
-                                    <Col xs={1}/>
-                                    <Col xs={1} className={this.state.klassName}>
-                                        Expirations:
-                                    </Col>
-                                    <Col xs={1} className={this.state.klassName}>
-                                        <StockNameCombo ref="expsCombo" names={this.state.exps}
-                                                        sel={this.state.expsSel }
-                                                        switchConfig={this.switchExps}/>
-                                    </Col>
-                                    <Col xs={1} className={this.state.klassName}/>
-                                    <Col xs={1} className={this.state.klassName}>
-                                        Trade Day:
-                                    </Col>
-                                    <Col xs={1} className={this.state.klassName}>
+            <div className="modal fade">
+                <div className="modal-dialog modal-lg">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <Row xs={12} className="container">
+                                <Col xs={1} className={this.state.klassName}>
+                                    Stocks:
+                                </Col>
+                                <Col xs={1} className={this.state.klassName}>
+                                    <StockNameCombo ref="stockCombo" names={this.state.stockNames}
+                                                    sel={this.state.stockSel }
+                                                    switchConfig={this.switchStocks}/>
+                                </Col>
+                                <Col xs={1}/>
+                                <Col xs={1} className={this.state.klassName}>
+                                    Expirations:
+                                </Col>
+                                <Col xs={1} className={this.state.klassName}>
+                                    <StockNameCombo ref="expsCombo" names={this.state.exps}
+                                                    sel={this.state.expsSel }
+                                                    switchConfig={this.switchExps}/>
+                                </Col>
+                                <Col xs={1} className={this.state.klassName}/>
+                                <Col xs={1} className={this.state.klassName}>
+                                    Trade Day:
+                                </Col>
+                                <Col xs={1} className={this.state.klassName}>
 
-                                        <StockNameCombo ref="daysCombo" names={this.state.days}
-                                                        sel={this.state.daysSel }
-                                                        switchConfig={this.switchDays}/>
-                                    </Col>
-                                </Row>
+                                    <StockNameCombo ref="daysCombo" names={this.state.days}
+                                                    sel={this.state.daysSel }
+                                                    switchConfig={this.switchDays}/>
+                                </Col>
+                            </Row>
 
-                                <h4 className="modal-title" id="myimporttrans">Choose Transactions to Import</h4>
-                            </div>
-                            <div className="modal-body">
-                                <div ref="importtable" id="importTable"></div>
-                            </div>
-                            <div>
-                                <Row>
-                                    <Col xs={1}/>
-                                    <Col xs={1}>
-                                        Import to:
-                                    </Col>
-                                    <Col xs={2} className={this.state.klassName}>
-                                        <ConfigNameCombo ref="nameCombo" names={this.state.positionNames}
-                                                 sel={this.state.positionSel}
-                                                 switchConfig={this.switchPosition}/>
-                                    </Col>
-                                    <Col xs={2}>
-                                        {this.state.showNewPos ? <input id="newP" className="searchBox" ref="postxt"/> : null}
-                                    </Col>
-                                    <Col xs={1} className={this.state.klassName}/>
-                                    <Col xs={2} className={this.state.klassName}>
-                                        <button type="button" className="btn btn-default" onClick={this.quit}>Close</button>
-                                    </Col>
-                                    <Col xs={2} className={this.state.klassName}>
-                                        <button type="button" className="btn btn-primary" onClick={this.import}>Import</button>
-                                    </Col>
-                                </Row>
-
-                            </div>
-                            </div>
+                            <h4 className="modal-title" id="myimporttrans">Choose Transactions to Import</h4>
                         </div>
-                    <div/>
+                        <div className="modal-body">
+                            <div ref="importtable" id="importTable"></div>
+                        </div>
+                        <div>
+                            <Row>
+                                <Col xs={1}/>
+                                <Col xs={1}>
+                                    Import to:
+                                </Col>
+                                <Col xs={2} className={this.state.klassName}>
+                                    <ConfigNameCombo ref="nameCombo" names={this.state.positionNames}
+                                                     sel={this.state.positionSel}
+                                                     switchConfig={this.switchPosition}/>
+                                </Col>
+                                <Col xs={2}>
+                                    {this.state.showNewPos ?
+                                        <input id="newP" className="searchBox" ref="postxt"/> : null}
+                                </Col>
+                                <Col xs={1} className={this.state.klassName}/>
+                                <Col xs={2} className={this.state.klassName}>
+                                    <button type="button" className="btn btn-default" onClick={this.quit}>Close</button>
+                                </Col>
+                                <Col xs={2} className={this.state.klassName}>
+                                    <button type="button" className="btn btn-primary" onClick={this.import}>Import
+                                    </button>
+                                </Col>
+                            </Row>
+
+                        </div>
+                    </div>
                 </div>
+                <div/>
+            </div>
 
         );
     }
 });
 
 
-var ImportDlg   = React.createClass({
-        getInitialState: function() {
-                return {data_uri: null}
-            },
+var ImportDlg = React.createClass({
+    getInitialState: function () {
+        return {data_uri: null}
+    },
 
-        handleSubmit: function() {
-            var formData = new FormData($('form')[0]);
+    handleSubmit: function () {
+        var formData = new FormData($('form')[0]);
 
-            $.ajax({
-                url: '/upload',
-                type: "POST",
-                cache: false,
-                processData: false,
+        $.ajax({
+            url: '/upload',
+            type: "POST",
+            cache: false,
+            processData: false,
 
-                contentType: false,
-                data: formData,
-                success: function(data) {
+            contentType: false,
+            data: formData,
+            success: function (data) {
 
-                    //alert (data.cnt +" transactions have been created");
-                    this.uploadFunc(data);
-                }.bind(this),
-                error: function(xhr, status, err) {
-                    // do stuff
-                }.bind(this)
+                //alert (data.cnt +" transactions have been created");
+                this.uploadFunc(data);
+            }.bind(this),
+            error: function (xhr, status, err) {
+                // do stuff
+            }.bind(this)
+        });
+        return false;
+    },
+    handleFile: function (e) {
+        var reader = new FileReader();
+        var file = e.target.files[0];
+
+        reader.onload = function (upload) {
+            this.setState({
+                data_uri: upload.target.result
             });
-            return false;
-        },
-        handleFile: function(e) {
-            var reader = new FileReader();
-            var file = e.target.files[0];
+            console.log(this.state.data_uri)
+        }.bind(this);
 
-            reader.onload = function(upload) {
-                this.setState({
-                    data_uri: upload.target.result
-                });
-                console.log(this.state.data_uri)
-            }.bind(this);
-
-            reader.readAsDataURL(file);
-        },
-        uploadFunc : function(t){
-            this.props.func(t);
-        },
-        render: function() {
+        reader.readAsDataURL(file);
+    },
+    uploadFunc: function (t) {
+        this.props.func(t);
+    },
+    render: function () {
 
 
-        var lbl = "my"+this.props.modal+"Label";
-        var target = "#my"+this.props.modal;
-        var idtarget = "my"+this.props.modal;
+        var lbl = "my" + this.props.modal + "Label";
+        var target = "#my" + this.props.modal;
+        var idtarget = "my" + this.props.modal;
 
         return (
-            <div  xs={10} className="container" >
+            <div xs={10} className="container">
 
                 <button type="button" className="btn btn-primary " data-toggle="modal" data-target={target}>
-                 {this.props.buttonLabel}
+                    {this.props.buttonLabel}
                 </button>
 
-                <div className="modal fade" id={idtarget} tabindex="-1" role="dialog" aria-labelledby={lbl} aria-hidden="true">
-                  <div className="modal-dialog">
-                    <div className="modal-content">
-                      <div className="modal-header">
-                        <button type="button" className="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span className="sr-only">Close</span></button>
-                        <h4 className="modal-title" id={lbl}>{this.props.title}</h4>
-                      </div>
-                      <div className="modal-body">
-                          <form  >
-                              <input className="tall" type="file" name="file"  id="file" onChange={this.handleFile} />
-                          </form>
-                      </div>
-                      <div className="modal-footer">
-                          <button type="button" className="btn btn-default" data-dismiss="modal">Cancel</button>
-                          <button type="button" className="btn btn-primary" onClick={this.handleSubmit}  data-dismiss="modal" >Upload</button>
-                      </div>
+                <div className="modal fade" id={idtarget} tabindex="-1" role="dialog" aria-labelledby={lbl}
+                     aria-hidden="true">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <button type="button" className="close" data-dismiss="modal"><span
+                                    aria-hidden="true">&times;</span><span className="sr-only">Close</span></button>
+                                <h4 className="modal-title" id={lbl}>{this.props.title}</h4>
+                            </div>
+                            <div className="modal-body">
+                                <form  >
+                                    <input className="tall" type="file" name="file" id="file"
+                                           onChange={this.handleFile}/>
+                                </form>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="button" className="btn btn-primary" onClick={this.handleSubmit}
+                                        data-dismiss="modal">Upload
+                                </button>
+                            </div>
 
+                        </div>
                     </div>
-                  </div>
                 </div>
             </div>
         );
     }
-    });
+});
 
-var NameDlg= React.createClass({
+var NameDlg = React.createClass({
+    getInitialState: function () {
+        return {
+            genJournalSel: -1,
+            nameText:this.props.initVal()
+        };
+    },
+    handleChange: function (e) {
+        this.setState({nameText: e.target.value});
+    },
+    quit: function (t) {
+        this.props.okFunc($(this.refs.txt.getDOMNode())[0].value, this.state.genJournalSel);
+    },
+    componentDidMount: function () {
+        dlgTxt = $(this.refs.txt.getDOMNode())[0]
+    },
+    switchgj: function () {
 
-        quit : function(t){
-            this.props.okFunc($(this.refs.txt.getDOMNode())[0].value);
-        },
-        componentDidMount: function() {
-            dlgTxt =  $(this.refs.txt.getDOMNode())[0]
-        },
-        render: function() {
 
-        if(dlgTxt) dlgTxt.value = this.props.initVal();
-        var lbl = "my"+this.props.modal+"Label";
-        var target = "#my"+this.props.modal;
-        var idtarget = "my"+this.props.modal;
+        var id = this.refs.nameCombo.getConfigName();
+        this.setState({genJournalSel: id})
+    },
+    render: function () {
+
+        if (dlgTxt) dlgTxt.value = this.state.nameText;
+        var lbl = "my" + this.props.modal + "Label";
+        var target = "#my" + this.props.modal;
+        var idtarget = "my" + this.props.modal;
 
         return (
-            <div  xs={10} className="container" >
+            <div xs={10} className="container">
 
                 <button type="button" className="btn btn-primary " data-toggle="modal" data-target={target}>
-                 {this.props.buttonLabel}
+                    {this.props.buttonLabel}
                 </button>
 
-                <div className="modal fade" id={idtarget} tabindex="-1" role="dialog" aria-labelledby={lbl} aria-hidden="true">
-                  <div className="modal-dialog">
-                    <div className="modal-content">
-                      <div className="modal-header">
-                        <button type="button" className="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span className="sr-only">Close</span></button>
-                        <h4 className="modal-title" id={lbl}>{this.props.title}</h4>
-                      </div>
-                      <div className="modal-body">
-                          {this.props.label}  <input   className="searchBox"  ref="txt"   />
-                      </div>
-                      <div className="modal-footer">
-                        <button type="button" className="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button type="button" className="btn btn-primary" onClick={this.quit}  data-dismiss="modal" >{this.props.buttonLabel}</button>
-                      </div>
+                <div className="modal fade" id={idtarget} tabindex="-1" role="dialog" aria-labelledby={lbl}
+                     aria-hidden="true">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <button type="button" className="close" data-dismiss="modal"><span
+                                    aria-hidden="true">&times;</span><span className="sr-only">Close</span></button>
+                                <h4 className="modal-title" id={lbl}>{this.props.title}</h4>
+                            </div>
+                            <div className="modal-body">
+                                {this.props.label} <input onChange={ this.handleChange } className="searchBox" ref="txt"/>
+                            </div>
+                            {this.props.genJournal.length > 0 ?
+                                <Row xs={12} className="container">
+                                    <Col xs={2} className="positionLbl">
+                                        Link Position to:
+                                    </Col>
+
+                                    <Col xs={2}>
+                                        <ConfigNameCombo ref="nameCombo" names={this.props.genJournal}
+                                                         sel={this.state.genJournalSel}
+                                                         switchConfig={this.switchgj}/>
+                                    </Col>
+
+
+                                </Row> : ""}
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="button" className="btn btn-primary" onClick={this.quit}
+                                        data-dismiss="modal">{this.props.buttonLabel}</button>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
             </div>
         );
     }
-    });
+});
 
 
 

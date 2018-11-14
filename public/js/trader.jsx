@@ -887,6 +887,7 @@ var Trader = React.createClass({
             positionNames: [{item: "Default", id: 9}],
             positionSel: 0,
             stockNames: [{item: "Default", id: 9}],
+            genJournal: [],
             stockSel: '00',
             klassName: "showError",
             maxPeriod: 0,
@@ -937,11 +938,12 @@ var Trader = React.createClass({
             data: {}, success: this.deleteThePosition, fail: this.fail, type: 'POST'
         });
     },
-    okNewPosition: function (val) {
+    okNewPosition: function (val,id) {
         let func = this.addNewPosition;
         $.post("/newPosition",
             {
-                name: val
+                name: val,
+                id : id
             },
             function (data) {
                     if(data.dupName){
@@ -1100,7 +1102,8 @@ var Trader = React.createClass({
                         </Col>
                         <Col xs={2}>
                             <NameDlg modal="Modala" buttonLabel="Create New Position" title="New Position"
-                                     okFunc={this.okNewPosition} label="Name" initVal={this.initValEmpty}/>
+                                     okFunc={this.okNewPosition} label="Name" initVal={this.initValEmpty}
+                                     genJournal={this.state.genJournal} />
                         </Col>
 
                         <Col xs={1}>
@@ -1203,7 +1206,8 @@ var Trader = React.createClass({
             lastPrice: data.underlyingLast,
             offset: data.offset,
             stockSel: sid,
-            stockNames: snames
+            stockNames: snames,
+            genJournal :data.genJornal
         });
         this.props.ofunc(this.state.offset);
         source.localData = data.call;

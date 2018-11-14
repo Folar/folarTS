@@ -140,6 +140,7 @@ var JournalPosition = React.createClass({
                         </Col>
                         <Col xs={2}>
                             <NameDlg modal="Modala" buttonLabel="Create General Journal" title="New General Journal"
+                                     genJournal={[]} gj="false"
                                      okFunc={this.okNewJournal} label="Name" initVal={this.initValEmpty}/>
                         </Col>
                     </Row>
