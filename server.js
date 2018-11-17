@@ -1128,7 +1128,7 @@ app.post('/editposition', function (req, resp) {
     });
 });
 
-const getAsyncDelPosition = async (con,) => {
+const getAsyncDelPosition = async (con) => {
 
     let sql = "delete transaction FROM transaction  inner join position_transaction pt " +
         " on pt.idtransaction = transaction.idtransaction where idposition =" + user.currentPositionId + ";";

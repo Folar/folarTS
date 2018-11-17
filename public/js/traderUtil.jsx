@@ -71,7 +71,7 @@ var ConfigNameCombo = React.createClass({
         });
 
         console.log("co = " + this.props.sel + " " + items.length)
-        if (items.length > 1)
+        if (items.length > 0)
             return <div>
                 <select value={this.props.sel} onChange={ this.props.switchConfig}>
                     {items}
