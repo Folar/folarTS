@@ -46,8 +46,8 @@ var TraderJournal = React.createClass({
         return (
             <div xs={12} className="container">
                 <div xs={12} className="container">
-                    <MenuExample func={transition} focus="0"
-                                 items={ ['By Position', 'By Date'] }/>
+                    <MenuFolar func={transition} focus="0"
+                                 items={ [{name:'By Position',style:''}, {name:'By Date',style:''}] }/>
                     <JournalPosition/>
                 </div>
 

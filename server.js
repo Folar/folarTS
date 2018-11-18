@@ -1220,18 +1220,24 @@ function calcPerformance(name, id, trdata) {
             let a = moment(tr.expiration);
             let b = moment();
             let w = a.diff(b, 'days');
-            let strikeMap = res.callExpDateMap
-            if (type == "Put")
-                strikeMap = res.putExpDateMap
-            let strikes = strikeMap[dt + ":" + (parseInt(w) + 1)];
 
-            for (let idx in strikes) {
-                let elems = strikes[idx];
-                for (let i in elems) {
-                    if (elems[i].strikePrice == tr.strike) {
-                        currentPrice = parseFloat(((elems[i]["ask"] + elems[i]["bid"]) / 2).toFixed(2));
+
+            if(res) {
+                let strikeMap = res.callExpDateMap;
+                if (type == "Put")
+                    strikeMap = res.putExpDateMap;
+                let strikes = strikeMap[dt + ":" + (parseInt(w) + 1)];
+
+                for (let idx in strikes) {
+                    let elems = strikes[idx];
+                    for (let i in elems) {
+                        if (elems[i].strikePrice == tr.strike) {
+                            currentPrice = parseFloat(((elems[i]["ask"] + elems[i]["bid"]) / 2).toFixed(2));
+                        }
                     }
                 }
+            } else {
+                currentPrice = 1;
             }
             if (dt > now) {
                 closed = false;

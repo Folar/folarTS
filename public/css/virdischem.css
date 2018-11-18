@@ -237,6 +237,9 @@ ul li.focused{
     color:#ffffff;
     background-color:#696969;
 }
+ul li.disabled{
+    color:#696969;
+}
 
 .tabs-panel {
 	display: none;
