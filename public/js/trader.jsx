@@ -1130,6 +1130,7 @@ var Trader = React.createClass({
 
     },
     success: function (data) {
+        this.props.enableMenu();
         var j = 1;
         var id = data.currentPosition;
         var names = data.positionNames;

@@ -109,17 +109,26 @@ var TraderApp = React.createClass({
         this.setState({cols: columns, configNames: names, configSel: id});
 
     },
+    enableMenu: function(){
+
+            this.setState({ menu: [{name: 'Trade', style: ''},
+                {name: 'Transaction Log', style: ''},
+                {name: 'Report', style: ''},
+                {name: 'Journal', style: ''},
+                {name: 'Settings', style: ''}]});
+
+    },
 
     render: function () {
         var me = this;
         var transition = function (state, name, fnc) {
 
             if(state == 0){
-                me.setState({ menu: [{name: 'Trade', style: ''},
-                    {name: 'Transaction Log', style: ''},
-                    {name: 'Report', style: ''},
-                    {name: 'Journal', style: ''},
-                    {name: 'Settings', style: ''}]});
+                me.setState({ menu: [{name: 'Trade', style: 'disabled'},
+                    {name: 'Transaction Log', style: 'disabled'},
+                    {name: 'Report', style: 'disabled'},
+                    {name: 'Journal', style: 'disabled'},
+                    {name: 'Settings', style: 'disabled'}]});
             }
             if (state == 1) {
                 if (me.state.fnc == null) {
@@ -138,7 +147,7 @@ var TraderApp = React.createClass({
         };
 
         var page = <Trader ofunc={this.setOffset} setCol={this.setColumns} firstTime={this.state.firstTime}
-                           offset={this.state.offset}/>;
+                           offset={this.state.offset} enableMenu={this.enableMenu}/>;
         if (this.state.webState == WEB_STATE_CONFIG) {
 
             page = <TraderConfig ref="config"/>;
