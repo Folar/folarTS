@@ -124,8 +124,9 @@ var JournalPosition = React.createClass({
                 return (
                     <Row xs={12} className="container">
                         <Note bg="#c0c0c0" fs="18px" fg="black" date={item.date} text={item.text}
-                              buttonText={this.getButtonText(item)} id={item.id} saveNote={this.saveNote}
+                              buttonText={this.getButtonText(item)} id={item.id} jid={this.state.currentId}
                               dt={item.dt} idx={index} key={item.id + item.dt}
+                              positions={this.state.positions}
                               mode={this.getMode(item)} expand={this.getExpand(item)}/>
                     </Row>
                 )

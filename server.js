@@ -1299,7 +1299,7 @@ const getDataFromDBParam = async (con, sql, params) => {
         });
     });
 };
-const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, modNote, noteId, text, dt) => {
+const getAsyncTradePerformance = async (con, journal, specificJID, specificPID) => {
     let info = [];
 
     // figure out which positions are open
@@ -1327,28 +1327,7 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
     }
 
     // journal only code
-    if (modNote) {
-        // edit a note in the journal
 
-        if (noteId == -1) {
-            if (text.length != 0) {
-                sql = "INSERT INTO tr_journal_entries ( create_date,modified_date,tr_date,entry,journal_id )"
-                    + " VALUES( NOW(),NOW(),'" + dt + "',?," + specificJID + ");";
-                await getDataFromDBParam(con, sql, [text]);
-            }
-
-        } else {
-            if (text.length == 0) {
-                sql = "DELETE FROM tr_journal_entries WHERE id = " + noteId + ";";
-                await getDataFromDB(con, sql);
-            }
-            else {
-                sql = "UPDATE tr_journal_entries SET  entry = ? WHERE id = " + noteId + ";";
-                await getDataFromDBParam(con, sql, [text]);
-            }
-
-        }
-    }
     let ops = [];
     let pid = -1;
     let openDate;
@@ -1457,27 +1436,53 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
 app.post('/switchPosition', function (req, resp) { // switch journal
     let con = connectToDB();
     let obj = req.body;
-    getAsyncTradePerformance(con, true, obj.jid, obj.pid, false, 0, "", "2018-10-09").then((data) => {
+    getAsyncTradePerformance(con, true, obj.jid, obj.pid).then((data) => {
         resp.json({currentId: data[0], positions: data[1], dates: data[2]});
     }).catch(function (err) {
         console.log("ERROR ERROR tradeperformance " + err);
         return;
     });
 });
+
+const getAsyncSaveNote = async (con, specificJID, specificPID,  noteId, text, dt) => {
+    // edit a note in the journal
+    let rid = noteId;
+    if (noteId == -1) {
+        if (text.length != 0) {
+            sql = "INSERT INTO tr_journal_entries ( create_date,modified_date,tr_date,entry,journal_id )"
+                + " VALUES( NOW(),NOW(),'" + dt + "',?," + specificJID + ");";
+            let res = await getDataFromDBParam(con, sql, [text]);
+            rid = res.insertId;
+        }
+
+    } else {
+        if (text.length == 0) {
+            sql = "DELETE FROM tr_journal_entries WHERE id = " + noteId + ";";
+            await getDataFromDB(con, sql);
+            rid = -1;
+        }
+        else {
+            sql = "UPDATE tr_journal_entries SET  entry = ? WHERE id = " + noteId + ";";
+            await getDataFromDBParam(con, sql, [text]);
+        }
+
+    }
+    return rid;
+}
 app.post('/saveNote', function (req, resp) {
     let con = connectToDB();
     let obj = req.body;
-    getAsyncTradePerformance(con, true, obj.jid, obj.pid, true, obj.id, obj.text, obj.dt).then((data) => {
-        resp.json({currentId: data[0], positions: data[1], dates: data[2]});
+    getAsyncSaveNote(con, obj.jid, obj.pid, obj.id, obj.text, obj.dt).then((data) => {
+        resp.json({rid: data});
     }).catch(function (err) {
-        console.log("ERROR ERROR tradeperformance " + err)
+        console.log("ERROR ERROR savenote " + err)
         return;
     });
 });
 app.post('/journal', function (req, resp) {
     let con = connectToDB();
 
-    getAsyncTradePerformance(con, true, -1, -1, false, 0, "", "2018-10-09").then((data) => {
+    getAsyncTradePerformance(con, true, -1, -1).then((data) => {
         resp.json({currentId: data[0], positions: data[1], dates: data[2]});
     }).catch(function (err) {
         console.log("ERROR ERROR tradeperformance " + err)
@@ -1488,7 +1493,7 @@ app.post('/journal', function (req, resp) {
 app.post('/report', function (req, resp) {
     let con = connectToDB();
 
-    getAsyncTradePerformance(con, false, -1, -1, false, 0, "", "2018-10-09").then((data) => {
+    getAsyncTradePerformance(con, false, -1, -1).then((data) => {
         resp.json({data: data});
     }).catch(function (err) {
         console.log("ERROR ERROR tradeperformance " + err)
