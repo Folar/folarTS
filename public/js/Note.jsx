@@ -45,6 +45,7 @@ var Note = React.createClass({
     timeHandle: null,
     handleChange: function (e) {
         this.setState({newText: e.target.value});
+        this.adjustHeight();
         if (e.target.value == this.state.text) {
             $("#" + this.props.idx).addClass("disabled");
             if (this.timeHandle != null) {
@@ -165,11 +166,11 @@ var Note = React.createClass({
     },
 
     adjustHeight: function () {
-        let len = this.state.text.split(/r\n|\r|\n/).length;
+        let len = this.state.newText.split(/r\n|\r|\n/).length;
         if (len < 2)
             this.setState({textHeight: "90px"});
         else {
-            len = (len + 2) * 30;
+            len = (len + 1) * 30;
             this.setState({textHeight: len})
 
         }
