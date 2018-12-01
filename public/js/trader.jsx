@@ -1131,7 +1131,7 @@ var Trader = React.createClass({
         this.props.enableMenu();
         var j = 1;
         var id = data.currentPositionId;
-        alert(id);
+       // alert(id);
         var names = data.positionNames;
 
         var sid = data.currentStock;
