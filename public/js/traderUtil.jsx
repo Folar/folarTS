@@ -53,7 +53,6 @@ var ConfigNameCombo = React.createClass({
         };
     },
     getConfigName: function () {
-
         var node = $(this.getDOMNode()).context.children[0];
         return node.value;
     },
@@ -66,14 +65,14 @@ var ConfigNameCombo = React.createClass({
     render: function () {
 
         var items = this.props.names.map(function (item, index) {
-
+            console.log("items = " + item.id + " " + item.name)
             return <option value={item.id}> {item.name} </option>;
         });
 
-        console.log("co = " + this.props.sel + " " + items.length)
+
         if (items.length > 0)
             return <div>
-                <select value={this.props.sel} onChange={ this.props.switchConfig}>
+                <select ref="cfselect" value={this.props.sel} onChange={ this.props.switchConfig}>
                     {items}
                 </select>
             </div>;
@@ -235,7 +234,7 @@ var ImportTransDlg = React.createClass({
             id = this.refs.daysCombo.getConfigName();
             newArray = newArray.filter(function (el) {
                 if (id == "All") return true;
-                debugger;
+
                 if (el.transaction_time.split(' ')[0] == id) return true;
                 return false;
             });
@@ -418,7 +417,7 @@ var NameDlg = React.createClass({
     getInitialState: function () {
         return {
             genJournalSel: -1,
-            nameText:this.props.initVal()
+            nameText: this.props.initVal()
         };
     },
     handleChange: function (e) {
@@ -460,7 +459,8 @@ var NameDlg = React.createClass({
                                 <h4 className="modal-title" id={lbl}>{this.props.title}</h4>
                             </div>
                             <div className="modal-body">
-                                {this.props.label} <input onChange={ this.handleChange } className="searchBox" ref="txt"/>
+                                {this.props.label} <input onChange={ this.handleChange } className="searchBox"
+                                                          ref="txt"/>
                             </div>
                             {this.props.genJournal.length > 0 ?
                                 <Row xs={12} className="container">

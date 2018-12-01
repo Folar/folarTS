@@ -317,13 +317,13 @@ app.post('/chgposition', function (req, res) {
     let id = req.body.name;
     let info = user.info;
 
-    info.currentPosition = id;
-    for (let i in info.positionNames) {
-        if (id == info.positionNames[i].name) {
-            info.currentPositionId = info.positionNames[i].idposition;
-            break;
-        }
-    }
+    info.currentPositionId = id;
+    // for (let i in info.positionNames) {
+    //     if (id == info.positionNames[i].name) {
+    //         info.currentPositionId = info.positionNames[i].idposition;
+    //         break;
+    //     }
+    // }
     let con = connectToDB();
     updateCurrentPosition(con, info.currentPositionId).then((data) => {
         con.end();
@@ -627,6 +627,9 @@ const getAsyncData = async (con, user, trans, underlying) => {
 
     const configNames = await  getConfigNames(con, user.idUser);
     const positions = await  getPositions(con, user.idUser);
+    for (let i in positions) {
+        positions[i].id = positions[i].idposition;
+    }
     if (underlying != "00" && user.currentStock != underlying) {
         user.currentStock = underlying;
         const result = await getDataFromDB(con,
@@ -1007,6 +1010,7 @@ app.post('/tradetable', function (req, resp) {
                 }
             }
         }
+        info.currentPositionId = user.currentPositionId;
         info.genJornal = data[5];
         resp.json(info);
     }).catch(function (err) {
@@ -1722,12 +1726,8 @@ const getAsyncUpload = async (sel, pos, val) => {
             "' ,NOW(), NOW(),NOW()," + idPosition + "," + user.idUser + ");";
         let rr = await getDataFromDB(con, sql);
     } else {
-        for (let i in user.info.positionNames) {
-            if (pos == user.info.positionNames[i].name) {
-                idPosition = user.info.positionNames[i].idposition;
-                break;
-            }
-        }
+        idPosition = pos;
+
     }
     let arr = sel.split(",");
     for (i in arr) {

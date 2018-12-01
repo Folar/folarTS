@@ -45,14 +45,22 @@ var TraderJournal = React.createClass({
         };
         return (
             <div xs={12} className="container">
-                <div xs={12} className="container">
-                    <MenuFolar func={transition} focus="0"
-                                 items={ [{name:'By Position',style:''}, {name:'By Date',style:''}] }/>
-                    <JournalPosition/>
-                </div>
+                <Row xs={12} className="container">
+                    <Col xs={4} className="container"/>
+                    <Col xs={4} className="container">
+                        <MenuFolar func={transition} focus="0"
+                                   items={ [{name: 'By Position', style: ''}, {name: 'By Date', style: ''}, {name: 'Archived', style: ''}] }/>
+                    </Col>
 
+                </Row>
+                <Row xs={10} className="container">
+                    <Col xs={10} className="container">
+                        <JournalPosition/>
+                    </Col>
 
+                </Row>
             </div>
+
         );
     }
 

@@ -969,15 +969,13 @@ var Trader = React.createClass({
 
     },
 
-    switchPosition: function () {
+    switchPosition: function (e) {
         if (thePositionsArr.length > 0) {
             if (!confirm("You have " + thePositionsArr.length + " pending transactions, do you wish to continue?")) {
                 return;
             }
         }
-
-        var id = this.refs.nameCombo.getConfigName();
-
+        var id = e.target.value;
         this.setState({positionSel: id});
         let func = this.chgPosition;
         $.post("/chgPosition",
@@ -1132,7 +1130,8 @@ var Trader = React.createClass({
     success: function (data) {
         this.props.enableMenu();
         var j = 1;
-        var id = data.currentPosition;
+        var id = data.currentPositionId;
+        alert(id);
         var names = data.positionNames;
 
         var sid = data.currentStock;
@@ -1142,7 +1141,7 @@ var Trader = React.createClass({
 
         this.props.setCol(data.config, data.idConfig, data.configNames);
         this.setState({
-            positionSel: id, positionNames: names, dataSource: data,
+            positionSel: data.currentPositionId, positionNames: names, dataSource: data,
             lastPrice: data.underlyingLast,
             offset: data.offset,
             stockSel: sid,
