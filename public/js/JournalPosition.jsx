@@ -98,7 +98,7 @@ var JournalPosition = React.createClass({
                 if (data.dupName) {
                     alert('Journal ' + data.dupName + ' already exists!')
                 }
-                func(0,data.jid);
+                func(0, data.jid);
 
             }
         );
@@ -132,11 +132,11 @@ var JournalPosition = React.createClass({
                 )
             });
         return (
-            <div className="container">
-                <div className="container">
+            <div xs={12} className="container">
+                <div xs={12} className="container">
                     <Row xs={12} className="container">
-                        <Col xs={2}/>
-                        <Col xs={8}>
+                        <Col xs={4}/>
+                        <Col xs={3}>
                             <h3> Open Positions </h3>
                         </Col>
                         <Col xs={2}>
@@ -150,9 +150,12 @@ var JournalPosition = React.createClass({
                     </Row>
 
                 </div>
-                <div className="container">
-                    <Row xs={11} className="container">
-                        <h3> Notes </h3>
+                <div xs={12} className="container">
+                    <Row xs={12} className="container">
+                        <Col xs={4}/>
+                        <Col xs={3}>
+                            <h3> Notes </h3>
+                        </Col>
                     </Row>
                     <div xs={11} className="container" style={{
                         fontSize: "18px", alignItems: "left", overflow: "auto",
