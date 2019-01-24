@@ -20,7 +20,8 @@ var Note = React.createClass({
             open: false,
             text: this.props.text,
             newText: this.props.text,
-            textHeight: "80px"
+            textHeight: "80px",
+            report: this.props.report
 
         };
     },
@@ -210,11 +211,11 @@ var Note = React.createClass({
                     </Col>
                     <Col xs={1}>
                     </Col>
-                    <Col xs={1}>
+                    {this.state.report == "false" && <Col xs={1}>
                         <button id={this.props.idx} type="button" className="btn btn-primary"
                                 style={{backgroundColor: "blue", color: "white"}}
                                 onClick={this.hitButton}>{this.state.buttonText}</button>
-                    </Col>
+                    </Col>}
                 </Row>
                 {this.state.mode == 2 &&
                 <Row xs={10}>

@@ -9,12 +9,15 @@ var Accordion = ReactBootstrap.Accordion;
 var Panel = ReactBootstrap.Panel;
 var Input = ReactBootstrap.Input;
 var Table = ReactBootstrap.Table;
-
+const JOURNAL_POSITION = 0;
+const JOURNAL_REPORT = 1;
+const JOURNAL_DATE = 2;
 
 var TraderJournal = React.createClass({
     getInitialState: function () {
         return {
-            logSource: null
+            logSource: null,
+            webState:0
 
         };
     },
@@ -39,23 +42,38 @@ var TraderJournal = React.createClass({
 
 
     render: function () {
+        var me = this;
         var transition = function (state, name, fnc) {
 
-
+            me.setState({webState: state});
         };
+        var page;
+        switch (this.state.webState){
+            case JOURNAL_POSITION:
+                page = <JournalPosition report="false" key="1"/>;
+                break;
+            case JOURNAL_REPORT:
+                page = <JournalPosition report="true" key="2"/>;
+                break;
+            case JOURNAL_DATE:
+                page = <h3> TBD</h3>;
+                break;
+        }
+
         return (
+
             <div xs={12} className="container">
                 <Row xs={12} className="container">
                     <Col xs={4} className="container"/>
                     <Col xs={4} className="container">
                         <MenuFolar func={transition} focus="0"
-                                   items={ [{name: 'By Position', style: ''}, {name: 'By Date', style: ''}, {name: 'Archived', style: ''}] }/>
+                                   items={ [{name: 'By Position', style: ''}, {name: 'Report', style: ''}, {name: 'By Date', style: ''}] }/>
                     </Col>
 
                 </Row>
                 <Row xs={10} className="container">
                     <Col xs={10} className="container">
-                        <JournalPosition/>
+                        {page}
                     </Col>
 
                 </Row>

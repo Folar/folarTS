@@ -14,7 +14,8 @@ var JournalPosition = React.createClass({
         return {
             currentId: -1,
             positions: [],
-            dates: []
+            dates: [],
+            report:this.props.report
 
         };
     },
@@ -107,7 +108,7 @@ var JournalPosition = React.createClass({
         return "";
     },
     render: function () {
-
+        let me = this;
         let positionBoxes =
             this.state.positions.map((item, index) => {
 
@@ -118,15 +119,20 @@ var JournalPosition = React.createClass({
                               width="140px"/>
                     </Col>)
             });
+        let newArray = this.state.dates;
+        newArray  = newArray.filter(function (item) {
+            return  me.props.report == "false" || item.text.length >0;
+        });
+
         let notes =
-            this.state.dates.map((item, index) => {
+            newArray.map((item, index) => {
 
                 return (
                     <Row xs={12} className="container">
                         <Note bg="#c0c0c0" fs="18px" fg="black" date={item.date} text={item.text}
                               buttonText={this.getButtonText(item)} id={item.id} jid={this.state.currentId}
                               dt={item.dt} idx={index} key={item.id + item.dt}
-                              positions={this.state.positions}
+                              positions={this.state.positions} report={this.props.report}
                               mode={this.getMode(item)} expand={this.getExpand(item)}/>
                     </Row>
                 )
@@ -139,11 +145,11 @@ var JournalPosition = React.createClass({
                         <Col xs={3}>
                             <h3> Open Positions </h3>
                         </Col>
-                        <Col xs={2}>
+                        {this.state.report == "false" && <Col xs={2}>
                             <NameDlg modal="Modala" buttonLabel="Create General Journal" title="New General Journal"
                                      genJournal={[]} gj="false"
                                      okFunc={this.okNewJournal} label="Name" initVal={this.initValEmpty}/>
-                        </Col>
+                        </Col> }
                     </Row>
                     <Row xs={12} className="container">
                         {positionBoxes}
@@ -160,10 +166,7 @@ var JournalPosition = React.createClass({
                     <div xs={11} className="container" style={{
                         fontSize: "18px", alignItems: "left", overflow: "auto",
                         height: '60vh'
-                    }}
-                         ref={(div) => {
-                             this.messageList = div;
-                         }}>
+                    }}>
                         {notes }
                     </div>
                 </div>
