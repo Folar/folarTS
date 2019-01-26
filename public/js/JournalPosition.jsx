@@ -113,7 +113,7 @@ var JournalPosition = React.createClass({
             this.state.positions.map((item, index) => {
 
                 return (
-                    <Col xs={2} className="positionLbl">
+                    <Col xs={2} className="positionLbl"  >
                         <Card bg={this.getBG(item)} fs="18px" fg={this.getFG(item)} name={item.name} height="30px"
                               switchPosition={this.switchPosition} id={item.id} jid={item.jid}
                               width="140px"/>

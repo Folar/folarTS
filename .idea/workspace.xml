@@ -7083,9 +7083,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/websocket/package.json" afterPath="$PROJECT_DIR$/node_modules/websocket/package.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/websocket/vendor/FastBufferList.js" afterPath="$PROJECT_DIR$/node_modules/websocket/vendor/FastBufferList.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/yaeti/package.json" afterPath="$PROJECT_DIR$/node_modules/yaeti/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/TraderLogin.jsx" afterPath="$PROJECT_DIR$/public/js/TraderLogin.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/traderUtil.jsx" afterPath="$PROJECT_DIR$/public/js/traderUtil.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server.js" afterPath="$PROJECT_DIR$/server.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/JournalPosition.jsx" afterPath="$PROJECT_DIR$/public/js/JournalPosition.jsx" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -7103,71 +7101,32 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="TraderLog.jsx" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/js/TraderLog.jsx">
+      <file leaf-file-name="traderUtil.jsx" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/js/traderUtil.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7725">
-              <caret line="515" column="65" lean-forward="false" selection-start-line="515" selection-start-column="65" selection-end-line="515" selection-end-column="65" />
+            <state relative-caret-position="273">
+              <caret line="232" column="15" lean-forward="true" selection-start-line="228" selection-start-column="31" selection-end-line="232" selection-end-column="15" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="trader.jsx" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/js/trader.jsx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="114">
-              <caret line="1098" column="37" lean-forward="false" selection-start-line="1098" selection-start-column="37" selection-end-line="1098" selection-end-column="37" />
-              <folding>
-                <marker date="1542155522779" expanded="true" signature="3578:3592" ph="..." />
-                <marker date="1542155522779" expanded="true" signature="3660:3690" ph="..." />
-                <marker date="1542155522779" expanded="true" signature="3744:3753" ph="..." />
-                <marker date="1542155522779" expanded="true" signature="42451:42465" ph="..." />
-                <marker date="1542155522779" expanded="true" signature="42525:42555" ph="..." />
-                <marker date="1542155522779" expanded="true" signature="42601:42610" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="server.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server.js">
+      <file leaf-file-name="TraderApp.jsx" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/js/TraderApp.jsx">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="117">
-              <caret line="1388" column="0" lean-forward="false" selection-start-line="1388" selection-start-column="0" selection-end-line="1388" selection-end-column="0" />
+              <caret line="88" column="23" lean-forward="false" selection-start-line="88" selection-start-column="23" selection-end-line="88" selection-end-column="23" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="traderConfig.jsx" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/js/traderConfig.jsx">
+      <file leaf-file-name="importDlg.jsx" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/js/importDlg.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="137">
-              <caret line="158" column="49" lean-forward="false" selection-start-line="158" selection-start-column="49" selection-end-line="158" selection-end-column="49" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TraderJournal.jsx" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/js/TraderJournal.jsx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
+            <state relative-caret-position="-763">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JournalPosition.jsx" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/js/JournalPosition.jsx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="137">
-              <caret line="142" column="37" lean-forward="true" selection-start-line="142" selection-start-column="37" selection-end-line="142" selection-end-column="53" />
-              <folding>
-                <marker date="1542131337319" expanded="true" signature="5496:5515" ph="&lt;div/&gt;" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -7175,21 +7134,41 @@
       <file leaf-file-name="Note.jsx" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/Note.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="146" column="33" lean-forward="false" selection-start-line="146" selection-start-column="33" selection-end-line="146" selection-end-column="33" />
+            <state relative-caret-position="-2172">
+              <caret line="23" column="37" lean-forward="true" selection-start-line="23" selection-start-column="37" selection-end-line="23" selection-end-column="37" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Cookies.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Cookies.js">
+      <file leaf-file-name="JournalPosition.jsx" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/public/js/JournalPosition.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="258">
-              <caret line="24" column="29" lean-forward="false" selection-start-line="24" selection-start-column="29" selection-end-line="24" selection-end-column="29" />
+            <state relative-caret-position="130">
+              <caret line="115" column="57" lean-forward="false" selection-start-line="115" selection-start-column="57" selection-end-line="115" selection-end-column="57" />
               <folding>
-                <element signature="n#!!doc" expanded="true" />
+                <marker date="1548506575494" expanded="true" signature="5869:5888" ph="&lt;div/&gt;" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TraderJournal.jsx" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/js/TraderJournal.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="263">
+              <caret line="55" column="61" lean-forward="false" selection-start-line="55" selection-start-column="61" selection-end-line="55" selection-end-column="61" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Card.jsx" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/js/Card.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-230">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -7198,18 +7177,36 @@
         <entry file="file://$PROJECT_DIR$/public/js/TraderLogin.jsx">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="330">
-              <caret line="22" column="45" lean-forward="false" selection-start-line="22" selection-start-column="45" selection-end-line="22" selection-end-column="45" />
+              <caret line="22" column="44" lean-forward="false" selection-start-line="22" selection-start-column="44" selection-end-line="22" selection-end-column="44" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="traderUtil.jsx" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/public/js/traderUtil.jsx">
+      <file leaf-file-name="server.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="141">
-              <caret line="73" column="28" lean-forward="false" selection-start-line="73" selection-start-column="28" selection-end-line="73" selection-end-column="28" />
+            <state relative-caret-position="24555">
+              <caret line="1637" column="0" lean-forward="false" selection-start-line="1637" selection-start-column="0" selection-end-line="1637" selection-end-column="0" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="trader.jsx" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/js/trader.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="48" column="21" lean-forward="false" selection-start-line="47" selection-start-column="0" selection-end-line="49" selection-end-column="26" />
+              <folding>
+                <element signature="e#29022#29061#0" expanded="false" />
+                <marker date="1543632691010" expanded="true" signature="2045:2059" ph="..." />
+                <marker date="1543632691010" expanded="true" signature="2127:2157" ph="..." />
+                <marker date="1543632691010" expanded="true" signature="2211:2220" ph="..." />
+                <marker date="1543632691010" expanded="true" signature="40972:40986" ph="..." />
+                <marker date="1543632691010" expanded="true" signature="41046:41076" ph="..." />
+                <marker date="1543632691010" expanded="true" signature="41122:41131" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -7225,36 +7222,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>positionS</find>
-      <find>positionSe</find>
-      <find>nameCombo</find>
-      <find>kNewPositio</find>
-      <find>newpos</find>
-      <find>&quot;UPDATE</find>
-      <find>insertt</find>
-      <find>openda</find>
-      <find>calcPerformance</find>
-      <find>createDat</find>
-      <find>&quot;inser</find>
-      <find>format(</find>
-      <find>txt</find>
-      <find>lgTxt</find>
-      <find>alert</find>
-      <find>handleChange</find>
-      <find>nameText</find>
-      <find>setState</find>
-      <find>exp</find>
-      <find>nl2b</find>
-      <find>my_</find>
-      <find>mod</find>
-      <find>getDataFromDB</find>
-      <find>conf</find>
-      <find>/co</find>
-      <find>moun</find>
-      <find>post</find>
-      <find>chgc</find>
-      <find>gjDate</find>
-      <find>named</find>
+      <find>currentpo</find>
+      <find>data[5</find>
+      <find>suce</find>
+      <find>chgp</find>
+      <find>deleteP</find>
+      <find>etAsyncDelPosition</find>
+      <find>mvpos</find>
+      <find>okf</find>
+      <find>move</find>
+      <find>etAsyncMoveTrans</find>
+      <find>createp</find>
+      <find>create</find>
+      <find>Combo</find>
+      <find>positionSel</find>
+      <find>ConfigNameCombo</find>
+      <find>moved</find>
+      <find>dlg</find>
+      <find>r up</find>
+      <find>import</find>
+      <find>getAsyncMoveTran</find>
+      <find>menu</find>
+      <find>tran</find>
+      <find>ref</find>
+      <find>false</find>
+      <find>&quot;false</find>
+      <find>&quot;</find>
+      <find>report</find>
+      <find>getExpand</find>
+      <find>filte</find>
+      <find>gj</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -7271,6 +7268,8 @@
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/public</dir>
+      <dir>$PROJECT_DIR$/public/img</dir>
+      <dir>$PROJECT_DIR$/public/js</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -7284,8 +7283,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="vm:460" />
-        <option value="vm:556" />
         <option value="$PROJECT_DIR$/Result.js" />
         <option value="$PROJECT_DIR$/TradeLogInfo.js" />
         <option value="$PROJECT_DIR$/TradePerformanceInfo.js" />
@@ -7320,21 +7317,23 @@
         <option value="$PROJECT_DIR$/public/js/importDlg.jsx" />
         <option value="vm:459" />
         <option value="$PROJECT_DIR$/public/js/Card.js" />
-        <option value="$PROJECT_DIR$/public/tradestation.html" />
-        <option value="$PROJECT_DIR$/public/js/TraderJournal.jsx" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="vm:452" />
         <option value="$PROJECT_DIR$/TradePerformance.js" />
         <option value="$PROJECT_DIR$/public/js/Card.jsx" />
-        <option value="$PROJECT_DIR$/public/js/JournalPosition.jsx" />
         <option value="$PROJECT_DIR$/public/js/TraderLog.jsx" />
-        <option value="$PROJECT_DIR$/public/js/trader.jsx" />
-        <option value="$PROJECT_DIR$/public/js/Note.jsx" />
         <option value="$PROJECT_DIR$/Cookies.js" />
+        <option value="$PROJECT_DIR$/public/js/traderConfig.jsx" />
+        <option value="$PROJECT_DIR$/public/tradestation.html" />
+        <option value="$PROJECT_DIR$/public/js/TraderApp.jsx" />
+        <option value="$PROJECT_DIR$/public/css/virdischem.css" />
         <option value="$PROJECT_DIR$/public/js/TraderLogin.jsx" />
         <option value="$PROJECT_DIR$/server.js" />
-        <option value="$PROJECT_DIR$/public/js/traderConfig.jsx" />
+        <option value="$PROJECT_DIR$/public/js/trader.jsx" />
         <option value="$PROJECT_DIR$/public/js/traderUtil.jsx" />
+        <option value="$PROJECT_DIR$/public/js/TraderJournal.jsx" />
+        <option value="$PROJECT_DIR$/public/js/Note.jsx" />
+        <option value="$PROJECT_DIR$/public/js/JournalPosition.jsx" />
       </list>
     </option>
   </component>
@@ -7376,6 +7375,92 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="External Dependencies">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="/">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="Users">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="lawrenceackner">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="fts">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="fts">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="public">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="fts">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="public">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="js">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="fts">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="public">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="css">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -7423,56 +7508,10 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="fts">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="fts">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="public">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="fts">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="public">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="js">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/public" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/public/js" />
     <property name="options.lastSelected" value="Errors" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
@@ -7644,42 +7683,15 @@
       <workItem from="1540101313771" duration="95435000" />
       <workItem from="1541106000325" duration="14900000" />
       <workItem from="1541551229658" duration="71280000" />
-      <workItem from="1542184014598" duration="13179000" />
-    </task>
-    <task id="LOCAL-00001" summary="finishe register">
-      <created>1529623509581</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1529623509581</updated>
-    </task>
-    <task id="LOCAL-00002" summary="finishe traaderjs - positions">
-      <created>1529882822035</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1529882822035</updated>
-    </task>
-    <task id="LOCAL-00003" summary="tradeer log">
-      <created>1530213464054</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1530213464054</updated>
-    </task>
-    <task id="LOCAL-00004" summary="tradeer log">
-      <created>1530317787730</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1530317787730</updated>
-    </task>
-    <task id="LOCAL-00005" summary="tradeer log">
-      <created>1530657399791</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1530657399791</updated>
+      <workItem from="1542184014598" duration="32123000" />
+      <workItem from="1542733237739" duration="22480000" />
+      <workItem from="1543259013919" duration="3438000" />
+      <workItem from="1543518917193" duration="19645000" />
+      <workItem from="1543853386853" duration="4753000" />
+      <workItem from="1543947012884" duration="183000" />
+      <workItem from="1545156781392" duration="119000" />
+      <workItem from="1545326249074" duration="103000" />
+      <workItem from="1546195600215" duration="11074000" />
     </task>
     <task id="LOCAL-00006" summary="tradeer import">
       <created>1530828887238</created>
@@ -7954,11 +7966,81 @@
       <option name="project" value="LOCAL" />
       <updated>1542311702779</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="tradeer import">
+      <created>1542473327798</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1542473327798</updated>
+    </task>
+    <task id="LOCAL-00046" summary="more journal stuff">
+      <created>1542569577175</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1542569577175</updated>
+    </task>
+    <task id="LOCAL-00047" summary="tradeer import">
+      <created>1542652222974</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1542652222974</updated>
+    </task>
+    <task id="LOCAL-00048" summary="loose focus on journal">
+      <created>1543175024687</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1543175024687</updated>
+    </task>
+    <task id="LOCAL-00049" summary="tradeer import">
+      <created>1543259411726</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1543259411726</updated>
+    </task>
+    <task id="LOCAL-00050" summary="tradeer import">
+      <created>1543301295683</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1543301295684</updated>
+    </task>
+    <task id="LOCAL-00051" summary="tradeer import">
+      <created>1543632162537</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1543632162537</updated>
+    </task>
+    <task id="LOCAL-00052" summary="tradeer import">
+      <created>1543632730122</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1543632730122</updated>
+    </task>
+    <task id="LOCAL-00053" summary="tradeer import">
+      <created>1543879946626</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1543879946627</updated>
+    </task>
+    <task id="LOCAL-00054" summary="report mode">
+      <created>1548353485492</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1548353485492</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1218131000" />
+    <option name="totallyTimeSpent" value="1298870000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -7975,12 +8057,13 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21528348" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.49842766" sideWeight="0.14379622" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32861635" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19769357" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32861635" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24897288" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32861635" sideWeight="0.49668324" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3380503" sideWeight="0.8562038" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3380503" sideWeight="0.8562038" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -7988,7 +8071,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32861635" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -8000,7 +8082,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.49842766" sideWeight="0.14379622" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19769357" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32861635" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32861635" sideWeight="0.49668324" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21528348" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -8047,17 +8129,15 @@
     <MESSAGE value="tradeer jour bug" />
     <MESSAGE value="add general journal" />
     <MESSAGE value="tradeer link positions" />
+    <MESSAGE value="more journal stuff" />
+    <MESSAGE value="loose focus on journal" />
     <MESSAGE value="tradeer import" />
-    <option name="LAST_COMMIT_MESSAGE" value="tradeer import" />
+    <MESSAGE value="report mode" />
+    <option name="LAST_COMMIT_MESSAGE" value="report mode" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/public/js/trader.jsx</url>
-          <line>1448</line>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/standalone.js</url>
           <line>365</line>
@@ -8075,38 +8155,28 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/public/js/trader.jsx</url>
-          <line>465</line>
+          <line>404</line>
           <option name="timeStamp" value="698" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/public/js/trader.jsx</url>
-          <line>390</line>
+          <line>329</line>
           <option name="timeStamp" value="847" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/public/js/trader.jsx</url>
-          <line>1202</line>
-          <option name="timeStamp" value="884" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/public/js/traderUtil.jsx</url>
-          <line>145</line>
-          <option name="timeStamp" value="908" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/public/js/traderUtil.jsx</url>
           <line>144</line>
+          <option name="timeStamp" value="908" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/public/js/traderUtil.jsx</url>
+          <line>143</line>
           <option name="timeStamp" value="1008" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/public/js/traderUtil.jsx</url>
-          <line>136</line>
+          <line>135</line>
           <option name="timeStamp" value="1009" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server.js</url>
-          <line>1711</line>
-          <option name="timeStamp" value="1085" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/server.js</url>
@@ -8115,29 +8185,46 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/server.js</url>
-          <line>1538</line>
+          <line>1553</line>
           <option name="timeStamp" value="1092" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/public/js/Note.jsx</url>
-          <line>175</line>
-          <properties />
+          <line>206</line>
           <option name="timeStamp" value="1106" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/server.js</url>
           <line>459</line>
-          <properties />
           <option name="timeStamp" value="1107" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/server.js</url>
           <line>474</line>
-          <properties />
           <option name="timeStamp" value="1108" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/public/js/JournalPosition.jsx</url>
+          <line>135</line>
+          <option name="timeStamp" value="1118" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/public/js/traderUtil.jsx</url>
+          <line>56</line>
+          <option name="timeStamp" value="1128" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/server.js</url>
+          <line>1799</line>
+          <option name="timeStamp" value="1138" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/server.js</url>
+          <line>1728</line>
+          <option name="timeStamp" value="1141" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="1113" />
+      <option name="time" value="1142" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="http://localhost:3000/tradestation.html">
@@ -8159,13 +8246,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/serverold.js" />
     <entry file="file://$PROJECT_DIR$/scratch.js" />
     <entry file="file://$PROJECT_DIR$/scr2.js" />
@@ -8290,18 +8370,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/importDlg.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="314">
-          <caret line="92" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/js/TraderReport.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="630">
           <caret line="42" column="8" lean-forward="false" selection-start-line="42" selection-start-column="7" selection-end-line="42" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -8309,7 +8381,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -8317,7 +8388,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -8342,20 +8412,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/tradestation.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="35" column="40" lean-forward="false" selection-start-line="35" selection-start-column="40" selection-end-line="35" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/css/virdischem.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="311" column="20" lean-forward="false" selection-start-line="311" selection-start-column="20" selection-end-line="311" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/react-scroll-to-bottom/lib/index.js" />
     <entry file="file://$PROJECT_DIR$/public/standalone.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -8365,13 +8421,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webpack.config.js" />
-    <entry file="file://$PROJECT_DIR$/public/js/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
@@ -8391,7 +8440,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="8" column="16" lean-forward="false" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -8399,39 +8447,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="6" column="68" lean-forward="false" selection-start-line="6" selection-start-column="68" selection-end-line="6" selection-end-column="68" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/TraderJournal.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/TraderLog.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7725">
-          <caret line="515" column="65" lean-forward="false" selection-start-line="515" selection-start-column="65" selection-end-line="515" selection-end-column="65" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/Card.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-412">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/Note.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="146" column="33" lean-forward="false" selection-start-line="146" selection-start-column="33" selection-end-line="146" selection-end-column="33" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -8439,27 +8454,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="258">
           <caret line="24" column="29" lean-forward="false" selection-start-line="24" selection-start-column="29" selection-end-line="24" selection-end-column="29" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/TraderLogin.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="45" lean-forward="false" selection-start-line="22" selection-start-column="45" selection-end-line="22" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/JournalPosition.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="142" column="37" lean-forward="true" selection-start-line="142" selection-start-column="37" selection-end-line="142" selection-end-column="53" />
-          <folding>
-            <marker date="1542131337319" expanded="true" signature="5496:5515" ph="&lt;div/&gt;" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -8471,34 +8465,123 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/tradestation.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="36" column="45" lean-forward="false" selection-start-line="36" selection-start-column="45" selection-end-line="36" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/css/virdischem.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3180">
+          <caret line="212" column="11" lean-forward="false" selection-start-line="212" selection-start-column="11" selection-end-line="212" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/TraderLogin.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="44" lean-forward="false" selection-start-line="22" selection-start-column="44" selection-end-line="22" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/TraderLog.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2325">
+          <caret line="155" column="53" lean-forward="false" selection-start-line="155" selection-start-column="53" selection-end-line="155" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="117">
-          <caret line="1388" column="0" lean-forward="false" selection-start-line="1388" selection-start-column="0" selection-end-line="1388" selection-end-column="0" />
+        <state relative-caret-position="24555">
+          <caret line="1637" column="0" lean-forward="false" selection-start-line="1637" selection-start-column="0" selection-end-line="1637" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/trader.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="1098" column="37" lean-forward="false" selection-start-line="1098" selection-start-column="37" selection-end-line="1098" selection-end-column="37" />
+        <state relative-caret-position="119">
+          <caret line="48" column="21" lean-forward="false" selection-start-line="47" selection-start-column="0" selection-end-line="49" selection-end-column="26" />
           <folding>
-            <marker date="1542155522779" expanded="true" signature="3578:3592" ph="..." />
-            <marker date="1542155522779" expanded="true" signature="3660:3690" ph="..." />
-            <marker date="1542155522779" expanded="true" signature="3744:3753" ph="..." />
-            <marker date="1542155522779" expanded="true" signature="42451:42465" ph="..." />
-            <marker date="1542155522779" expanded="true" signature="42525:42555" ph="..." />
-            <marker date="1542155522779" expanded="true" signature="42601:42610" ph="..." />
+            <element signature="e#29022#29061#0" expanded="false" />
+            <marker date="1543632691010" expanded="true" signature="2045:2059" ph="..." />
+            <marker date="1543632691010" expanded="true" signature="2127:2157" ph="..." />
+            <marker date="1543632691010" expanded="true" signature="2211:2220" ph="..." />
+            <marker date="1543632691010" expanded="true" signature="40972:40986" ph="..." />
+            <marker date="1543632691010" expanded="true" signature="41046:41076" ph="..." />
+            <marker date="1543632691010" expanded="true" signature="41122:41131" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/Card.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-230">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/TraderApp.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="117">
+          <caret line="88" column="23" lean-forward="false" selection-start-line="88" selection-start-column="23" selection-end-line="88" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/importDlg.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-763">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/TraderJournal.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="263">
+          <caret line="55" column="61" lean-forward="false" selection-start-line="55" selection-start-column="61" selection-end-line="55" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/Note.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2172">
+          <caret line="23" column="37" lean-forward="true" selection-start-line="23" selection-start-column="37" selection-end-line="23" selection-end-column="37" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/traderUtil.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="141">
-          <caret line="73" column="28" lean-forward="false" selection-start-line="73" selection-start-column="28" selection-end-line="73" selection-end-column="28" />
+        <state relative-caret-position="273">
+          <caret line="232" column="15" lean-forward="true" selection-start-line="228" selection-start-column="31" selection-end-line="232" selection-end-column="15" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/JournalPosition.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="115" column="57" lean-forward="false" selection-start-line="115" selection-start-column="57" selection-end-line="115" selection-end-column="57" />
+          <folding>
+            <marker date="1548506575494" expanded="true" signature="5869:5888" ph="&lt;div/&gt;" />
+          </folding>
         </state>
       </provider>
     </entry>
