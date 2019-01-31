@@ -60,12 +60,13 @@ var JournalPosition = React.createClass({
     },
 
     getMode: function (item) {
+        if(item.last) return 2;
         if (!this.getExpand(item)) return 0;
         return 1;
     },
     getExpand: function (item) {
 
-        return item.text.length > 0;
+        return item.last || item.text.length > 0;
     },
     saveNote: function (id, text, dt) {
 
@@ -121,7 +122,7 @@ var JournalPosition = React.createClass({
             });
         let newArray = this.state.dates;
         newArray  = newArray.filter(function (item) {
-            return  me.props.report == "false" || item.text.length >0;
+            return  me.props.report == "false" || item.text.length >0 || item.last;
         });
 
         let notes =
@@ -132,7 +133,7 @@ var JournalPosition = React.createClass({
                         <Note bg="#c0c0c0" fs="18px" fg="black" date={item.date} text={item.text}
                               buttonText={this.getButtonText(item)} id={item.id} jid={this.state.currentId}
                               dt={item.dt} idx={index} key={item.id + item.dt}
-                              positions={this.state.positions} report={this.props.report}
+                              positions={this.state.positions} report={this.props.report || item.last}
                               mode={this.getMode(item)} expand={this.getExpand(item)}/>
                     </Row>
                 )

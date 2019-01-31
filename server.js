@@ -1418,8 +1418,11 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID) 
                     date: moment(start).format('dddd MMMM Do'),
                     id: -1,
                     text: "",
-                    dt: start.format('YYYY-MM-DD')
+                    dt: start.format('YYYY-MM-DD'),
+                    last:false
                 };
+                if(start.format('YYYY-MM-DD') == end.format('YYYY-MM-DD'))
+                    x.last = true;
                 if (item && moment(item.tr_date).format('YYYY-MM-DD') == start.format('YYYY-MM-DD')) {
                     x.id = item.id;
                     x.text = item.entry;
