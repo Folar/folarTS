@@ -390,16 +390,17 @@ app.post('/newPosition', function (req, res) {
 
 });
 
-const newJournal = async (con, name, c1, c2, c3, c4, c5, stocks) => {
+const newJournal = async (con, name, dt) => {
 
     sql = "INSERT INTO journal (name, openDate, createDate,modifyDate ,idposition,iduser) VALUES( '" + name +
-        "' ,NOW(), NOW(),NOW(),0," + user.idUser + ");";
+        "' ,'"+dt+"', '"+dt+"','"+dt+"',0," + user.idUser + ");";
     r = await getDataFromDB(con, sql);
     return r.insertId;
 }
 app.post('/newJournal', function (req, res) {
     let con = connectToDB();
     let name = req.body.name;
+    let dt = req.body.dt;
     let info2 = user.info;
     for (let i in info2.positionNames) {
         if (name == info2.positionNames[i].name) {
@@ -409,7 +410,7 @@ app.post('/newJournal', function (req, res) {
             return;
         }
     }
-    newJournal(con, name).then(function (data) {
+    newJournal(con, name,dt).then(function (data) {
         con.end();
         let result = {jid: data}
         res.json(result);
@@ -1437,14 +1438,14 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID) 
 
     }
     con.end();
-    return [jid, ops, retJournal];
+    return [jid, ops, retJournal,pid];
 };
 
 app.post('/switchPosition', function (req, resp) { // switch journal
     let con = connectToDB();
     let obj = req.body;
     getAsyncTradePerformance(con, true, obj.jid, obj.pid).then((data) => {
-        resp.json({currentId: data[0], positions: data[1], dates: data[2]});
+        resp.json({currentId: data[0], positions: data[1], dates: data[2],pid:data[3]});
     }).catch(function (err) {
         console.log("ERROR ERROR tradeperformance " + err);
         return;
@@ -1490,7 +1491,7 @@ app.post('/journal', function (req, resp) {
     let con = connectToDB();
 
     getAsyncTradePerformance(con, true, -1, -1).then((data) => {
-        resp.json({currentId: data[0], positions: data[1], dates: data[2]});
+        resp.json({currentId: data[0], positions: data[1], dates: data[2],pid:data[3]});
     }).catch(function (err) {
         console.log("ERROR ERROR tradeperformance " + err)
         return;

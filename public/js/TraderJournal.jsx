@@ -17,7 +17,9 @@ var TraderJournal = React.createClass({
     getInitialState: function () {
         return {
             logSource: null,
-            webState:0
+            webState:0,
+            jid:-1,
+            pid:-1
 
         };
     },
@@ -39,6 +41,9 @@ var TraderJournal = React.createClass({
     fail: function () {
 
     },
+    switchJournal:function (jid,pid) {
+        this.setState({jid:jid,pid:pid});
+    },
 
 
     render: function () {
@@ -50,10 +55,12 @@ var TraderJournal = React.createClass({
         var page;
         switch (this.state.webState){
             case JOURNAL_POSITION:
-                page = <JournalPosition report="false" key="1"/>;
+                page = <JournalPosition report="false" key="1" jid={this.state.jid} pid={this.state.pid}
+                        switchJournal={this.switchJournal}/>;
                 break;
             case JOURNAL_REPORT:
-                page = <JournalPosition report="true" key="2"/>;
+                page = <JournalPosition report="true" key="2"  jid={this.state.jid} pid={this.state.pid}
+                                        switchJournal={this.switchJournal}/>;
                 break;
             case JOURNAL_DATE:
                 page = <h3> TBD</h3>;

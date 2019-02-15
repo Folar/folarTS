@@ -84,6 +84,7 @@ var ConfigNameCombo = React.createClass({
 
 });
 var dlgTxt = null;
+var dtTxt = null;
 var importSource = {
     localData: [],
     dataType: "json",
@@ -417,17 +418,29 @@ var NameDlg = React.createClass({
     getInitialState: function () {
         return {
             genJournalSel: -1,
-            nameText: this.props.initVal()
+            nameText: this.props.initVal(),
+            dateText: this.formatDate()
         };
+    },
+    handleDateChange: function (e) {
+        this.setState({dateText: e.target.value});
     },
     handleChange: function (e) {
         this.setState({nameText: e.target.value});
     },
     quit: function (t) {
-        this.props.okFunc($(this.refs.txt.getDOMNode())[0].value, this.state.genJournalSel);
+        if (this.props.dlgType == 1) {
+            this.props.okFunc($(this.refs.txt.getDOMNode())[0].value,
+                this.state.genJournalSel, $(this.refs.dateTxt.getDOMNode())[0].value);
+
+        }
+        else
+            this.props.okFunc($(this.refs.txt.getDOMNode())[0].value, this.state.genJournalSel, 0);
     },
     componentDidMount: function () {
-        dlgTxt = $(this.refs.txt.getDOMNode())[0]
+        dlgTxt = $(this.refs.txt.getDOMNode())[0];
+        if(this.refs.dateTxt)
+            dtTxt = $(this.refs.dateTxt.getDOMNode())[0];
     },
     switchgj: function () {
 
@@ -435,9 +448,22 @@ var NameDlg = React.createClass({
         var id = this.refs.nameCombo.getConfigName();
         this.setState({genJournalSel: id})
     },
+    formatDate: function () {
+        var d = new Date(),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+        return year + "-" + month + "-" + day;
+    },
+
     render: function () {
 
+
         if (dlgTxt) dlgTxt.value = this.state.nameText;
+        if (dtTxt) dtTxt.value = this.state.dateText;
         var lbl = "my" + this.props.modal + "Label";
         var target = "#my" + this.props.modal;
         var idtarget = "my" + this.props.modal;
@@ -472,6 +498,21 @@ var NameDlg = React.createClass({
                                         <ConfigNameCombo ref="nameCombo" names={this.props.genJournal}
                                                          sel={this.state.genJournalSel}
                                                          switchConfig={this.switchgj}/>
+                                    </Col>
+
+
+                                </Row> : ""}
+                            {this.props.dlgType == 1 ?
+                                <Row xs={12} className="container">
+                                    <Col xs={2} className="positionLbl">
+                                        Start Date(YYYY-MM-DD):
+                                    </Col>
+
+                                    <Col xs={2}>
+                                        <input className="searchBox"
+                                               ref="dateTxt"  onChange={ this.handleDateChange }/>
+
+
                                     </Col>
 
 

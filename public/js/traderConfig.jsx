@@ -156,7 +156,7 @@ var TraderConfig = React.createClass({
                     </Col>
                     <Col xs={1}>
                         <NameDlg modal="Modalc" title="New Config" buttonLabel="Create New Configuration"
-                                 genJournal={[]}  okFunc={this.ok} label="Name" initVal={this.initValEmpty}/>
+                                 dlgType={0} genJournal={[]}  okFunc={this.ok} label="Name" initVal={this.initValEmpty}/>
                     </Col>
                 </Row>
                 <Row className='left8'>

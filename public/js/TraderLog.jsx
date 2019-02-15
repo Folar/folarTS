@@ -512,7 +512,7 @@ var TraderLog = React.createClass({
                     </Row>
                     <Row xs={12} className="container">
                         <Col xs={2}>
-                            <NameDlg buttonLabel="Edit Position Name" title="Edit Position" okFunc={this.okEditPosition}
+                            <NameDlg  dlgType={0} buttonLabel="Edit Position Name" title="Edit Position" okFunc={this.okEditPosition}
                                      label="Name" genJournal={[]}
                                      modal="Modalb" initVal={this.initVal}/>
                         </Col>

@@ -13,6 +13,7 @@ var JournalPosition = React.createClass({
     getInitialState: function () {
         return {
             currentId: -1,
+            pid:-1,
             positions: [],
             dates: [],
             report:this.props.report
@@ -23,7 +24,8 @@ var JournalPosition = React.createClass({
 
 
         var func = this.success;
-        $.post("/journal", {}, function (data) {
+        $.post("/switchPosition", {pid: this.props.pid, jid: this.props.jid}, function (data) {
+        //$.post("/journal", {}, function (data) {
                 func(data);
                 //this.setState({busy: true});
             }
@@ -31,8 +33,8 @@ var JournalPosition = React.createClass({
     },
 
     success: function (data) {
-        this.setState({currentId: data.currentId, positions: data.positions, dates: data.dates});
-        // this.scrollToBottom();
+        this.setState({currentId: data.currentId, positions: data.positions, dates: data.dates,pid:data.pid});
+        this.props.switchJournal(data.currentId,data.pid);
 
     },
     scrollToBottom: function () {
@@ -90,11 +92,12 @@ var JournalPosition = React.createClass({
             //this.setState({busy: true});
         })
     },
-    okNewJournal: function (val) {
+    okNewJournal: function (val,junk,dt) {
         let func = this.switchPosition;
         $.post("/newJournal",
             {
-                name: val
+                name: val,
+                dt:dt
             },
             function (data) {
                 if (data.dupName) {
@@ -147,7 +150,7 @@ var JournalPosition = React.createClass({
                             <h3> Open Positions </h3>
                         </Col>
                         {this.state.report == "false" && <Col xs={2}>
-                            <NameDlg modal="Modala" buttonLabel="Create General Journal" title="New General Journal"
+                            <NameDlg dlgType={1} modal="Modala" buttonLabel="Create General Journal" title="New General Journal"
                                      genJournal={[]} gj="false"
                                      okFunc={this.okNewJournal} label="Name" initVal={this.initValEmpty}/>
                         </Col> }
