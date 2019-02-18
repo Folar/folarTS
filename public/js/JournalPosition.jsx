@@ -35,6 +35,17 @@ var JournalPosition = React.createClass({
     success: function (data) {
         this.setState({currentId: data.currentId, positions: data.positions, dates: data.dates,pid:data.pid});
         this.props.switchJournal(data.currentId,data.pid);
+       // alert(this.state.currentId);
+        for (let i in this.state.positions) {
+            if (this.state.positions[i].jid == this.state.currentId) {
+                if( this.state.positions[i].id != 0)
+                    $("#mybidbuttonModala").addClass("disabled");
+                else
+                    $("#mybidbuttonModala").removeClass("disabled");
+                break;
+            }
+        }
+
 
     },
     scrollToBottom: function () {
@@ -108,8 +119,53 @@ var JournalPosition = React.createClass({
             }
         );
     },
+    okModJournal: function (val,junk,dt) {
+        let func = this.switchPosition;
+        $.post("/modJournal",
+            {
+                name: val,
+                dt:dt,
+                id:this.state.currentId
+            },
+            function (data) {
+                if (data.dupName) {
+                    alert('Journal ' + data.dupName + ' already exists!')
+                }
+                func(0, data.jid);
+
+            }
+        );
+    },
     initValEmpty: function () {
         return "";
+    },
+    journalDate: function () {
+        for (let i in this.state.positions) {
+            if (this.state.positions[i].jid == this.state.currentId) {
+                return this.state.positions[i].date;
+                break;
+            }
+        }
+        return "";
+    },
+    journalName: function () {
+        for (let i in this.state.positions) {
+            if (this.state.positions[i].jid == this.state.currentId) {
+                return this.state.positions[i].name;
+                break;
+            }
+        }
+        return "";
+    },
+    formatDate: function () {
+        var d = new Date(),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+        return year + "-" + month + "-" + day;
     },
     render: function () {
         let me = this;
@@ -145,14 +201,20 @@ var JournalPosition = React.createClass({
             <div xs={12} className="container">
                 <div xs={12} className="container">
                     <Row xs={12} className="container">
-                        <Col xs={4}/>
+                        <Col xs={2}/>
+                        {this.state.report == "true" && <Col xs={2}/>}
+                        {this.state.report == "false" && <Col xs={2}>
+                            <NameDlg dlgType={1} modal="Modala" buttonLabel="Modify Journal" title="Modify General Journal"
+                                     genJournal={[]} gj="false"    dt={this.journalDate()}
+                                     okFunc={this.okModJournal} label="Name" initVal={this.journalName()}/>
+                        </Col> }
                         <Col xs={3}>
                             <h3> Open Positions </h3>
                         </Col>
                         {this.state.report == "false" && <Col xs={2}>
-                            <NameDlg dlgType={1} modal="Modala" buttonLabel="Create General Journal" title="New General Journal"
-                                     genJournal={[]} gj="false"
-                                     okFunc={this.okNewJournal} label="Name" initVal={this.initValEmpty}/>
+                            <NameDlg dlgType={1} modal="Modaldd" buttonLabel="Create General Journal" title="New General Journal"
+                                     genJournal={[]} gj="false"   dt={this.formatDate()}
+                                     okFunc={this.okNewJournal} label="Name" initVal={this.initValEmpty()}/>
                         </Col> }
                     </Row>
                     <Row xs={12} className="container">

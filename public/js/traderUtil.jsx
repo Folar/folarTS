@@ -83,8 +83,7 @@ var ConfigNameCombo = React.createClass({
     }
 
 });
-var dlgTxt = null;
-var dtTxt = null;
+
 var importSource = {
     localData: [],
     dataType: "json",
@@ -416,12 +415,15 @@ var ImportDlg = React.createClass({
 
 var NameDlg = React.createClass({
     getInitialState: function () {
+
         return {
             genJournalSel: -1,
-            nameText: this.props.initVal(),
-            dateText: this.formatDate()
+            nameText: this.props.initVal,
+            dateText: ""
         };
     },
+    dlgTxt :null,
+    dtTxt :null,
     handleDateChange: function (e) {
         this.setState({dateText: e.target.value});
     },
@@ -437,10 +439,19 @@ var NameDlg = React.createClass({
         else
             this.props.okFunc($(this.refs.txt.getDOMNode())[0].value, this.state.genJournalSel, 0);
     },
+    componentWillReceiveProps: function () {
+        this.setState({nameText:  this.props.initVal});
+         if(this.refs.dateTxt) {
+            this.setState({dateText:  this.props.dt});
+
+        }
+    },
     componentDidMount: function () {
-        dlgTxt = $(this.refs.txt.getDOMNode())[0];
-        if(this.refs.dateTxt)
-            dtTxt = $(this.refs.dateTxt.getDOMNode())[0];
+
+        this.dlgTxt = $(this.refs.txt.getDOMNode())[0];
+        if(this.refs.dateTxt) {
+            this.dtTxt = $(this.refs.dateTxt.getDOMNode())[0];
+        }
     },
     switchgj: function () {
 
@@ -448,30 +459,22 @@ var NameDlg = React.createClass({
         var id = this.refs.nameCombo.getConfigName();
         this.setState({genJournalSel: id})
     },
-    formatDate: function () {
-        var d = new Date(),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
 
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
-        return year + "-" + month + "-" + day;
-    },
 
     render: function () {
 
 
-        if (dlgTxt) dlgTxt.value = this.state.nameText;
-        if (dtTxt) dtTxt.value = this.state.dateText;
+        if (this.dlgTxt) this.dlgTxt.value = this.state.nameText;
+        if (this.dtTxt) this.dtTxt.value = this.state.dateText;
         var lbl = "my" + this.props.modal + "Label";
         var target = "#my" + this.props.modal;
         var idtarget = "my" + this.props.modal;
+        var idbutton = "mybidbutton" + this.props.modal;
 
         return (
             <div xs={10} className="container">
 
-                <button type="button" className="btn btn-primary " data-toggle="modal" data-target={target}>
+                <button  id={idbutton}  type="button" className="btn btn-primary " data-toggle="modal" data-target={target}>
                     {this.props.buttonLabel}
                 </button>
 
@@ -482,7 +485,7 @@ var NameDlg = React.createClass({
                             <div className="modal-header">
                                 <button type="button" className="close" data-dismiss="modal"><span
                                     aria-hidden="true">&times;</span><span className="sr-only">Close</span></button>
-                                <h4 className="modal-title" id={lbl}>{this.props.title}</h4>
+                                <h4 className="modal-title" id={lbl} key={this.props.key}>{this.props.title}</h4>
                             </div>
                             <div className="modal-body">
                                 {this.props.label} <input onChange={ this.handleChange } className="searchBox"
@@ -503,8 +506,8 @@ var NameDlg = React.createClass({
 
                                 </Row> : ""}
                             {this.props.dlgType == 1 ?
-                                <Row xs={12} className="container">
-                                    <Col xs={2} className="positionLbl">
+                                <Row xs={5} className="container">
+                                    <Col xs={3} className="positionLbl">
                                         Start Date(YYYY-MM-DD):
                                     </Col>
 
@@ -517,6 +520,7 @@ var NameDlg = React.createClass({
 
 
                                 </Row> : ""}
+
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-default" data-dismiss="modal">Cancel</button>
                                 <button type="button" className="btn btn-primary" onClick={this.quit}

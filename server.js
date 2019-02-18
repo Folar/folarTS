@@ -422,6 +422,42 @@ app.post('/newJournal', function (req, res) {
 
 });
 
+const modJournal = async (con, name, dt,id) => {
+
+
+        var sql = "UPDATE journal SET  name = '" + name + "', openDate = '" + dt + "', createDate = '" + dt + "', modifyDate = '" +
+         dt +"' where idJournal = " + id;
+        r = await getDataFromDB(con, sql);
+        return id;
+}
+
+
+app.post('/modJournal', function (req, res) {
+    let con = connectToDB();
+    let name = req.body.name;
+    let dt = req.body.dt;
+    let id = req.body.id;
+    let info2 = user.info;
+    for (let i in info2.positionNames) {
+        if (name == info2.positionNames[i].name) {
+            let result = {dupName: name}
+            res.json(result);
+            con.end();
+            return;
+        }
+    }
+
+    modJournal(con, name,dt,id).then(function (data) {
+        con.end();
+        let result = {jid: id}
+        res.json(result);
+    }).catch(function (err) {
+        console.log("ERROR ERROR  modify  journal " + err)
+        return;
+    });
+
+
+});
 const newConfig = async (con, name, c1, c2, c3, c4, c5, stocks) => {
 
     let data = await createConfig(con, name, c1, c2, c3, c4, c5, stocks);
@@ -1383,7 +1419,8 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID) 
         ops.push({
             id: 0,
             jid: journals[i].idjournal,
-            name: journals[i].name
+            name: journals[i].name,
+            date: moment(journals[i].createDate, 'YYYY-MM-DD HH:mm:ss').format("YYYY-MM-DD")
         });
     }
     let retJournal = [];

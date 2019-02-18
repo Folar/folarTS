@@ -1039,7 +1039,7 @@ var Trader = React.createClass({
                         </Col>
                         <Col xs={2}>
                             <NameDlg dlgType={0} modal="Modala" buttonLabel="Create New Position" title="New Position"
-                                     okFunc={this.okNewPosition} label="Name" initVal={this.initValEmpty}
+                                     okFunc={this.okNewPosition} label="Name" initVal={this.initValEmpty()}
                                      genJournal={this.state.genJournal} />
                         </Col>
 
