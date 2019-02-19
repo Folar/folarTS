@@ -103,12 +103,13 @@ var JournalPosition = React.createClass({
             //this.setState({busy: true});
         })
     },
-    okNewJournal: function (val,junk,dt) {
+    okNewJournal: function (val,junk,dt,tags) {
         let func = this.switchPosition;
         $.post("/newJournal",
             {
                 name: val,
-                dt:dt
+                dt:dt,
+                tags:tags
             },
             function (data) {
                 if (data.dupName) {
@@ -119,13 +120,14 @@ var JournalPosition = React.createClass({
             }
         );
     },
-    okModJournal: function (val,junk,dt) {
+    okModJournal: function (val,junk,dt,tags) {
         let func = this.switchPosition;
         $.post("/modJournal",
             {
                 name: val,
                 dt:dt,
-                id:this.state.currentId
+                id:this.state.currentId,
+                tags:tags
             },
             function (data) {
                 if (data.dupName) {
@@ -143,6 +145,15 @@ var JournalPosition = React.createClass({
         for (let i in this.state.positions) {
             if (this.state.positions[i].jid == this.state.currentId) {
                 return this.state.positions[i].date;
+                break;
+            }
+        }
+        return "";
+    },
+    journalTags: function () {
+        for (let i in this.state.positions) {
+            if (this.state.positions[i].jid == this.state.currentId) {
+                return this.state.positions[i].tags;
                 break;
             }
         }
@@ -205,7 +216,7 @@ var JournalPosition = React.createClass({
                         {this.state.report == "true" && <Col xs={2}/>}
                         {this.state.report == "false" && <Col xs={2}>
                             <NameDlg dlgType={1} modal="Modala" buttonLabel="Modify Journal" title="Modify General Journal"
-                                     genJournal={[]} gj="false"    dt={this.journalDate()}
+                                     genJournal={[]} gj="false"    dt={this.journalDate()} tags={this.journalTags()}
                                      okFunc={this.okModJournal} label="Name" initVal={this.journalName()}/>
                         </Col> }
                         <Col xs={3}>
@@ -213,7 +224,7 @@ var JournalPosition = React.createClass({
                         </Col>
                         {this.state.report == "false" && <Col xs={2}>
                             <NameDlg dlgType={1} modal="Modaldd" buttonLabel="Create General Journal" title="New General Journal"
-                                     genJournal={[]} gj="false"   dt={this.formatDate()}
+                                     genJournal={[]} gj="false"   dt={this.formatDate()} tags=""
                                      okFunc={this.okNewJournal} label="Name" initVal={this.initValEmpty()}/>
                         </Col> }
                     </Row>

@@ -419,11 +419,16 @@ var NameDlg = React.createClass({
         return {
             genJournalSel: -1,
             nameText: this.props.initVal,
-            dateText: ""
+            dateText: "",
+            tagTxt:""
         };
     },
     dlgTxt :null,
     dtTxt :null,
+    tagTxt :null,
+    handleTagChange: function (e) {
+        this.setState({tagText: e.target.value});
+    },
     handleDateChange: function (e) {
         this.setState({dateText: e.target.value});
     },
@@ -433,16 +438,18 @@ var NameDlg = React.createClass({
     quit: function (t) {
         if (this.props.dlgType == 1) {
             this.props.okFunc($(this.refs.txt.getDOMNode())[0].value,
-                this.state.genJournalSel, $(this.refs.dateTxt.getDOMNode())[0].value);
+                this.state.genJournalSel, $(this.refs.dateTxt.getDOMNode())[0].value,
+                $(this.refs.tagTxt.getDOMNode())[0].value );
 
         }
         else
-            this.props.okFunc($(this.refs.txt.getDOMNode())[0].value, this.state.genJournalSel, 0);
+            this.props.okFunc($(this.refs.txt.getDOMNode())[0].value, this.state.genJournalSel, 0,0);
     },
     componentWillReceiveProps: function () {
         this.setState({nameText:  this.props.initVal});
          if(this.refs.dateTxt) {
             this.setState({dateText:  this.props.dt});
+             this.setState({tagText:  this.props.tags});
 
         }
     },
@@ -451,6 +458,7 @@ var NameDlg = React.createClass({
         this.dlgTxt = $(this.refs.txt.getDOMNode())[0];
         if(this.refs.dateTxt) {
             this.dtTxt = $(this.refs.dateTxt.getDOMNode())[0];
+            this.tagTxt = $(this.refs.tagTxt.getDOMNode())[0];
         }
     },
     switchgj: function () {
@@ -466,6 +474,7 @@ var NameDlg = React.createClass({
 
         if (this.dlgTxt) this.dlgTxt.value = this.state.nameText;
         if (this.dtTxt) this.dtTxt.value = this.state.dateText;
+        if (this.tagTxt) this.tagTxt.value = this.state.tagText;
         var lbl = "my" + this.props.modal + "Label";
         var target = "#my" + this.props.modal;
         var idtarget = "my" + this.props.modal;
@@ -506,19 +515,26 @@ var NameDlg = React.createClass({
 
                                 </Row> : ""}
                             {this.props.dlgType == 1 ?
+                            <Row xs={5} className="container">
+                                <Col xs={3} className="positionLbl">
+                                    Start Date(YYYY-MM-DD):
+                                </Col>
+
+                                <Col xs={2}>
+                                    <input className="searchBox"
+                                           ref="dateTxt"  onChange={ this.handleDateChange }/>
+                                </Col>
+                            </Row> : ""}
+                            {this.props.dlgType == 1 ?
                                 <Row xs={5} className="container">
                                     <Col xs={3} className="positionLbl">
-                                        Start Date(YYYY-MM-DD):
+                                        Tags (MarBB, MarMonarchs):
                                     </Col>
 
                                     <Col xs={2}>
                                         <input className="searchBox"
-                                               ref="dateTxt"  onChange={ this.handleDateChange }/>
-
-
+                                               ref="tagTxt"  onChange={ this.handleTagChange }/>
                                     </Col>
-
-
                                 </Row> : ""}
 
                             <div className="modal-footer">

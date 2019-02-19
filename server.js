@@ -390,10 +390,10 @@ app.post('/newPosition', function (req, res) {
 
 });
 
-const newJournal = async (con, name, dt) => {
+const newJournal = async (con, name, dt,tags) => {
 
-    sql = "INSERT INTO journal (name, openDate, createDate,modifyDate ,idposition,iduser) VALUES( '" + name +
-        "' ,'"+dt+"', '"+dt+"','"+dt+"',0," + user.idUser + ");";
+    sql = "INSERT INTO journal (name, tags, openDate, createDate,modifyDate ,idposition,iduser) VALUES( '" + name +
+        "' ,'"+tags+"','"+dt+"', '"+dt+"','"+dt+"',0," + user.idUser + ");";
     r = await getDataFromDB(con, sql);
     return r.insertId;
 }
@@ -401,6 +401,7 @@ app.post('/newJournal', function (req, res) {
     let con = connectToDB();
     let name = req.body.name;
     let dt = req.body.dt;
+    let tags = req.body.tags;
     let info2 = user.info;
     for (let i in info2.positionNames) {
         if (name == info2.positionNames[i].name) {
@@ -410,7 +411,7 @@ app.post('/newJournal', function (req, res) {
             return;
         }
     }
-    newJournal(con, name,dt).then(function (data) {
+    newJournal(con, name,dt,tags).then(function (data) {
         con.end();
         let result = {jid: data}
         res.json(result);
@@ -422,10 +423,12 @@ app.post('/newJournal', function (req, res) {
 
 });
 
-const modJournal = async (con, name, dt,id) => {
+const modJournal = async (con, name, dt,id,tags) => {
 
 
-        var sql = "UPDATE journal SET  name = '" + name + "', openDate = '" + dt + "', createDate = '" + dt + "', modifyDate = '" +
+        var sql = "UPDATE journal SET  name = '" + name + "', tags = '" + tags + "',"+
+            "openDate = '" + dt + "', " +
+            "createDate = '" + dt + "', modifyDate = '" +
          dt +"' where idJournal = " + id;
         r = await getDataFromDB(con, sql);
         return id;
@@ -437,6 +440,7 @@ app.post('/modJournal', function (req, res) {
     let name = req.body.name;
     let dt = req.body.dt;
     let id = req.body.id;
+    let tags = req.body.tags;
     let info2 = user.info;
     for (let i in info2.positionNames) {
         if (name == info2.positionNames[i].name) {
@@ -447,7 +451,7 @@ app.post('/modJournal', function (req, res) {
         }
     }
 
-    modJournal(con, name,dt,id).then(function (data) {
+    modJournal(con, name,dt,id,tags).then(function (data) {
         con.end();
         let result = {jid: id}
         res.json(result);
@@ -1402,7 +1406,7 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID) 
         }
     }
     // get the general journals
-    sql = "SELECT  idjournal, idposition, name,createDate FROM journal  where iduser = " + user.idUser +
+    sql = "SELECT  idjournal, idposition, tags, name,createDate FROM journal  where iduser = " + user.idUser +
         " AND idposition = 0;"
 
     let journals = await getDataFromDB(con, sql);
@@ -1420,6 +1424,7 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID) 
             id: 0,
             jid: journals[i].idjournal,
             name: journals[i].name,
+            tags:journals[i].tags,
             date: moment(journals[i].createDate, 'YYYY-MM-DD HH:mm:ss').format("YYYY-MM-DD")
         });
     }
