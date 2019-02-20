@@ -16,7 +16,9 @@ var JournalPosition = React.createClass({
             pid:-1,
             positions: [],
             dates: [],
-            report:this.props.report
+            report:this.props.report,
+            tags:[],
+            tagSel:"All"
 
         };
     },
@@ -24,8 +26,7 @@ var JournalPosition = React.createClass({
 
 
         var func = this.success;
-        $.post("/switchPosition", {pid: this.props.pid, jid: this.props.jid}, function (data) {
-        //$.post("/journal", {}, function (data) {
+        $.post("/switchPosition", {pid: this.props.pid, jid: this.props.jid, tag:"$USECURRENT"}, function (data) {
                 func(data);
                 //this.setState({busy: true});
             }
@@ -33,7 +34,8 @@ var JournalPosition = React.createClass({
     },
 
     success: function (data) {
-        this.setState({currentId: data.currentId, positions: data.positions, dates: data.dates,pid:data.pid});
+        this.setState({currentId: data.currentId, positions: data.positions, dates: data.dates,pid:data.pid,
+            tags:data.tags,tagSel:data.currentTag});
         this.props.switchJournal(data.currentId,data.pid);
        // alert(this.state.currentId);
         for (let i in this.state.positions) {
@@ -98,9 +100,9 @@ var JournalPosition = React.createClass({
     },
     switchPosition: function (id, jid) {
         var func = this.success;
-        $.post("/switchPosition", {pid: id, jid: jid}, function (data) {
+        var sel = this.refs.tagsCombo.getConfigName();
+        $.post("/switchPosition", {pid: id, jid: jid,tag: sel}, function (data) {
             func(data);
-            //this.setState({busy: true});
         })
     },
     okNewJournal: function (val,junk,dt,tags) {
@@ -178,6 +180,11 @@ var JournalPosition = React.createClass({
         if (day.length < 2) day = '0' + day;
         return year + "-" + month + "-" + day;
     },
+    switchTags:function(){
+        var id = this.refs.tagsCombo.getConfigName();
+        this.setState({tagSel : id});
+        this.switchPosition(this.props.pid,  this.props.jid);
+    },
     render: function () {
         let me = this;
         let positionBoxes =
@@ -212,7 +219,11 @@ var JournalPosition = React.createClass({
             <div xs={12} className="container">
                 <div xs={12} className="container">
                     <Row xs={12} className="container">
-                        <Col xs={2}/>
+                        {this.state.report == "true" && <Col xs={2}/>}
+                        {this.state.report == "false" && <Col xs={2} className="showError">
+                            <StockNameCombo ref="tagsCombo" names={this.state.tags} sel={this.state.tagSel}
+                                            switchConfig={this.switchTags}/>
+                        </Col>}
                         {this.state.report == "true" && <Col xs={2}/>}
                         {this.state.report == "false" && <Col xs={2}>
                             <NameDlg dlgType={1} modal="Modala" buttonLabel="Modify Journal" title="Modify General Journal"
@@ -220,7 +231,7 @@ var JournalPosition = React.createClass({
                                      okFunc={this.okModJournal} label="Name" initVal={this.journalName()}/>
                         </Col> }
                         <Col xs={3}>
-                            <h3> Open Positions </h3>
+                            <h3> Journals </h3>
                         </Col>
                         {this.state.report == "false" && <Col xs={2}>
                             <NameDlg dlgType={1} modal="Modaldd" buttonLabel="Create General Journal" title="New General Journal"

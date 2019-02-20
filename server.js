@@ -53,7 +53,7 @@ let user = {};
 function login(con, name, pw) {
 
     var sql = "SELECT fname , user.iduser, userName, userPassword, currentConfig, currentPosition, " +
-        "currentStock FROM user " +
+        "currentStock,currentTag FROM user " +
         "LEFT JOIN  user_info ON user.iduser = user_info.iduser   where userName ='" + name +
         "' and userPassword = '" + pw + "'";
 
@@ -79,6 +79,7 @@ app.post('/login', function (req, res) {
             user.info.currentConfigId = user.currentConfigId = lst[0].currentConfig;
             user.idUser = lst[0].iduser;
             user.currentStock = lst[0].currentStock;
+            user.currentTag = lst[0].currentTag;
             user.currentPositionId = lst[0].currentPosition;
             user.fname = lst[0].fname;
             user.info.stkData = [];
@@ -339,24 +340,24 @@ app.post('/chgposition', function (req, res) {
 const newPosition = async (con, name, id) => {
     let times = "NOW(),NOW());";
     let sql = null;
-    if(id != -1){
+    if (id != -1) {
         sql = "SELECT  createDate FROM journal  where idjournal = " + id + ";"
         let journals = await getDataFromDB(con, sql);
-        let dt =moment(journals[0].createDate).format('YYYY-MM-DD HH:mm:ss')
-        times = "'" +dt+"','"+dt+"');";
+        let dt = moment(journals[0].createDate).format('YYYY-MM-DD HH:mm:ss')
+        times = "'" + dt + "','" + dt + "');";
     }
     sql = "INSERT INTO position2 (iduser, name, createDate,modifyDate ) VALUES( " +
-        +user.idUser + ",'" + name + "' ,"+ times;
+        +user.idUser + ",'" + name + "' ," + times;
     let data = await getDataFromDB(con, sql);
     sql = "UPDATE user SET   currentPosition =" + data.insertId +
         " where iduser = " + user.idUser;
     let r = await getDataFromDB(con, sql);
-    if(id == -1)
+    if (id == -1)
         sql = "INSERT INTO journal (name, openDate, createDate,modifyDate ,idposition,iduser) VALUES( '" + name +
             "' ,NOW(), NOW(),NOW()," + data.insertId + "," + user.idUser + ");";
     else
-        sql = "UPDATE journal SET   name ='" +name +
-             "', idposition = " + data.insertId +
+        sql = "UPDATE journal SET   name ='" + name +
+            "', idposition = " + data.insertId +
             " where idjournal = " + id;
     r = await getDataFromDB(con, sql);
     return data;
@@ -374,7 +375,7 @@ app.post('/newPosition', function (req, res) {
             return;
         }
     }
-    newPosition(con, name,jid).then(function (data) {
+    newPosition(con, name, jid).then(function (data) {
         let info = user.info;
         info.currentPosition = user.currentPosition = name;
         info.currentPositionId = user.currentPositionId = data.insertId;
@@ -390,10 +391,10 @@ app.post('/newPosition', function (req, res) {
 
 });
 
-const newJournal = async (con, name, dt,tags) => {
+const newJournal = async (con, name, dt, tags) => {
 
     sql = "INSERT INTO journal (name, tags, openDate, createDate,modifyDate ,idposition,iduser) VALUES( '" + name +
-        "' ,'"+tags+"','"+dt+"', '"+dt+"','"+dt+"',0," + user.idUser + ");";
+        "' ,'" + tags + "','" + dt + "', '" + dt + "','" + dt + "',0," + user.idUser + ");";
     r = await getDataFromDB(con, sql);
     return r.insertId;
 }
@@ -411,7 +412,7 @@ app.post('/newJournal', function (req, res) {
             return;
         }
     }
-    newJournal(con, name,dt,tags).then(function (data) {
+    newJournal(con, name, dt, tags).then(function (data) {
         con.end();
         let result = {jid: data}
         res.json(result);
@@ -423,15 +424,15 @@ app.post('/newJournal', function (req, res) {
 
 });
 
-const modJournal = async (con, name, dt,id,tags) => {
+const modJournal = async (con, name, dt, id, tags) => {
 
 
-        var sql = "UPDATE journal SET  name = '" + name + "', tags = '" + tags + "',"+
-            "openDate = '" + dt + "', " +
-            "createDate = '" + dt + "', modifyDate = '" +
-         dt +"' where idJournal = " + id;
-        r = await getDataFromDB(con, sql);
-        return id;
+    var sql = "UPDATE journal SET  name = '" + name + "', tags = '" + tags + "'," +
+        "openDate = '" + dt + "', " +
+        "createDate = '" + dt + "', modifyDate = '" +
+        dt + "' where idJournal = " + id;
+    r = await getDataFromDB(con, sql);
+    return id;
 }
 
 
@@ -451,7 +452,7 @@ app.post('/modJournal', function (req, res) {
         }
     }
 
-    modJournal(con, name,dt,id,tags).then(function (data) {
+    modJournal(con, name, dt, id, tags).then(function (data) {
         con.end();
         let result = {jid: id}
         res.json(result);
@@ -724,7 +725,7 @@ const getAsyncData = async (con, user, trans, underlying) => {
         if (ops.length == 0)
             ops.push({
                 id: -1,
-                name:"Nothing"
+                name: "Nothing"
             });
         ops.push({
             id: journals[i].idjournal,
@@ -1267,7 +1268,7 @@ function calcPerformance(name, id, trdata) {
             let w = a.diff(b, 'days');
 
 
-            if(res) {
+            if (res) {
                 let strikeMap = res.callExpDateMap;
                 if (type == "Put")
                     strikeMap = res.putExpDateMap;
@@ -1344,8 +1345,9 @@ const getDataFromDBParam = async (con, sql, params) => {
         });
     });
 };
-const getAsyncTradePerformance = async (con, journal, specificJID, specificPID) => {
+const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, tag) => {
     let info = [];
+    let tagSet = new Set();
 
     // figure out which positions are open
     let sql = "SELECT  iduser, idposition, name, createDate FROM position2 where iduser = " + user.idUser + ";";
@@ -1377,6 +1379,7 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID) 
     let pid = -1;
     let openDate;
 
+
     let journalAssigned = false;
     let spid = specificPID != -1 ? specificPID : user.currentPositionId;
     let jid = specificJID;
@@ -1405,6 +1408,16 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID) 
             })
         }
     }
+
+    // check for tag switch
+    if (tag != "$USECURRENT" && tag != user.currentTag){
+        sql = "UPDATE user SET   currentTag ='" + tag +
+            "' where iduser = " + user.idUser;
+        user.currentTag = tag;
+
+        let re = await getDataFromDB(con, sql);
+
+    }
     // get the general journals
     sql = "SELECT  idjournal, idposition, tags, name,createDate FROM journal  where iduser = " + user.idUser +
         " AND idposition = 0;"
@@ -1420,13 +1433,23 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID) 
             gjDate = journals[i].createDate;
         }
         journalAssigned = true;
+        if (journals[i].tags.length != 0) {
+            let ts = journals[i].tags.split(',');
+            for (let t in ts) {
+                tagSet.add(ts[t]);
+            }
+        }
         ops.push({
             id: 0,
             jid: journals[i].idjournal,
             name: journals[i].name,
-            tags:journals[i].tags,
+            tags: journals[i].tags,
             date: moment(journals[i].createDate, 'YYYY-MM-DD HH:mm:ss').format("YYYY-MM-DD")
         });
+    }
+    let tagArray = ["All"];
+    if (tagSet.size != 0) {
+        tagSet.forEach(v => tagArray.push(v));
     }
     let retJournal = [];
     let start;
@@ -1462,9 +1485,9 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID) 
                     id: -1,
                     text: "",
                     dt: start.format('YYYY-MM-DD'),
-                    last:false
+                    last: false
                 };
-                if(start.format('YYYY-MM-DD') == end.format('YYYY-MM-DD'))
+                if (start.format('YYYY-MM-DD') == end.format('YYYY-MM-DD'))
                     x.last = true;
                 if (item && moment(item.tr_date).format('YYYY-MM-DD') == start.format('YYYY-MM-DD')) {
                     x.id = item.id;
@@ -1480,21 +1503,24 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID) 
 
     }
     con.end();
-    return [jid, ops, retJournal,pid];
+    return [jid, ops, retJournal, pid, tagArray];
 };
 
 app.post('/switchPosition', function (req, resp) { // switch journal
     let con = connectToDB();
     let obj = req.body;
-    getAsyncTradePerformance(con, true, obj.jid, obj.pid).then((data) => {
-        resp.json({currentId: data[0], positions: data[1], dates: data[2],pid:data[3]});
+    getAsyncTradePerformance(con, true, obj.jid, obj.pid, obj.tag).then((data) => {
+        resp.json({
+            currentId: data[0], positions: data[1], dates: data[2], pid: data[3],
+            tags: data[4], currentTag: user.currentTag
+        });
     }).catch(function (err) {
         console.log("ERROR ERROR tradeperformance " + err);
         return;
     });
 });
 
-const getAsyncSaveNote = async (con, specificJID, specificPID,  noteId, text, dt) => {
+const getAsyncSaveNote = async (con, specificJID, specificPID, noteId, text, dt) => {
     // edit a note in the journal
     let rid = noteId;
     if (noteId == -1) {
@@ -1529,21 +1555,12 @@ app.post('/saveNote', function (req, resp) {
         return;
     });
 });
-app.post('/journal', function (req, resp) {
-    let con = connectToDB();
 
-    getAsyncTradePerformance(con, true, -1, -1).then((data) => {
-        resp.json({currentId: data[0], positions: data[1], dates: data[2],pid:data[3]});
-    }).catch(function (err) {
-        console.log("ERROR ERROR tradeperformance " + err)
-        return;
-    });
-});
 
 app.post('/report', function (req, resp) {
     let con = connectToDB();
 
-    getAsyncTradePerformance(con, false, -1, -1).then((data) => {
+    getAsyncTradePerformance(con, false, -1, -1, -1).then((data) => {
         resp.json({data: data});
     }).catch(function (err) {
         console.log("ERROR ERROR tradeperformance " + err)
