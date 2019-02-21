@@ -13,12 +13,12 @@ var JournalPosition = React.createClass({
     getInitialState: function () {
         return {
             currentId: -1,
-            pid:-1,
+            pid: -1,
             positions: [],
             dates: [],
-            report:this.props.report,
-            tags:[],
-            tagSel:"All"
+            report: this.props.report,
+            tags: [],
+            tagSel: "All"
 
         };
     },
@@ -26,21 +26,34 @@ var JournalPosition = React.createClass({
 
 
         var func = this.success;
-        $.post("/switchPosition", {pid: this.props.pid, jid: this.props.jid, tag:"$USECURRENT"}, function (data) {
+        $.post("/switchPosition", {pid: this.props.pid, jid: this.props.jid, tag: "$USECURRENT"}, function (data) {
                 func(data);
                 //this.setState({busy: true});
             }
         )
     },
+    hasTag: function (currentTag, tags) {
+
+        if(tags == "$N/A" || currentTag == "All") return true;
+        let ts = tags.split(',');
+        for (let i in ts) {
+            if (currentTag.toUpperCase() == ts[i].toUpperCase().trim()) {
+                return true;
+            }
+        }
+        return false;
+    },
 
     success: function (data) {
-        this.setState({currentId: data.currentId, positions: data.positions, dates: data.dates,pid:data.pid,
-            tags:data.tags,tagSel:data.currentTag});
-        this.props.switchJournal(data.currentId,data.pid);
-       // alert(this.state.currentId);
+        this.setState({
+            currentId: data.currentId, positions: data.positions, dates: data.dates, pid: data.pid,
+            tags: data.tags, tagSel: data.currentTag
+        });
+        this.props.switchJournal(data.currentId, data.pid);
+        // alert(this.state.currentId);
         for (let i in this.state.positions) {
             if (this.state.positions[i].jid == this.state.currentId) {
-                if( this.state.positions[i].id != 0)
+                if (this.state.positions[i].id != 0)
                     $("#mybidbuttonModala").addClass("disabled");
                 else
                     $("#mybidbuttonModala").removeClass("disabled");
@@ -75,7 +88,7 @@ var JournalPosition = React.createClass({
     },
 
     getMode: function (item) {
-        if(item.last) return 2;
+        if (item.last) return 2;
         if (!this.getExpand(item)) return 0;
         return 1;
     },
@@ -101,17 +114,17 @@ var JournalPosition = React.createClass({
     switchPosition: function (id, jid) {
         var func = this.success;
         var sel = this.refs.tagsCombo.getConfigName();
-        $.post("/switchPosition", {pid: id, jid: jid,tag: sel}, function (data) {
+        $.post("/switchPosition", {pid: id, jid: jid, tag: sel}, function (data) {
             func(data);
         })
     },
-    okNewJournal: function (val,junk,dt,tags) {
+    okNewJournal: function (val, junk, dt, tags) {
         let func = this.switchPosition;
         $.post("/newJournal",
             {
                 name: val,
-                dt:dt,
-                tags:tags
+                dt: dt,
+                tags: tags
             },
             function (data) {
                 if (data.dupName) {
@@ -122,14 +135,14 @@ var JournalPosition = React.createClass({
             }
         );
     },
-    okModJournal: function (val,junk,dt,tags) {
+    okModJournal: function (val, junk, dt, tags) {
         let func = this.switchPosition;
         $.post("/modJournal",
             {
                 name: val,
-                dt:dt,
-                id:this.state.currentId,
-                tags:tags
+                dt: dt,
+                id: this.state.currentId,
+                tags: tags
             },
             function (data) {
                 if (data.dupName) {
@@ -141,7 +154,11 @@ var JournalPosition = React.createClass({
         );
     },
     initValEmpty: function () {
-        return "";
+
+        if (this.state.tagSel == 'All')
+            return "";
+
+        return this.state.tagSel;
     },
     journalDate: function () {
         for (let i in this.state.positions) {
@@ -180,10 +197,22 @@ var JournalPosition = React.createClass({
         if (day.length < 2) day = '0' + day;
         return year + "-" + month + "-" + day;
     },
-    switchTags:function(){
+    getCurrentPosition:function () {
+        for (let i in this.state.positions) {
+            if (this.state.positions[i].jid == this.state.currentId) {
+                return this.state.positions[i];
+            }
+        }
+        return null;
+    },
+    switchTags: function () {
         var id = this.refs.tagsCombo.getConfigName();
-        this.setState({tagSel : id});
-        this.switchPosition(this.props.pid,  this.props.jid);
+        this.setState({tagSel: id});
+        if( this.hasTag(id,this.getCurrentPosition().tags)) {
+            this.switchPosition(this.props.pid, this.props.jid);
+        }else {
+            this.switchPosition(-1, -1);
+        }
     },
     render: function () {
         let me = this;
@@ -191,15 +220,15 @@ var JournalPosition = React.createClass({
             this.state.positions.map((item, index) => {
 
                 return (
-                    <Col xs={2} className="positionLbl"  >
+                    <Col xs={2} className="positionLbl">
                         <Card bg={this.getBG(item)} fs="18px" fg={this.getFG(item)} name={item.name} height="30px"
                               switchPosition={this.switchPosition} id={item.id} jid={item.jid}
                               width="140px"/>
                     </Col>)
             });
         let newArray = this.state.dates;
-        newArray  = newArray.filter(function (item) {
-            return  me.props.report == "false" || item.text.length >0 || item.last;
+        newArray = newArray.filter(function (item) {
+            return me.props.report == "false" || item.text.length > 0 || item.last;
         });
 
         let notes =
@@ -219,24 +248,26 @@ var JournalPosition = React.createClass({
             <div xs={12} className="container">
                 <div xs={12} className="container">
                     <Row xs={12} className="container">
-                        {this.state.report == "true" && <Col xs={2}/>}
-                        {this.state.report == "false" && <Col xs={2} className="showError">
+
+                        {true && <Col xs={2} className="showError">
                             <StockNameCombo ref="tagsCombo" names={this.state.tags} sel={this.state.tagSel}
                                             switchConfig={this.switchTags}/>
                         </Col>}
                         {this.state.report == "true" && <Col xs={2}/>}
                         {this.state.report == "false" && <Col xs={2}>
-                            <NameDlg dlgType={1} modal="Modala" buttonLabel="Modify Journal" title="Modify General Journal"
-                                     genJournal={[]} gj="false"    dt={this.journalDate()} tags={this.journalTags()}
+                            <NameDlg dlgType={1} modal="Modala" buttonLabel="Modify Journal"
+                                     title="Modify General Journal"
+                                     genJournal={[]} gj="false" dt={this.journalDate()} tags={this.journalTags()}
                                      okFunc={this.okModJournal} label="Name" initVal={this.journalName()}/>
                         </Col> }
                         <Col xs={3}>
                             <h3> Journals </h3>
                         </Col>
                         {this.state.report == "false" && <Col xs={2}>
-                            <NameDlg dlgType={1} modal="Modaldd" buttonLabel="Create General Journal" title="New General Journal"
-                                     genJournal={[]} gj="false"   dt={this.formatDate()} tags=""
-                                     okFunc={this.okNewJournal} label="Name" initVal={this.initValEmpty()}/>
+                            <NameDlg dlgType={1} modal="Modaldd" buttonLabel="Create General Journal"
+                                     title="New General Journal"
+                                     genJournal={[]} gj="false" dt={this.formatDate()} tags={this.initValEmpty()}
+                                     okFunc={this.okNewJournal} label="Name" initVal=""/>
                         </Col> }
                     </Row>
                     <Row xs={12} className="container">

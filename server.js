@@ -1345,6 +1345,15 @@ const getDataFromDBParam = async (con, sql, params) => {
         });
     });
 };
+function hasTag(currentTag,tags) {
+    let ts = tags.split(',');
+    for (let i in ts){
+        if (currentTag.toUpperCase() == ts[i].toUpperCase()){
+            return true;
+        }
+    }
+    return false;
+}
 const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, tag) => {
     let info = [];
     let tagSet = new Set();
@@ -1404,7 +1413,8 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
             ops.push({
                 id: info[tp].id,
                 jid: r[0].idjournal,
-                name: info[tp].name
+                name: info[tp].name,
+                tags:"$N/A"
             })
         }
     }
@@ -1436,16 +1446,18 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
         if (journals[i].tags.length != 0) {
             let ts = journals[i].tags.split(',');
             for (let t in ts) {
-                tagSet.add(ts[t]);
+                tagSet.add(ts[t].trim());
             }
         }
-        ops.push({
-            id: 0,
-            jid: journals[i].idjournal,
-            name: journals[i].name,
-            tags: journals[i].tags,
-            date: moment(journals[i].createDate, 'YYYY-MM-DD HH:mm:ss').format("YYYY-MM-DD")
-        });
+        if(user.currentTag == "All" || hasTag(user.currentTag,journals[i].tags)) {
+            ops.push({
+                id: 0,
+                jid: journals[i].idjournal,
+                name: journals[i].name,
+                tags: journals[i].tags,
+                date: moment(journals[i].createDate, 'YYYY-MM-DD HH:mm:ss').format("YYYY-MM-DD")
+            });
+        }
     }
     let tagArray = ["All"];
     if (tagSet.size != 0) {
