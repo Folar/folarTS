@@ -32,6 +32,7 @@ var JournalPosition = React.createClass({
             }
         )
     },
+    newTags:"$",
     hasTag: function (currentTag, tags) {
 
         if(tags == "$N/A" || currentTag == "All") return true;
@@ -114,12 +115,20 @@ var JournalPosition = React.createClass({
     switchPosition: function (id, jid) {
         var func = this.success;
         var sel = this.refs.tagsCombo.getConfigName();
+        console.log(sel)
+        if( this.newTags != "$" && !this.hasTag(sel,this.newTags)) {
+            sel="All";
+            console.log("alll")
+            this.setState({tagSel:"All"});
+        }
+        this.newTags = "$";
         $.post("/switchPosition", {pid: id, jid: jid, tag: sel}, function (data) {
             func(data);
         })
     },
     okNewJournal: function (val, junk, dt, tags) {
         let func = this.switchPosition;
+        this.newTags = tags;
         $.post("/newJournal",
             {
                 name: val,
@@ -136,6 +145,7 @@ var JournalPosition = React.createClass({
         );
     },
     okModJournal: function (val, junk, dt, tags) {
+        this.newTags = tags;
         let func = this.switchPosition;
         $.post("/modJournal",
             {
