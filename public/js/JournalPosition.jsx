@@ -46,11 +46,14 @@ var JournalPosition = React.createClass({
     },
 
     success: function (data) {
+
         this.setState({
             currentId: data.currentId, positions: data.positions, dates: data.dates, pid: data.pid,
             tags: data.tags, tagSel: data.currentTag
         });
-        this.props.switchJournal(data.currentId, data.pid);
+        console.log("call switch journal rc  ",this.refreshComp);
+        this.props.switchJournal(data.currentId, data.pid,false,this.refreshComp);
+        this.refreshComp = false;
         // alert(this.state.currentId);
         for (let i in this.state.positions) {
             if (this.state.positions[i].jid == this.state.currentId) {
@@ -61,8 +64,6 @@ var JournalPosition = React.createClass({
                 break;
             }
         }
-
-
     },
     scrollToBottom: function () {
         const scrollHeight = this.messageList.scrollHeight;
@@ -112,14 +113,18 @@ var JournalPosition = React.createClass({
             //this.setState({busy: true});
         })
     },
+    refreshComp:false,
     switchPosition: function (id, jid) {
         var func = this.success;
         var sel = this.refs.tagsCombo.getConfigName();
-        console.log(sel)
+
         if( this.newTags != "$" && !this.hasTag(sel,this.newTags)) {
-            sel="All";
-            console.log("alll")
-            this.setState({tagSel:"All"});
+            this.refreshComp = true;
+            if(this.newTags.length == 0)
+                sel="All";
+            else
+                sel = this.newTags.split(",")[0].trim();
+           // console.log(" mod alll " + sel +" "+ this.refreshComp )
         }
         this.newTags = "$";
         $.post("/switchPosition", {pid: id, jid: jid, tag: sel}, function (data) {
@@ -230,11 +235,12 @@ var JournalPosition = React.createClass({
             this.state.positions.map((item, index) => {
 
                 return (
-                    <Col xs={2} className="positionLbl">
+                    <Col xs={2} className="positionLbl"  key={item.jid}>
                         <Card bg={this.getBG(item)} fs="18px" fg={this.getFG(item)} name={item.name} height="30px"
                               switchPosition={this.switchPosition} id={item.id} jid={item.jid}
                               width="140px"/>
-                    </Col>)
+                    </Col>
+                    )
             });
         let newArray = this.state.dates;
         newArray = newArray.filter(function (item) {
@@ -245,7 +251,7 @@ var JournalPosition = React.createClass({
             newArray.map((item, index) => {
 
                 return (
-                    <Row xs={12} className="container">
+                    <Row xs={12} className="container" key={item.id + item.dt}>
                         <Note bg="#c0c0c0" fs="18px" fg="black" date={item.date} text={item.text}
                               buttonText={this.getButtonText(item)} id={item.id} jid={this.state.currentId}
                               dt={item.dt} idx={index} key={item.id + item.dt}
@@ -283,6 +289,7 @@ var JournalPosition = React.createClass({
                     <Row xs={12} className="container">
                         {positionBoxes}
                     </Row>
+
 
                 </div>
                 <div xs={12} className="container">

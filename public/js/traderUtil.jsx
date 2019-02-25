@@ -27,7 +27,7 @@ var StockNameCombo = React.createClass({
     render: function () {
 
         var items = this.props.names.map(function (item, index) {
-            return <option value={item}> {item} </option>;
+            return <option key={index}  value={item}> {item} </option>;
         });
 
 
@@ -528,7 +528,7 @@ var NameDlg = React.createClass({
                             {this.props.dlgType == 1 ?
                                 <Row xs={5} className="container">
                                     <Col xs={3} className="positionLbl">
-                                        Tags (MarBB, MarMonarchs):
+                                        Tags (MarBB,MarMonarchs):
                                     </Col>
 
                                     <Col xs={2}>

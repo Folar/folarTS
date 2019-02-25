@@ -58,7 +58,7 @@ var MenuFolar = React.createClass({
                         // Notice the use of the bind() method. It makes the
                         // index available to the clicked function:
 
-                        return <li className={style} onClick={self.clicked.bind(self, index, m)}>{m.name}</li>;
+                        return <li key={index} className={style} onClick={self.clicked.bind(self, index, m)}>{m.name}</li>;
 
                     }) }
 

@@ -1348,7 +1348,7 @@ const getDataFromDBParam = async (con, sql, params) => {
 function hasTag(currentTag,tags) {
     let ts = tags.split(',');
     for (let i in ts){
-        if (currentTag.toUpperCase() == ts[i].toUpperCase()){
+        if (currentTag.toUpperCase() == ts[i].trim().toUpperCase()){
             return true;
         }
     }
