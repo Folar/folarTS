@@ -51,9 +51,8 @@ var JournalPosition = React.createClass({
             currentId: data.currentId, positions: data.positions, dates: data.dates, pid: data.pid,
             tags: data.tags, tagSel: data.currentTag
         });
-        console.log("call switch journal rc  ",this.refreshComp);
-        this.props.switchJournal(data.currentId, data.pid,false,this.refreshComp);
-        this.refreshComp = false;
+        this.props.switchJournal(data.currentId, data.pid);
+
         // alert(this.state.currentId);
         for (let i in this.state.positions) {
             if (this.state.positions[i].jid == this.state.currentId) {
@@ -113,18 +112,15 @@ var JournalPosition = React.createClass({
             //this.setState({busy: true});
         })
     },
-    refreshComp:false,
     switchPosition: function (id, jid) {
         var func = this.success;
         var sel = this.refs.tagsCombo.getConfigName();
 
         if( this.newTags != "$" && !this.hasTag(sel,this.newTags)) {
-            this.refreshComp = true;
             if(this.newTags.length == 0)
                 sel="All";
             else
                 sel = this.newTags.split(",")[0].trim();
-           // console.log(" mod alll " + sel +" "+ this.refreshComp )
         }
         this.newTags = "$";
         $.post("/switchPosition", {pid: id, jid: jid, tag: sel}, function (data) {
