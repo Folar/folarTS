@@ -19,8 +19,7 @@ var TraderJournal = React.createClass({
             logSource: null,
             webState:0,
             jid:-1,
-            pid:-1,
-            hack:55
+            pid:-1
 
         };
     },
@@ -43,19 +42,10 @@ var TraderJournal = React.createClass({
     fail: function () {
 
     },
-    switchJournal:function (jid,pid,hack) {
-        var h = this.state.hack;
-        //console.log("iin sj hack = " + hack);
-        if(hack) {
-           // console.log("need to refresh");
-            if(this.state.hack == 55)
-                h = 110;
-            else
-                h = 55
-        }
-        this.setState({jid:jid,pid:pid,hack:h});
-    },
+    switchJournal:function (jid,pid) {
 
+        this.setState({jid:jid,pid:pid});
+    },
 
     render: function () {
         var me = this;
@@ -63,17 +53,14 @@ var TraderJournal = React.createClass({
             me.setState({webState: state});
         };
         var page;
-        var k=this.state.hack;
-        var j=this.state.hack +1;
 
-        console.log(j +" "+k);
         switch (this.state.webState){
             case JOURNAL_POSITION:
-                page = <JournalPosition report="false" key={k} jid={this.state.jid} pid={this.state.pid}
+                page = <JournalPosition report="false" key={1} jid={this.state.jid} pid={this.state.pid}
                         switchJournal={this.switchJournal}/>;
                 break;
             case JOURNAL_REPORT:
-                page = <JournalPosition report="true" key={j}  jid={this.state.jid} pid={this.state.pid}
+                page = <JournalPosition report="true" key={2}  jid={this.state.jid} pid={this.state.pid}
                                         switchJournal={this.switchJournal}/>;
                 break;
             case JOURNAL_DATE:
