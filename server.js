@@ -57,7 +57,7 @@ function login(con, name, pw) {
         "LEFT JOIN  user_info ON user.iduser = user_info.iduser   where userName ='" + name +
         "' and userPassword = '" + pw + "'";
 
-
+    console.log("sql "  + sql);
     return new Promise((resolve, reject) => {
         con.query(sql, "", (err, rows) => {
             if (err)

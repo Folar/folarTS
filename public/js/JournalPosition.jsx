@@ -34,8 +34,8 @@ var JournalPosition = React.createClass({
     },
     newTags:"$",
     hasTag: function (currentTag, tags) {
-
-        if(tags == "$N/A" || currentTag == "All") return true;
+        console.log(tags + "ct ="+currentTag)
+        if(tags == "$N/A" || currentTag == "All" ) return true;
         let ts = tags.split(',');
         for (let i in ts) {
             if (currentTag.toUpperCase() == ts[i].toUpperCase().trim()) {
@@ -116,6 +116,8 @@ var JournalPosition = React.createClass({
         var func = this.success;
         var sel = this.refs.tagsCombo.getConfigName();
 
+        if(!sel)
+            sel = "All";
         if( this.newTags != "$" && !this.hasTag(sel,this.newTags)) {
             if(this.newTags.length == 0)
                 sel="All";
@@ -166,7 +168,7 @@ var JournalPosition = React.createClass({
     },
     initValEmpty: function () {
 
-        if (this.state.tagSel == 'All')
+        if (!this.state.tagSel || this.state.tagSel == 'All' )
             return "";
 
         return this.state.tagSel;
