@@ -216,11 +216,12 @@ var JournalPosition = React.createClass({
                 return this.state.positions[i];
             }
         }
-        return null;
+        return this.state.positions[0];
     },
     switchTags: function () {
         var id = this.refs.tagsCombo.getConfigName();
         this.setState({tagSel: id});
+        debugger;
         if( this.hasTag(id,this.getCurrentPosition().tags)) {
             this.switchPosition(this.props.pid, this.props.jid);
         }else {
