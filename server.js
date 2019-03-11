@@ -1433,13 +1433,16 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
         " AND idposition = 0;"
 
     let journals = await getDataFromDB(con, sql);
+    let assignedJid = false;
     for (let i in journals) {
         if (!journalAssigned && jid == -1) {
+            assignedJid = true;
             jid = journals[i].idjournal;
             gjDate = journals[i].createDate;
         }
         if (specificJID == journals[i].idjournal) {
             jid = specificJID;
+            assignedJid = false;
             gjDate = journals[i].createDate;
         }
         journalAssigned = true;
@@ -1450,6 +1453,11 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
             }
         }
         if(user.currentTag == "All" || hasTag(user.currentTag,journals[i].tags)) {
+            if(assignedJid ) {
+                jid = journals[i].idjournal;
+                gjDate = journals[i].createDate;
+                assignedJid = false;
+            }
             ops.push({
                 id: 0,
                 jid: journals[i].idjournal,
@@ -1515,6 +1523,7 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
 
     }
     con.end();
+    console.log("jid =" +jid);
     return [jid, ops, retJournal, pid, tagArray];
 };
 
