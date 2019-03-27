@@ -182,7 +182,7 @@ var Note = React.createClass({
         }
     },
     saveNote: function (id, text, dt) {
-
+        console.log(`id = ${id} text = ${text} dt = ${dt}`);
         var func = this.success;
         let pid = 0;
         for (let i in this.props.positions) {
@@ -191,6 +191,7 @@ var Note = React.createClass({
                 break;
             }
         }
+        console.log(`jid = ${this.props.jid} pid = ${pid}`);
         $.post("/saveNote", {id: id, text: text, jid: this.props.jid, pid: pid, dt: dt}, function (data) {
             func(data);
             //this.setState({busy: true});
