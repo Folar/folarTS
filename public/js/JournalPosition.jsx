@@ -97,23 +97,9 @@ var JournalPosition = React.createClass({
 
         return item.last || item.text.length > 0;
     },
-    saveNote: function (id, text, dt) {
 
-        var func = this.success;
-        let pid = 0
-        for (let i in this.state.positions) {
-            if (this.state.positions[i].jid == this.state.currentId) {
-                pid = this.state.positions[i].id;
-                break;
-            }
-        }
-        $.post("/saveNote", {id: id, text: text, jid: this.state.currentId, pid: pid, dt: dt}, function (data) {
-            func(data);
-            //this.setState({busy: true});
-        })
-    },
     switchPosition: function (id, jid) {
-        debugger;
+        console.log(`id = ${id} jid = ${jid}`);
         var func = this.success;
         var sel = this.refs.tagsCombo.getConfigName();
 
@@ -126,7 +112,6 @@ var JournalPosition = React.createClass({
                 sel = this.newTags.split(",")[0].trim();
         }
         this.newTags = "$";
-        debugger;
         $.post("/switchPosition", {pid: id, jid: jid, tag: sel}, function (data) {
             func(data);
         })
@@ -253,10 +238,10 @@ var JournalPosition = React.createClass({
             newArray.map((item, index) => {
 
                 return (
-                    <Row xs={12} className="container" key={item.id + item.dt}>
+                    <Row xs={12} className="container" key={this.state.currentId + item.dt}>
                         <Note bg="#c0c0c0" fs="18px" fg="black" date={item.date} text={item.text}
                               buttonText={this.getButtonText(item)} id={item.id} jid={this.state.currentId}
-                              dt={item.dt} idx={index} key={item.id + item.dt}
+                              dt={item.dt} idx={index} key={this.state.currentId + item.dt}
                               positions={this.state.positions} report={this.props.report || item.last}
                               mode={this.getMode(item)} expand={this.getExpand(item)}/>
                     </Row>
