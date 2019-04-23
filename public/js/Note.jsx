@@ -41,7 +41,7 @@ var Note = React.createClass({
     },
 
     fail: function () {
-
+        alert("server went kaput");
     },
     timeHandle: null,
     handleChange: function (e) {
@@ -191,11 +191,15 @@ var Note = React.createClass({
                 break;
             }
         }
-        console.log(`jid = ${this.props.jid} pid = ${pid}`);
+
         $.post("/saveNote", {id: id, text: text, jid: this.props.jid, pid: pid, dt: dt}, function (data) {
+          // console.log(` xxxjid = ${this.props.jid} pid = ${pid}`);
+
             func(data);
             //this.setState({busy: true});
-        })
+        }).fail(function() {
+            alert("Server is not responding.");
+        });
     },
     render: function () {
 
