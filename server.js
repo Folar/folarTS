@@ -1449,8 +1449,14 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
         if (journals[i].tags.length != 0) {
             let ts = journals[i].tags.split(',');
             for (let t in ts) {
+                if( ts[t] =="archived") {
+                    continue;
+                }
                 tagSet.add(ts[t].trim());
             }
+        }
+        if( hasTag("archived",journals[i].tags)) {
+            continue;
         }
         if(user.currentTag == "All" || hasTag(user.currentTag,journals[i].tags)) {
             if(assignedJid ) {
