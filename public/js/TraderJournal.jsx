@@ -11,7 +11,8 @@ var Input = ReactBootstrap.Input;
 var Table = ReactBootstrap.Table;
 const JOURNAL_POSITION = 0;
 const JOURNAL_REPORT = 1;
-const JOURNAL_DATE = 2;
+const JOURNAL_TAG = 2;
+const JOURNAL_ARCHIVE = 3;
 
 var TraderJournal = React.createClass({
     getInitialState: function () {
@@ -63,8 +64,11 @@ var TraderJournal = React.createClass({
                 page = <JournalPosition report="true" key={2}  jid={this.state.jid} pid={this.state.pid}
                                         switchJournal={this.switchJournal}/>;
                 break;
-            case JOURNAL_DATE:
-                page = <h3> TBD</h3>;
+            case JOURNAL_TAG:
+                page = <JournalTag tag="true" key={3}/>;
+                break;
+            case JOURNAL_ARCHIVE:
+                page = <JournalTag tag="false" key={4}/>;
                 break;
         }
 
@@ -73,9 +77,9 @@ var TraderJournal = React.createClass({
             <div xs={12} className="container">
                 <Row xs={12} className="container">
                     <Col xs={4} className="container"/>
-                    <Col xs={4} className="container">
+                    <Col xs={5} className="container">
                         <MenuFolar func={transition} focus="0"
-                                   items={ [{name: 'By Position', style: ''}, {name: 'Report', style: ''}, {name: 'By Date', style: ''}] }/>
+                                   items={ [{name: 'By Position', style: ''}, {name: 'Report', style: ''}, {name: 'Tag', style: ''},{name: 'Archived', style: ''}] }/>
                     </Col>
 
                 </Row>

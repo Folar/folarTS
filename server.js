@@ -1354,6 +1354,141 @@ function hasTag(currentTag,tags) {
     }
     return false;
 }
+const setAsyncTags = async ( con, journals, tagName) => {
+
+
+    // journal only code
+
+    let ops = [];
+
+
+    for (let i in journals){
+        sql = "SELECT  idjournal, tags FROM journal  where idjournal = " + journals[i] + " ;"
+        let j = await getDataFromDB(con, sql);
+        let tag = j[0].tags;
+        if(tag.trim().length == 0){
+            tag = tagName.trim();
+        }else
+            tag += ","+tagName.trim();
+        sql = "UPDATE journal SET   tags = '" + tag+
+                "' where idjournal = " +journals[i];
+        let r = await getDataFromDB(con, sql);
+        if (tagName!="archived"){
+            let t = tagName.split(",")[0].trim();
+            sql = "UPDATE user SET   currentTag ='" + t +
+                "' where iduser = " + user.idUser;
+            user.currentTag = t;
+
+            let re = await getDataFromDB(con, sql);
+        }
+    }
+
+    con.end();
+
+
+    return ;
+};
+const removeAsyncArchived = async ( con, journals, tagName) => {
+
+
+    // journal only code
+
+    let ops = [];
+
+
+    for (let i in journals){
+        sql = "SELECT  idjournal, tags FROM journal  where idjournal = " + journals[i] + " ;"
+        let j = await getDataFromDB(con, sql);
+        let tag = j[0].tags;
+        if(tag.trim() == "archived"){
+            tag = "";
+        }else
+            tag = tag.substr(0,tag.length-9);
+        sql = "UPDATE journal SET   tags = '" + tag+
+            "' where idjournal = " +journals[i];
+        let r = await getDataFromDB(con, sql);
+    }
+
+    con.end();
+
+
+    return ;
+};
+const getAsyncTags = async ( con, tag) => {
+
+
+    // journal only code
+
+    let ops = [];
+
+
+    // get the general journals
+    sql = "SELECT  idjournal, idposition, tags, name,createDate FROM journal  where iduser = " + user.idUser +
+        " AND idposition = 0;"
+
+    let journals = await getDataFromDB(con, sql);
+    con.end();
+    for (let i in journals) {
+
+
+        if( tag =="true" && !hasTag("archived",journals[i].tags) || tag == "false" && hasTag("archived",journals[i].tags)  ) {
+
+            ops.push({
+                id: 0,
+                jid: journals[i].idjournal,
+                name: journals[i].name,
+                tags: journals[i].tags,
+                date: moment(journals[i].createDate, 'YYYY-MM-DD HH:mm:ss').format("YYYY-MM-DD")
+            });
+        }
+    }
+
+
+
+
+    return [ ops];
+};
+
+app.post('/unarchivedJournals', function (req, resp) { // switch journal
+    let obj = req.body;
+    let arr = obj["journals[]"];
+    if (obj.len == 1)
+        arr =  [arr];
+    let con = connectToDB();
+    removeAsyncArchived(con, arr).then((data) => {
+
+        resp.json({positions: 1});
+    }).catch(function (err) {
+        console.log("ERROR ERROR tag journal " + err);
+        return;
+    });
+
+});
+app.post('/tagJournals', function (req, resp) { // switch journal
+    let obj = req.body;
+    let arr = obj["journals[]"];
+    if (obj.len == 1)
+        arr =  [arr];
+    let con = connectToDB();
+    setAsyncTags(con, arr,obj.tag).then((data) => {
+
+        resp.json({positions: 1});
+    }).catch(function (err) {
+            console.log("ERROR ERROR tag journal " + err);
+            return;
+        });
+
+});
+app.post('/getTags', function (req, resp) { // switch journal
+    let con = connectToDB();
+    let obj = req.body;
+    getAsyncTags(con, obj.tag).then((data) => {
+        resp.json({ positions: data[0] });
+    }).catch(function (err) {
+        console.log("ERROR ERROR gettags " + err);
+        return;
+    });
+});
 const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, tag) => {
     let info = [];
     let tagSet = new Set();
