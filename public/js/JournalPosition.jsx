@@ -30,8 +30,11 @@ var JournalPosition = React.createClass({
                 func(data);
                 //this.setState({busy: true});
             }
-        )
+        ).fail(function() {
+            alert("Server is not responding.");
+        });
     },
+    keyg:55,
     newTags:"$",
     hasTag: function (currentTag, tags) {
         console.log(tags + "ct ="+currentTag)
@@ -99,7 +102,7 @@ var JournalPosition = React.createClass({
     },
 
     switchPosition: function (id, jid) {
-        console.log(`id = ${id} jid = ${jid}`);
+        //console.log(`id = ${id} jid = ${jid}`);
         var func = this.success;
         var sel = this.refs.tagsCombo.getConfigName();
 
@@ -132,7 +135,9 @@ var JournalPosition = React.createClass({
                 func(0, data.jid);
 
             }
-        );
+        ).fail(function() {
+            alert("Server is not responding.");
+        });
     },
     okModJournal: function (val, junk, dt, tags) {
         this.newTags = tags;
@@ -151,7 +156,9 @@ var JournalPosition = React.createClass({
                 func(0, data.jid);
 
             }
-        );
+        ).fail(function() {
+            alert("Server is not responding.");
+        });
     },
     initValEmpty: function () {
 
@@ -218,17 +225,33 @@ var JournalPosition = React.createClass({
     },
     render: function () {
         let me = this;
-        let positionBoxes =
-            this.state.positions.map((item, index) => {
-
+        let positionBoxes=[] ;
+        for(let i = 0 ;i<this.state.positions.length;i+=5 ) {
+            let lim = i + 5 > this.state.positions.length? this.state.positions.length - i:5;
+            var clonedArray = JSON.parse(JSON.stringify(this.state.positions));
+            let boxes = clonedArray.splice(i, lim).map((item, index) => {
                 return (
-                    <Col xs={2} className="positionLbl"  key={item.jid}>
+
+                    <Col xs={2} className="positionLbl" key={item.jid}>
                         <Card bg={this.getBG(item)} fs="18px" fg={this.getFG(item)} name={item.name} height="30px"
                               switchPosition={this.switchPosition} id={item.id} jid={item.jid}
                               width="140px"/>
                     </Col>
-                    )
+                )
             });
+            positionBoxes.push(boxes);
+        }
+
+        let positions = positionBoxes.map((item, index) => {
+
+            return (
+                <Row xs={12} className="container" key={this.keyg++}>
+                    {positionBoxes[index]}
+                </Row>
+            )
+        });
+
+
         let newArray = this.state.dates;
         newArray = newArray.filter(function (item) {
             return me.props.report == "false" || item.text.length > 0 || item.last;
@@ -273,8 +296,9 @@ var JournalPosition = React.createClass({
                                      okFunc={this.okNewJournal} label="Name" initVal=""/>
                         </Col> }
                     </Row>
+
                     <Row xs={12} className="container">
-                        {positionBoxes}
+                        {positions}
                     </Row>
 
 

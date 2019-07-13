@@ -378,6 +378,11 @@ ul li.disabled{
    .graphContainer {
         margin-top:10px;
    }
+    div.overflowy {
+        overflow-y:  auto;
+        overflow-x:  hidden;
+        height: 350px;
+    }
 
    .arrowDisplay{
            width: 45px;
@@ -415,9 +420,10 @@ ul li.disabled{
 
  .wide{
         width:700px;
-
   }
-
+.exwide{
+    width:1000px
+}
 
  .tall{
         height:40px;

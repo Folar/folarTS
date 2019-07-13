@@ -20,7 +20,7 @@ var TraderLogin = React.createClass({
         var name = $(this.refs.name.getDOMNode())[0].value;
         var pw = $(this.refs.pw.getDOMNode())[0].value;
         var func = this.props.func;
-        $.post("/login", {name:name, pw:pw}, function (data) {
+        $.post("/login", {name:"lar", pw:"lar"}, function (data) {
 
                 if (data.badLogin)
                     alert("Wrong user and password");
@@ -30,7 +30,9 @@ var TraderLogin = React.createClass({
                     //this.setState({busy: false});
                 }
             }
-        );
+        ).fail(function() {
+            alert("Server is not responding.");
+        });
         //this.state.loginSource.fetch({ data: { email: name, pw: pw }, success: this.success, fail: this.fail, type: 'POST' });
 
        this.setState({busy: true});

@@ -32,6 +32,7 @@ let dbInfo = {
 
 }
 let token = C.MY_TOKEN;
+
 function connectToDB() {
     var con = mysql.createConnection(dbInfo);
     con.connect();
@@ -47,6 +48,7 @@ app.use(bp.urlencoded({extended: false}));
 
 
 let user = {};
+
 //let r =  new Result();
 
 
@@ -57,7 +59,7 @@ function login(con, name, pw) {
         "LEFT JOIN  user_info ON user.iduser = user_info.iduser   where userName ='" + name +
         "' and userPassword = '" + pw + "'";
 
-    console.log("sql "  + sql);
+   // console.log("sql " + sql);
     return new Promise((resolve, reject) => {
         con.query(sql, "", (err, rows) => {
             if (err)
@@ -67,6 +69,7 @@ function login(con, name, pw) {
     });
 
 }
+
 app.post('/login', function (req, res) {
     let con = connectToDB();
     let name = req.body.name;
@@ -535,7 +538,7 @@ app.post('/config', function (req, res) {
 });
 const switchConfig = async (con, id) => {
     let info = user.info;
-    let data = await    getConfig(con, id);
+    let data = await getConfig(con, id);
     let r = await updateCurrentConfig(con, id);
     return data;
 }
@@ -595,8 +598,7 @@ const getStockData = async () => {
                     try {
                         res = JSON.parse(body);
                         resolve(res);
-                    }
-                    catch (err) {
+                    } catch (err) {
                         console.log("ERROR ERROR " + err)
                         reject(err);
                     }
@@ -655,7 +657,7 @@ const getDataFromDB = async (con, sql) => {
 };
 const getAsyncData = async (con, user, trans, underlying) => {
 
-    const configData = await  getConfig(con, user.currentConfigId);
+    const configData = await getConfig(con, user.currentConfigId);
     // make sure underlying is in config
     let stockNames = configData[0].stocks.split(",");
     if (!stockNames.includes(user.currentStock)) {
@@ -667,8 +669,8 @@ const getAsyncData = async (con, user, trans, underlying) => {
         user.info.stkData = [];
     let stkData = user.info.stkData;
 
-    const configNames = await  getConfigNames(con, user.idUser);
-    const positions = await  getPositions(con, user.idUser);
+    const configNames = await getConfigNames(con, user.idUser);
+    const positions = await getPositions(con, user.idUser);
     for (let i in positions) {
         positions[i].id = positions[i].idposition;
     }
@@ -735,7 +737,7 @@ const getAsyncData = async (con, user, trans, underlying) => {
 
     con.end();
     if (stkData[user.currentStock] == undefined) {
-        let stk = await  getStockData();
+        let stk = await getStockData();
         user.info.stkData[user.currentStock] = stk;
     }
     return [configData, user.info.stkData[user.currentStock], configNames, positions, resultSet, ops];
@@ -1192,6 +1194,7 @@ const getAsyncDelPosition = async (con) => {
     con.end();
     return res;
 };
+
 function calcPerformance(name, id, trdata) {
     let res = user.info.res;
     let now = moment().format('YYYY-MM-DD');
@@ -1303,7 +1306,7 @@ function calcPerformance(name, id, trdata) {
                         if (tr.strike > user.info.underlyingLast) {
                             realizedSum += Math.abs(realizedCost);
                         } else {
-                            realizedSum += -1 * ( user.info.underlyingLast - tr.strike  ) * Math.abs(realizedQty) + Math.abs(realizedCost);
+                            realizedSum += -1 * (user.info.underlyingLast - tr.strike) * Math.abs(realizedQty) + Math.abs(realizedCost);
                         }
 
                     }
@@ -1345,16 +1348,18 @@ const getDataFromDBParam = async (con, sql, params) => {
         });
     });
 };
-function hasTag(currentTag,tags) {
+
+function hasTag(currentTag, tags) {
     let ts = tags.split(',');
-    for (let i in ts){
-        if (currentTag.toUpperCase() == ts[i].trim().toUpperCase()){
+    for (let i in ts) {
+        if (currentTag.toUpperCase() == ts[i].trim().toUpperCase()) {
             return true;
         }
     }
     return false;
 }
-const setAsyncTags = async ( con, journals, tagName) => {
+
+const setAsyncTags = async (con, journals, tagName) => {
 
 
     // journal only code
@@ -1362,98 +1367,199 @@ const setAsyncTags = async ( con, journals, tagName) => {
     let ops = [];
 
 
-    for (let i in journals){
+    for (let i in journals) {
+        sql = "SELECT  idjournal, tags FROM journal  where idjournal = " + journals[i] + " ;"
+        let j = await getDataFromDB(con, sql);
+        let existingTags = j[0].tags;
+        let allTags = existingTags.split(",");
+        let tmpSet = new Set();
+        for (let ii in allTags)
+            tmpSet.add(allTags[ii]);
+        allTags = tagName.split(",");
+        for (let ii in allTags)
+            tmpSet.add(allTags[ii]);
+        let array = [];
+        let tagList = "";
+        tmpSet.forEach(v => array.push(v));
+        for (let ii in array) {
+            if (ii != 0)
+                tagList += ",";
+            tagList += array[ii].trim();
+        }
+        ;
+        sql = "UPDATE journal SET   tags = '" + tagList +
+            "' where idjournal = " + journals[i];
+        let r = await getDataFromDB(con, sql);
+        // if (tagName != "archived") {
+        //     let t = tagName.split(",")[0].trim();
+        //     sql = "UPDATE user SET   currentTag ='" + t +
+        //         "' where iduser = " + user.idUser;
+        //     user.currentTag = t;
+        //
+        //     let re = await getDataFromDB(con, sql);
+        // }
+    }
+
+    con.end();
+
+
+    return;
+};
+
+const removeAsyncTags = async (con, journals, tagName) => {
+
+
+    // journal only code
+
+    let ops = [];
+
+
+
+    for (let i in journals) {
+        sql = "SELECT  idjournal, tags FROM journal  where idjournal = " + journals[i] + " ;"
+        let j = await getDataFromDB(con, sql);
+        let tagsForRemoval = tagName.split(",");
+        let existingTags = j[0].tags;
+        let allTags = existingTags.split(",");
+        let tmpSet = new Set();
+        for (let ii in allTags){
+            if (!tagsForRemoval.includes(allTags[ii]))
+                tmpSet.add(allTags[ii]);
+        }
+        let array = [];
+        let tagList = "";
+        tmpSet.forEach(v => array.push(v));
+        for (let ii in array) {
+            if (ii != 0)
+                tagList += ",";
+            tagList += array[ii].trim();
+        }
+        ;
+        sql = "UPDATE journal SET   tags = '" + tagList +
+            "' where idjournal = " + journals[i];
+        let r = await getDataFromDB(con, sql);
+        // if (tagName != "archived") {
+        //     let t = tagName.split(",")[0].trim();
+        //     sql = "UPDATE user SET   currentTag ='" + t +
+        //         "' where iduser = " + user.idUser;
+        //     user.currentTag = t;
+        //
+        //     let re = await getDataFromDB(con, sql);
+        // }
+        // if (!tagsForRemoval.includes(user.currentTag)){
+        //     sql = "UPDATE user SET   currentTag ='" + "All" +
+        //             "' where iduser = " + user.idUser;
+        //         user.currentTag = "All";
+        //
+        //         let re = await getDataFromDB(con, sql);
+        // }
+    }
+
+    con.end();
+
+
+    return;
+};
+const removeAsyncArchived = async (con, journals, tagName) => {
+
+
+    // journal only code
+
+    let ops = [];
+
+
+    for (let i in journals) {
         sql = "SELECT  idjournal, tags FROM journal  where idjournal = " + journals[i] + " ;"
         let j = await getDataFromDB(con, sql);
         let tag = j[0].tags;
-        if(tag.trim().length == 0){
-            tag = tagName.trim();
-        }else
-            tag += ","+tagName.trim();
-        sql = "UPDATE journal SET   tags = '" + tag+
-                "' where idjournal = " +journals[i];
+        if (tag.trim() == "archived") {
+            tag = "";
+        } else
+            tag = tag.substr(0, tag.length - 9);
+        sql = "UPDATE journal SET   tags = '" + tag +
+            "' where idjournal = " + journals[i];
         let r = await getDataFromDB(con, sql);
-        if (tagName!="archived"){
-            let t = tagName.split(",")[0].trim();
-            sql = "UPDATE user SET   currentTag ='" + t +
-                "' where iduser = " + user.idUser;
-            user.currentTag = t;
+    }
 
+    con.end();
+
+
+    return;
+};
+const getAsyncTags = async (con, tagFlag, tag) => {
+
+
+        // journal only code
+
+        let ops = [];
+
+        let sql;
+
+        // check for tag switch
+        if (tag != "$USECURRENT" && tag != user.currentTag) {
+            sql = "UPDATE user SET   currentTag ='" + tag +
+                "' where iduser = " + user.idUser;
+            user.currentTag = tag;
+           // console.log(`in getAsyncTag sql = ${sql}`);
             let re = await getDataFromDB(con, sql);
         }
-    }
+        // get the general journals
+        sql = "SELECT  idjournal, idposition, tags, name,createDate FROM journal  where iduser = " + user.idUser +
+            " AND idposition = 0;"
 
-    con.end();
+        let journals = await getDataFromDB(con, sql);
+        con.end();
+        let tagSet = new Set();
+        for (let i in journals) {
+            if (journals[i].tags.length != 0) {
+                let ts = journals[i].tags.split(',');
+                if (journals[i].tags.length != 0) {
+                    if(ts.includes("archived") && tagFlag == "true")
+                        continue;
+                    for (let t in ts) {
+                        if(ts[t].trim().length== 0)
+                            continue;
+                        tagSet.add(ts[t].trim());
+                    }
+                }
+            }
+            if (tagFlag == "false" && hasTag("archived", journals[i].tags)) {
+                ops.push({
+                    id: 0,
+                    jid: journals[i].idjournal,
+                    name: journals[i].name,
+                    tags: journals[i].tags,
+                    date: moment(journals[i].createDate, 'YYYY-MM-DD HH:mm:ss').format("YYYY-MM-DD")
+                });
+            }
+            if (tagFlag == "true" && !hasTag("archived", journals[i].tags) &&
+                (user.currentTag == "All" || hasTag(user.currentTag, journals[i].tags))) {
 
+                ops.push({
+                    id: 0,
+                    jid: journals[i].idjournal,
+                    name: journals[i].name,
+                    tags: journals[i].tags,
+                    date: moment(journals[i].createDate, 'YYYY-MM-DD HH:mm:ss').format("YYYY-MM-DD")
+                });
+            }
 
-    return ;
-};
-const removeAsyncArchived = async ( con, journals, tagName) => {
-
-
-    // journal only code
-
-    let ops = [];
-
-
-    for (let i in journals){
-        sql = "SELECT  idjournal, tags FROM journal  where idjournal = " + journals[i] + " ;"
-        let j = await getDataFromDB(con, sql);
-        let tag = j[0].tags;
-        if(tag.trim() == "archived"){
-            tag = "";
-        }else
-            tag = tag.substr(0,tag.length-9);
-        sql = "UPDATE journal SET   tags = '" + tag+
-            "' where idjournal = " +journals[i];
-        let r = await getDataFromDB(con, sql);
-    }
-
-    con.end();
-
-
-    return ;
-};
-const getAsyncTags = async ( con, tag) => {
-
-
-    // journal only code
-
-    let ops = [];
-
-
-    // get the general journals
-    sql = "SELECT  idjournal, idposition, tags, name,createDate FROM journal  where iduser = " + user.idUser +
-        " AND idposition = 0;"
-
-    let journals = await getDataFromDB(con, sql);
-    con.end();
-    for (let i in journals) {
-
-
-        if( tag =="true" && !hasTag("archived",journals[i].tags) || tag == "false" && hasTag("archived",journals[i].tags)  ) {
-
-            ops.push({
-                id: 0,
-                jid: journals[i].idjournal,
-                name: journals[i].name,
-                tags: journals[i].tags,
-                date: moment(journals[i].createDate, 'YYYY-MM-DD HH:mm:ss').format("YYYY-MM-DD")
-            });
         }
+        let tagArray = ["All"];
+        if (tagSet.size != 0) {
+            tagSet.forEach(v => tagArray.push(v));
+        }
+
+
+        return [ops, tagArray];
     }
-
-
-
-
-    return [ ops];
-};
+;
 
 app.post('/unarchivedJournals', function (req, resp) { // switch journal
     let obj = req.body;
     let arr = obj["journals[]"];
     if (obj.len == 1)
-        arr =  [arr];
+        arr = [arr];
     let con = connectToDB();
     removeAsyncArchived(con, arr).then((data) => {
 
@@ -1464,26 +1570,69 @@ app.post('/unarchivedJournals', function (req, resp) { // switch journal
     });
 
 });
+
 app.post('/tagJournals', function (req, resp) { // switch journal
     let obj = req.body;
     let arr = obj["journals[]"];
     if (obj.len == 1)
-        arr =  [arr];
+        arr = [arr];
     let con = connectToDB();
-    setAsyncTags(con, arr,obj.tag).then((data) => {
+    setAsyncTags(con, arr, obj.tag).then((data) => {
 
         resp.json({positions: 1});
     }).catch(function (err) {
-            console.log("ERROR ERROR tag journal " + err);
-            return;
-        });
+        console.log("ERROR ERROR tag journal " + err);
+        return;
+    });
+
+});app.post('/removeJournalTags', function (req, resp) { // switch journal
+    let obj = req.body;
+    let arr = obj["journals[]"];
+    if (obj.len == 1)
+        arr = [arr];
+    let con = connectToDB();
+    removeAsyncTags(con, arr, obj.tag).then((data) => {
+
+        resp.json({positions: 1});
+    }).catch(function (err) {
+        console.log("ERROR ERROR remove tag journal " + err);
+        return;
+    });
+
+});
+
+app.post('/tagJournals', function (req, resp) { // switch journal
+    let obj = req.body;
+    let arr = obj["journals[]"];
+    if (obj.len == 1)
+        arr = [arr];
+    let con = connectToDB();
+    setAsyncTags(con, arr, obj.tag).then((data) => {
+
+        resp.json({positions: 1});
+    }).catch(function (err) {
+        console.log("ERROR ERROR tag journal " + err);
+        return;
+    });
 
 });
 app.post('/getTags', function (req, resp) { // switch journal
     let con = connectToDB();
     let obj = req.body;
-    getAsyncTags(con, obj.tag).then((data) => {
-        resp.json({ positions: data[0] });
+   // console.log(`flag = ${obj.tagFlag} jid = ${obj.tag}`);
+    getAsyncTags(con, obj.tagFlag, obj.tag).then((data) => {
+        if(obj.tagFlag == "true" && data[0].length == 0){
+
+            let con = connectToDB();
+            getAsyncTags(con, obj.tagFlag, "All").then((data) => {
+                resp.json({positions: data[0], tags: data[1], currentTag: user.currentTag});
+            }).catch(function (err) {
+                console.log("ERROR ERROR gettags " + err);
+                return;
+            });
+        }
+        else
+            resp.json({positions: data[0], tags: data[1], currentTag: user.currentTag});
     }).catch(function (err) {
         console.log("ERROR ERROR gettags " + err);
         return;
@@ -1549,13 +1698,13 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
                 id: info[tp].id,
                 jid: r[0].idjournal,
                 name: info[tp].name,
-                tags:"$N/A"
+                tags: "$N/A"
             })
         }
     }
 
     // check for tag switch
-    if (tag != "$USECURRENT" && tag != user.currentTag){
+    if (tag != "$USECURRENT" && tag != user.currentTag) {
         sql = "UPDATE user SET   currentTag ='" + tag +
             "' where iduser = " + user.idUser;
         user.currentTag = tag;
@@ -1583,18 +1732,19 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
         journalAssigned = true;
         if (journals[i].tags.length != 0) {
             let ts = journals[i].tags.split(',');
+            if(ts.includes("archived"))
+                continue;
             for (let t in ts) {
-                if( ts[t] =="archived") {
+                if(ts[t].trim().length== 0)
                     continue;
-                }
                 tagSet.add(ts[t].trim());
             }
         }
-        if( hasTag("archived",journals[i].tags)) {
+        if (hasTag("archived", journals[i].tags)) {
             continue;
         }
-        if(user.currentTag == "All" || hasTag(user.currentTag,journals[i].tags)) {
-            if(assignedJid ) {
+        if (user.currentTag == "All" || hasTag(user.currentTag, journals[i].tags)) {
+            if (assignedJid) {
                 jid = journals[i].idjournal;
                 gjDate = journals[i].createDate;
                 assignedJid = false;
@@ -1664,7 +1814,7 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
 
     }
     con.end();
-    console.log("jid =" +jid);
+   // console.log("jid =" + jid);
     return [jid, ops, retJournal, pid, tagArray];
 };
 
@@ -1698,8 +1848,7 @@ const getAsyncSaveNote = async (con, specificJID, specificPID, noteId, text, dt)
             sql = "DELETE FROM tr_journal_entries WHERE id = " + noteId + ";";
             await getDataFromDB(con, sql);
             rid = -1;
-        }
-        else {
+        } else {
             sql = "UPDATE tr_journal_entries SET  entry = ? WHERE id = " + noteId + ";";
             await getDataFromDBParam(con, sql, [text]);
         }
@@ -1815,8 +1964,7 @@ const getAsyncMoveTrans = async (con, copy, move, create, mvpos, name, trans) =>
         }
 
 
-    }
-    else if (!copy && move) {
+    } else if (!copy && move) {
         let sql = "UPDATE position_transaction SET  idposition = " + mvpos + " where idposition  = " + idPosition +
             " AND idtransaction IN (" + trans + ");";
         res = await getDataFromDB(con, sql);
@@ -1990,6 +2138,7 @@ const getAsyncUpload = async (sel, pos, val) => {
     return arr.length;
 };
 let lastTransTime = 0
+
 class ImportTrans {
 
     constructor(cnt, line) {
@@ -2065,8 +2214,7 @@ app.post('/upload', function (req, resp) {
                         trade_days.push(td);
                     }
                     buf.push(it);
-                }
-                else
+                } else
                     continueToRead = false;
             }
             if (last) {
