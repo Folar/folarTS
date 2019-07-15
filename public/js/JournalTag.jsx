@@ -72,19 +72,25 @@ var JournalTag = React.createClass({
         }
         return false;
     },
-
-    success: function (data) {
+    refreshSelections:function () {
         this.mySet.clear();
         this.nameSet.clear();
         this.tagMap = [];
+        $("#archBtn").addClass("disabled");
+        $("#mybidbuttonModalTag").addClass("disabled");
+        $("#mybidbuttonModalTagR").addClass("disabled");
+        this.setState({mySet: this.mySet, removeTags: []
+        });
+    },
+
+    success: function (data) {
+        this.refreshSelections();
         let buttonLbl = "Archived";
         if (this.props.tag != "true") {
             buttonLbl = "Unarchived";
             // alert(buttonLbl)
         }
-        $("#archBtn").addClass("disabled");
-        $("#mybidbuttonModalTag").addClass("disabled");
-        $("#mybidbuttonModalTagR").addClass("disabled");
+
 
 
         console.log("bligl" +this.state.tagSel);
@@ -373,6 +379,7 @@ var JournalTag = React.createClass({
                             <JournalDlg dlgType={0} modal="ModalTag" buttonLabel={"Tag journals"}
                                         title={"Tag the journals " + this.state.journals} tags={this.state.tags}
                                         rtags={this.state.removeTags}
+                                        quit={this.refreshSelections}
                                         okFunc={this.okModJournal} label="Name" initVal={""}/>
                         </Col>}
                         {this.props.tag == "true" && <Col xs={2}>
@@ -380,6 +387,7 @@ var JournalTag = React.createClass({
                                         title={"Remove tags from the journals " + this.state.journals}
                                         tags={this.state.tags}
                                         rtags={this.state.removeTags}
+                                        quit={this.refreshSelections}
                                         okFunc={this.okRemoveTags} label="Name" initVal={""}/>
                         </Col>}
 

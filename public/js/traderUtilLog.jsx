@@ -21,20 +21,20 @@ var JournalDlg = React.createClass({
             rtags: this.props.rtags
         };
     },
-    dlgTxt: null,
-    keyg:5,
+    nameTxt: "",
+    keyg: 5,
     dtTxt: null,
     tagTxt: null,
     mySet: new Set(),
     handleTagChange: function (e) {
-
+        console.log("uuuuuuuuuuuuuuu")
         this.setState({tagText: e.target.value});
 
         if (e.target.value.length > 0) {
-            $("#newTag").removeClass("disabled");
+            $("#newTag"+ this.props.modal).removeClass("disabled");
 
         } else {
-            $("#newTag").addClass("disabled");
+            $("#newTag"+ this.props.modal).addClass("disabled");
         }
     },
     handleDateChange: function (e) {
@@ -42,44 +42,63 @@ var JournalDlg = React.createClass({
     },
     handleChange: function (e) {
         this.setState({nameText: e.target.value});
-    },
-    quit: function (t) {
         if (this.props.dlgType == 1) {
-            this.props.okFunc($(this.refs.txt.getDOMNode())[0].value,
+            if (e.target.value.trim().length > 0)
+                $("#okButton" + this.props.modal).removeClass("disabled");
+            else
+                $("#okButton" + this.props.modal).addClass("disabled");
+        }
+    },
+    ok: function (t) {
+        if (this.props.dlgType == 1) {
+            this.props.okFunc($(this.refs.nameTxt.getDOMNode())[0].value,
                 this.state.genJournalSel, $(this.refs.dateTxt.getDOMNode())[0].value,
-                $(this.refs.tagTxt.getDOMNode())[0].value);
+                this.state.tagList);
 
         } else
             this.props.okFunc(this.state.tagList, this.state.genJournalSel, 0, 0);
         this.mySet.clear();
         this.state.mySet.clear();
         this.setState({mySet: this.mySet, tagList: ""});
+        if(this.tagTxt)
+            $(this.refs.tagTxt.getDOMNode())[0].value ="";
 
     },
+    quit: function (t) {
+        this.props.quit();
+        if (this.props.dlgType != 2) {
+            $("#newTag" + this.props.modal).addClass("disabled");
+            $(this.refs.tagTxt.getDOMNode())[0].value = "";
+        }
+    },
     componentWillReceiveProps: function () {
-        this.setState({nameText: this.props.initVal});
+
         this.setState({tags: this.props.tags});
+
 
         if (this.refs.dateTxt) {
             this.setState({dateText: this.props.dt});
-            this.setState({tagText: this.props.tags});
+            this.setState({nameText: this.props.initVal});
+            if (this.props.initVal.length >  0)
+                $("#okButton" + this.props.modal).removeClass("disabled");
+            if (this.props.title =="Modify General Journal"){
+                let t=this.props.setTags.split(",");
+                let s = new Set()
+                for(let i in t)
+                    s.add(t[i]);
+                this.mySet = s;
+                this.setState({mySet: s, tagList: this.props.setTags})
+            }
 
         }
     },
     componentDidMount: function () {
-        if (this.refs.txt)
-            this.dlgTxt = $(this.refs.txt.getDOMNode())[0];
         if (this.refs.dateTxt) {
             this.dtTxt = $(this.refs.dateTxt.getDOMNode())[0];
-            this.tagTxt = $(this.refs.tagTxt.getDOMNode())[0];
+            this.nameTxt = $(this.refs.nameTxt.getDOMNode())[0];
         }
     },
-    switchgj: function () {
 
-
-        var id = this.refs.nameCombo.getConfigName();
-        this.setState({genJournalSel: id})
-    },
     getFG: function (item) {
         let col = "#7a414d";
         return this.state.mySet.has(item) ? "lightblue" : col;
@@ -97,7 +116,8 @@ var JournalDlg = React.createClass({
         }
         let tagList = ""
         if (this.mySet.size > 0) {
-            $("#okButton"+this.props.modal).removeClass("disabled");
+            if (this.props.dlgType != 1)
+                $("#okButton" + this.props.modal).removeClass("disabled");
             let array = [];
             this.mySet.forEach(v => array.push(v));
             for (let i in array) {
@@ -106,13 +126,15 @@ var JournalDlg = React.createClass({
                 tagList += array[i];
             }
         } else {
-            $("#okButton"+this.props.modal).addClass("disabled");
+            if (this.props.dlgType != 1)
+                $("#okButton" + this.props.modal).addClass("disabled");
         }
         this.setState({mySet: this.mySet, tagList: tagList});
     },
     addNewTag: function (t) {
 
-        let tt = $(this.refs.tagTxt.getDOMNode())[0].value
+        let tt = $(this.refs.tagTxt.getDOMNode())[0].value;
+        $(this.refs.tagTxt.getDOMNode())[0].value = "";
         let nt = tt.split(",");
 
         for (let i in nt) {
@@ -121,7 +143,8 @@ var JournalDlg = React.createClass({
             }
             this.mySet.add(nt[i]);
         }
-        $("#okButton"+this.props.modal).removeClass("disabled");
+        if (this.props.dlgType != 1)
+            $("#okButton" + this.props.modal).removeClass("disabled");
         let array = [];
         let tagList = "";
         this.mySet.forEach(v => array.push(v));
@@ -130,12 +153,13 @@ var JournalDlg = React.createClass({
                 tagList += ",";
             tagList += array[i];
         }
+        debugger;
         this.setState({tags: this.state.tags, mySet: this.mySet, tagList: tagList});
     },
     render: function () {
 
 
-        if (this.dlgTxt) this.dlgTxt.value = this.state.nameText;
+        if (this.nameTxt) this.nameTxt.value = this.state.nameText;
         if (this.dtTxt) this.dtTxt.value = this.state.dateText;
         if (this.tagTxt) this.tagTxt.value = this.state.tagText;
         var lbl = "my" + this.props.modal + "Label";
@@ -148,12 +172,13 @@ var JournalDlg = React.createClass({
 
             var clonedArray = JSON.parse(JSON.stringify(this.state.tags));
             console.log("cloneArr = " + JSON.stringify(this.state.tags))
-            clonedArray.splice(0, 1);
+            if (this.state.tags.length > 0)
+                clonedArray.splice(0, 1);
         }
 
-        let positionBoxes=[] ;
-        for(let i = 0 ;i<clonedArray.length;i+=5 ) {
-            let lim = i + 5 > clonedArray.length? clonedArray.length - i:5;
+        let positionBoxes = [];
+        for (let i = 0; i < clonedArray.length; i += 5) {
+            let lim = i + 5 > clonedArray.length ? clonedArray.length - i : 5;
             var clonedArray2 = JSON.parse(JSON.stringify(clonedArray));
             let boxes = clonedArray2.splice(i, lim).map((item, index) => {
                 return (
@@ -178,7 +203,6 @@ var JournalDlg = React.createClass({
         });
 
 
-
         return (
             <div xs={10} className="container">
 
@@ -196,51 +220,38 @@ var JournalDlg = React.createClass({
                                     aria-hidden="true">&times;</span><span className="sr-only">Close</span></button>
                                 <h4 className="modal-title" id={lbl} key={this.props.key}>{this.props.title}</h4>
                             </div>
-                            <div className="modal-body">
+                            <div>
+
+                                {this.props.dlgType == 1 ?
+                                    <Row xs={6} className="container">
+                                        <Col xs={3} className="positionLbl">
+                                            {this.props.label}
+                                        </Col>
+                                        <Col xs={3} >
+                                            <input onChange={this.handleChange} className="searchBox"
+                                                                      ref="nameTxt"/>
+                                        </Col>
+
+                                    </Row> : ""}
+
+                                {this.props.dlgType == 1 ?
+                                    <Row xs={6} className="container">
+                                        <Col xs={3} className="positionLbl">
+                                            Start Date(YYYY-MM-DD):
+                                        </Col>
+
+                                        <Col xs={3}>
+                                            <input className="searchBox"
+                                                   ref="dateTxt" onChange={this.handleDateChange}/>
+                                        </Col>
+                                    </Row> : ""}
 
                             </div>
-
-
-                            {this.props.dlgType == 1 ?
-                                <Row xs={5} className="container">
-                                    <Col xs={3} className="positionLbl">
-                                        {this.props.label} <input onChange={this.handleChange} className="searchBox"
-                                                                  ref="txt"/>
-                                    </Col>
-
-                                </Row> : ""}
-
-                            {this.props.dlgType == 1 ?
-                                <Row xs={5} className="container">
-                                    <Col xs={3} className="positionLbl">
-                                        Start Date(YYYY-MM-DD):
-                                    </Col>
-
-                                    <Col xs={2}>
-                                        <input className="searchBox"
-                                               ref="dateTxt" onChange={this.handleDateChange}/>
-                                    </Col>
-                                </Row> : ""}
-                            {this.props.dlgType == 1 ?
-                                <Row xs={5} className="container">
-                                    <Col xs={3} className="positionLbl">
-                                        Tags (MarBB,MarMonarchs):
-                                    </Col>
-
-                                    <Col xs={2}>
-                                        <input className="searchBox"
-                                               ref="tagTxt" onChange={this.handleTagChange}/>
-                                    </Col>
-                                </Row> : ""}
-
                             <div className="overflowy">
                                 <Row xs={8} className="container">
-                                    <Col xs={5} className="positionLbl">
-                                        {this.state.tagList}
-                                    </Col>
                                     {this.props.dlgType != 2 ?
                                         <Col xs={1}>
-                                            <button type="button" id="newTag" onClick={this.addNewTag}
+                                            <button type="button" id={"newTag"+ this.props.modal} onClick={this.addNewTag}
                                                     className="btn  btn-primary disabled">Add Tag
                                             </button>
                                         </Col> : ""}
@@ -249,6 +260,10 @@ var JournalDlg = React.createClass({
                                             <input className="searchBox"
                                                    ref="tagTxt" onChange={this.handleTagChange}/>
                                         </Col> : ""}
+                                    <Col xs={5} className="positionLbl">
+                                        {this.state.tagList}
+                                    </Col>
+
 
                                 </Row>
                                 <Row xs={12} className="container">
@@ -257,9 +272,10 @@ var JournalDlg = React.createClass({
                             </div>
                             <div className="modal-footer">
 
-                                <button type="button" className="btn btn-default" data-dismiss="modal">Cancel</button>
-                                <button type="button" className="btn btn-primary disabled" onClick={this.quit}
-                                        id={"okButton"+this.props.modal}
+                                <button type="button" className="btn btn-default" data-dismiss="modal"
+                                        onClick={this.quit}>Cancel</button>
+                                <button type="button" className="btn btn-primary disabled" onClick={this.ok}
+                                        id={"okButton" + this.props.modal}
                                         data-dismiss="modal">{this.props.buttonLabel}</button>
                             </div>
                         </div>

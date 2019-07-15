@@ -281,18 +281,20 @@ var JournalPosition = React.createClass({
                         </Col>}
                         {this.state.report == "true" && <Col xs={2}/>}
                         {this.state.report == "false" && <Col xs={2}>
-                            <NameDlg dlgType={1} modal="Modala" buttonLabel="Modify Journal"
+                            <JournalDlg dlgType={1} modal="Modala" buttonLabel="Modify Journal"
                                      title="Modify General Journal"
-                                     genJournal={[]} gj="false" dt={this.journalDate()} tags={this.journalTags()}
+                                     genJournal={[]} gj="false" dt={this.journalDate()} tags={this.state.tags}
+                                        setTags={this.journalTags()} rtags={[]}
                                      okFunc={this.okModJournal} label="Name" initVal={this.journalName()}/>
                         </Col> }
                         <Col xs={3}>
                             <h3> Journals </h3>
                         </Col>
                         {this.state.report == "false" && <Col xs={2}>
-                            <NameDlg dlgType={1} modal="Modaldd" buttonLabel="Create General Journal"
-                                     title="New General Journal"
-                                     genJournal={[]} gj="false" dt={this.formatDate()} tags={this.initValEmpty()}
+                            <JournalDlg dlgType={1} modal="Modaldd" buttonLabel="Create General Journal"
+                                     title="New General Journal" rtags={[]}
+                                        setTags={this.journalTags()} rtags={[]}
+                                     genJournal={[]} gj="false" dt={this.formatDate()} tags={this.state.tags}
                                      okFunc={this.okNewJournal} label="Name" initVal=""/>
                         </Col> }
                     </Row>
