@@ -223,6 +223,8 @@ var JournalPosition = React.createClass({
             this.switchPosition(-1, -1);
         }
     },
+    refreshSelections: function(){},
+
     render: function () {
         let me = this;
         let positionBoxes=[] ;
@@ -285,6 +287,7 @@ var JournalPosition = React.createClass({
                                      title="Modify General Journal"
                                      genJournal={[]} gj="false" dt={this.journalDate()} tags={this.state.tags}
                                         setTags={this.journalTags()} rtags={[]}
+                                        quit={this.refreshSelections}
                                      okFunc={this.okModJournal} label="Name" initVal={this.journalName()}/>
                         </Col> }
                         <Col xs={3}>
@@ -295,6 +298,7 @@ var JournalPosition = React.createClass({
                                      title="New General Journal" rtags={[]}
                                         setTags={this.journalTags()} rtags={[]}
                                      genJournal={[]} gj="false" dt={this.formatDate()} tags={this.state.tags}
+                                        quit={this.refreshSelections}
                                      okFunc={this.okNewJournal} label="Name" initVal=""/>
                         </Col> }
                     </Row>
