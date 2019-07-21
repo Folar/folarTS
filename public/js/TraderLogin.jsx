@@ -20,7 +20,7 @@ var TraderLogin = React.createClass({
         var name = $(this.refs.name.getDOMNode())[0].value;
         var pw = $(this.refs.pw.getDOMNode())[0].value;
         var func = this.props.func;
-        $.post("/login", {name:"lar", pw:"lar"}, function (data) {
+        $.post("/login", {name:name, pw:pw}, function (data) {
 
                 if (data.badLogin)
                     alert("Wrong user and password");
@@ -74,7 +74,7 @@ var TraderLogin = React.createClass({
 
                         <Row xs={12}>
                             <div >
-                                <p className='wantto'>Do you want to use the Folar Trade Station, But Don't have an
+                                <p className='wantto'>Do you want to use the Folar Journal, But Don't have an
                                     account?</p>
                             </div>
                         </Row>
