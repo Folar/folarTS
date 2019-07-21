@@ -41,13 +41,6 @@ var thePositions = new Array();
 var thePositionsArr = new Array();
 var theTransactions = new Array();
 
-const WEB_STATE_TRADE = 0;
-const WEB_STATE_LOG = 1;
-const WEB_STATE_REPORT = 2;
-const WEB_STATE_JOURNAL = 3;
-const WEB_STATE_CONFIG = 4;
-const WEB_STATE_REG = 5;
-const WEB_STATE_LOGIN = 6;
 
 
 

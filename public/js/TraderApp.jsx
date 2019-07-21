@@ -6,6 +6,12 @@ var Accordion = ReactBootstrap.Accordion;
 var Panel = ReactBootstrap.Panel;
 var Input = ReactBootstrap.Input;
 var Table = ReactBootstrap.Table;
+const JOURNAL_POSITION = 0;
+const JOURNAL_REPORT = 1;
+const JOURNAL_TAG = 2;
+const JOURNAL_ARCHIVE = 3;
+const WEB_STATE_REG = 4;
+const WEB_STATE_LOGIN = 5;
 
 var MenuFolar = React.createClass({
 
@@ -75,31 +81,12 @@ var TraderApp = React.createClass({
     getInitialState: function () {
         return {
             webState: WEB_STATE_LOGIN,
-            firstTime: 1,
-            userName: 'Ed',
-            configNames: [{item: "Default", id: 9}],
-            configSel: 0,
-            fnc: null,
-            offset: -1,
-            cols: {
-                col1: "iv",
-                col2: "mid",
-                col3: "position",
-                col4: "delta",
-                col5: "trade"
-            },
-            menu: [{name: 'Trade', style: ''},
-                {name: 'Transaction Log', style: 'disabled'},
-                {name: 'Report', style: 'disabled'},
-                {name: 'Journal', style: ''},
-                {name: 'Settings', style: 'disabled'}]
+            jid:-1,
+            pid:-1
         };
     },
     quit: function () {
-        thePositions = new Array();
-        thePositionsArr = new Array();
-        transSource.localData = thePositionsArr;
-        this.setState({webState: WEB_STATE_LOGIN, firstTime: 1});
+        this.setState({webState: WEB_STATE_LOGIN, firstTime: 5});
     },
 
     setOffset: function (os) {
@@ -111,34 +98,22 @@ var TraderApp = React.createClass({
     },
     enableMenu: function(){
 
-            this.setState({ menu: [{name: 'Trade', style: ''},
-                {name: 'Transaction Log', style: ''},
-                {name: 'Report', style: ''},
+            this.setState({ menu: [
                 {name: 'Journal', style: ''},
                 {name: 'Settings', style: ''}]});
 
+    },
+    switchJournal:function (jid,pid) {
+
+        this.setState({jid:jid,pid:pid});
     },
 
     render: function () {
         var me = this;
         var transition = function (state, name, fnc) {
 
-            if(state == 0){
-                me.setState({ menu: [{name: 'Trade', style: 'disabled'},
-                    {name: 'Transaction Log', style: 'disabled'},
-                    {name: 'Report', style: 'disabled'},
-                    {name: 'Journal', style: 'disabled'},
-                    {name: 'Settings', style: 'disabled'}]});
-            }
-            if (state == 1) {
-                if (me.state.fnc == null) {
-                    me.setState({fnc: fnc});
-                }
-            }
-            if (state == WEB_STATE_TRADE && me.state.webState == 1) {
-                // make sure the tab is correct after deleting the position
-                me.state.fnc()
-            }
+
+
             if (me.state.webState == WEB_STATE_LOGIN || me.state.webState == WEB_STATE_REG) {
                 me.setState({userName: name});
             }
@@ -146,20 +121,30 @@ var TraderApp = React.createClass({
             me.setState({webState: state});
         };
 
-        var page = <Trader ofunc={this.setOffset} setCol={this.setColumns} firstTime={this.state.firstTime}
-                           offset={this.state.offset} enableMenu={this.enableMenu}/>;
-        if (this.state.webState == WEB_STATE_CONFIG) {
+        var page ="";
+        debugger;
 
-            page = <TraderConfig ref="config"/>;
-        } else if (this.state.webState == WEB_STATE_LOG) {
+        switch (this.state.webState){
+            case JOURNAL_POSITION:
+                page = <JournalPosition report="false" key={1} jid={this.state.jid} pid={this.state.pid}
+                                        switchJournal={this.switchJournal}/>;
+                break;
+            case JOURNAL_REPORT:
+                page = <JournalPosition report="true" key={2}  jid={this.state.jid} pid={this.state.pid}
+                                        switchJournal={this.switchJournal}/>;
+                break;
+            case JOURNAL_TAG:
+                page = <JournalTag tag="true" key={3}/>;
+                break;
+            case JOURNAL_ARCHIVE:
+                page = <JournalTag tag="false" key={4}/>;
+                break;
+           ;
+            case WEB_STATE_REG:
 
-            page = <TraderLog func={transition}/>;
-        } else if (this.state.webState == WEB_STATE_REPORT) {
-
-            page = <TraderReport />;
-        } else if (this.state.webState == WEB_STATE_JOURNAL) {
-            page = <TraderJournal/>
+               page = <TraderRegister func={transition}/>
         }
+
 
         //alert (this.state.webState);
         switch (this.state.webState) {
@@ -177,21 +162,19 @@ var TraderApp = React.createClass({
                         <TraderLogin func={transition}/>
                     </div>
                 );
-            case WEB_STATE_TRADE:
-            case WEB_STATE_LOG:
-            case WEB_STATE_REPORT:
-            case WEB_STATE_JOURNAL:
-            case WEB_STATE_CONFIG:
+            default:
+                debugger;
                 return (
                     <div>
                         <div xs={12} className="container">
                             <Row>
                                 <Col xs={2}>
-                                    <h3 className="titleFont2">Folar Trade Station</h3>
+                                    <h3 className="titleFont2">Folar Journal</h3>
                                 </Col>
                                 <Col xs={6}>
-                                    <MenuFolar func={transition} focus="3"
-                                               items={this.state.menu }/>
+                                    <MenuFolar func={transition} focus="0"
+                                               items={ [{name: 'By Position', style: ''}, {name: 'Report', style: ''}, {name: 'Tag', style: ''},{name: 'Archived', style: ''}] }/>
+
                                 </Col>
                                 <Col xs={4} className="menuSuffix">
                                     <span className="exit"> Hi {this.state.userName} &nbsp;&nbsp;  <img className="exit"

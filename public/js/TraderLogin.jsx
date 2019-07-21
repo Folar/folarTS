@@ -20,13 +20,13 @@ var TraderLogin = React.createClass({
         var name = $(this.refs.name.getDOMNode())[0].value;
         var pw = $(this.refs.pw.getDOMNode())[0].value;
         var func = this.props.func;
-        $.post("/login", {name:name, pw:pw}, function (data) {
+        $.post("/login", {name:"lar", pw:"lar"}, function (data) {
 
                 if (data.badLogin)
                     alert("Wrong user and password");
 
                 else {
-                    func(3, data.email, 1);
+                    func(0, data.email, 1);
                     //this.setState({busy: false});
                 }
             }
@@ -40,7 +40,7 @@ var TraderLogin = React.createClass({
     },
 
     onClick: function () {
-        this.props.func(5);
+        this.props.func(4);
     },
 
     render: function () {
@@ -48,7 +48,7 @@ var TraderLogin = React.createClass({
 
         return (
             <div xs={12} className="container">
-                <h1 className="titleFont">Folar Trade Station</h1>
+                <h1 className="titleFont">Folar Journal</h1>
                 <Row xs={12}>
 
                     <Col className="col-lg-6 col-md-12 col-sm-12 borderRight">

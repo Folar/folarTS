@@ -9,10 +9,6 @@ var Accordion = ReactBootstrap.Accordion;
 var Panel = ReactBootstrap.Panel;
 var Input = ReactBootstrap.Input;
 var Table = ReactBootstrap.Table;
-const JOURNAL_POSITION = 0;
-const JOURNAL_REPORT = 1;
-const JOURNAL_TAG = 2;
-const JOURNAL_ARCHIVE = 3;
 
 var TraderJournal = React.createClass({
     getInitialState: function () {
