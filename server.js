@@ -946,7 +946,7 @@ app.post('/switchPosition', function (req, resp) { // switch journal
             tags: data[4], currentTag: user.currentTag
         });
     }).catch(function (err) {
-        console.log("ERROR ERROR tradeperformance " + err);
+        console.log("ERROR ERROR switch positions " + err +"jid ="+ obj.jid+ " pid="+ obj.pid, + " tag="+obj.tag);
         return;
     });
 });

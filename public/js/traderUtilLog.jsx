@@ -27,7 +27,6 @@ var JournalDlg = React.createClass({
     tagTxt: null,
     mySet: new Set(),
     handleTagChange: function (e) {
-        console.log("uuuuuuuuuuuuuuu")
         this.setState({tagText: e.target.value});
 
         if (e.target.value.length > 0) {
@@ -153,7 +152,6 @@ var JournalDlg = React.createClass({
                 tagList += ",";
             tagList += array[i];
         }
-        debugger;
         this.setState({tags: this.state.tags, mySet: this.mySet, tagList: tagList});
     },
     render: function () {
@@ -171,7 +169,7 @@ var JournalDlg = React.createClass({
         if (this.props.dlgType != 2) {
 
             var clonedArray = JSON.parse(JSON.stringify(this.state.tags));
-            console.log("cloneArr = " + JSON.stringify(this.state.tags))
+
             if (this.state.tags.length > 0)
                 clonedArray.splice(0, 1);
         }

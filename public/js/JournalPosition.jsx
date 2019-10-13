@@ -27,6 +27,7 @@ var JournalPosition = React.createClass({
 
         var func = this.success;
         $.post("/switchPosition", {pid: this.props.pid, jid: this.props.jid, tag: "$USECURRENT"}, function (data) {
+                console.log("componentDidMount tag=$USECURRENT");
                 func(data);
                 //this.setState({busy: true});
             }
@@ -115,11 +116,13 @@ var JournalPosition = React.createClass({
                 sel = this.newTags.split(",")[0].trim();
         }
         this.newTags = "$";
+        console.log("switchPositiion sel"+sel);
         $.post("/switchPosition", {pid: id, jid: jid, tag: sel}, function (data) {
             func(data);
         })
     },
     okNewJournal: function (val, junk, dt, tags) {
+        console.log("okNewJournal");
         let func = this.switchPosition;
         this.newTags = tags;
         $.post("/newJournal",
@@ -140,6 +143,7 @@ var JournalPosition = React.createClass({
         });
     },
     okModJournal: function (val, junk, dt, tags) {
+        console.log("okModJournal");
         this.newTags = tags;
         let func = this.switchPosition;
         $.post("/modJournal",
@@ -213,6 +217,7 @@ var JournalPosition = React.createClass({
         return null;
     },
     switchTags: function () {
+        console.log("switchTags");
         var id = this.refs.tagsCombo.getConfigName();
         this.setState({tagSel: id});
         if(this.getCurrentPosition() == null)

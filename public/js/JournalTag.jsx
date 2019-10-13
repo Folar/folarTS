@@ -93,11 +93,9 @@ var JournalTag = React.createClass({
 
 
 
-        console.log("bligl" +this.state.tagSel);
         if(this.state.tagSel.length >0 && data.currentTag != this.state.tagSel&& data.currentTag == "All"){
             this.state.tagSel = "All";
             this.fixTags();
-            console.log("FIXXXXXX");
         }else {
             this.setState({
                 positions: data.positions, mySet: this.mySet, lbl: buttonLbl, tags: data.tags,

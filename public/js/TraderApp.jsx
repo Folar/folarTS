@@ -122,7 +122,7 @@ var TraderApp = React.createClass({
         };
 
         var page ="";
-        debugger;
+
 
         switch (this.state.webState){
             case JOURNAL_POSITION:
@@ -163,7 +163,7 @@ var TraderApp = React.createClass({
                     </div>
                 );
             default:
-                debugger;
+
                 return (
                     <div>
                         <div xs={12} className="container">

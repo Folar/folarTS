@@ -3,399 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="5ad510bb-4656-4461-b8c0-ceb240b56920" name="Default" comment="tradeer import">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatrixRow.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TradeDataCache.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TradeDataPeriod.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TradeDataRepository.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TradeDataRow.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TradeLogInfo.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TradePerformance.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TradePerformanceInfo.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Transaction.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/JournalPosition.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/JournalPosition.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/JournalTag.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/JournalTag.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/TraderApp.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/TraderApp.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/TraderJournal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/TraderJournal.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/TraderLogin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/TraderLogin.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/globalization/ReadMe.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/globalization/globalize.culture.cs-CZ.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/globalization/globalize.culture.de-DE.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/globalization/globalize.culture.en-CA.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/globalization/globalize.culture.en-US.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/globalization/globalize.culture.fr-FR.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/globalization/globalize.culture.he-IL.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/globalization/globalize.culture.hr-HR.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/globalization/globalize.culture.hu-HU.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/globalization/globalize.culture.it-IT.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/globalization/globalize.culture.ja-JP.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/globalization/globalize.culture.lt.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/globalization/globalize.culture.ru-RU.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/globalization/globalize.culture.sa-IN.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/globalization/globalize.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqx-all.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxangular.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxbulletchart.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxbuttongroup.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxbuttons.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxcalendar.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxchart.core.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxchart.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxchart.rangeselector.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxcheckbox.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxcolorpicker.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxcombobox.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxcore.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxdata.export.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxdata.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxdatatable.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxdatetimeinput.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxdocking.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxdockpanel.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxdragdrop.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxdraw.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxdropdownbutton.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxdropdownlist.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxeditor.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxexpander.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxgauge.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxgrid.aggregates.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxgrid.columnsreorder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxgrid.columnsresize.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxgrid.edit.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxgrid.export.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxgrid.filter.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxgrid.grouping.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxgrid.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxgrid.pager.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxgrid.selection.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxgrid.sort.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxgrid.storage.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxinput.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxknockout.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxlistbox.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxlistmenu.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxmaskedinput.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxmenu.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxnavigationbar.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxnotification.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxnumberinput.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxpanel.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxpasswordinput.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxprogressbar.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxradiobutton.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxrangeselector.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxrating.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxresponse.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxscrollbar.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxscrollview.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxslider.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxsplitter.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxswitchbutton.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxtabs.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxtooltip.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxtouch.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxtree.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxtreegrid.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxtreemap.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxvalidator.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/jqxwindow.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/backImage.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/backgroundTop.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/bg_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/bg_black_horizontal.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/bg_blackhover.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/bg_blackhover_horizontal.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/bg_blackpressed.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/bg_blackpressed_horizontal.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/bg_blueenergy.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/bg_darkblue.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/bg_darkbluehover.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/bg_darkbluepressed.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/black_gradient.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/blackbackground.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/check_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/check_blue.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/check_blue_indeterminate.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/check_disabled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/check_indeterminate_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/check_indeterminate_disabled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/check_indeterminate_white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/check_lightblue.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/check_lightblue_indeterminate.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/check_white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/close.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/close_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/close_blue.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/close_white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/colorpicker/ReadMe.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/colorpicker/bar-hue.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/colorpicker/bar-saturation.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/colorpicker/map-hue.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/colorpicker/map-saturation-overlay.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/colorpicker/map-saturation.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/crosshair-white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/crosshair.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/darkness/ReadMe.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/darkness/ui-bg_flat_30_cccccc_40x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/darkness/ui-bg_flat_50_5c5c5c_40x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/darkness/ui-bg_glass_20_555555_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/darkness/ui-bg_glass_40_0078a3_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/darkness/ui-bg_glass_40_ffc73d_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/darkness/ui-bg_gloss-wave_25_333333_500x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/darkness/ui-bg_highlight-soft_80_eeeeee_1x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/darkness/ui-bg_inset-soft_25_000000_1x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/darkness/ui-bg_inset-soft_30_f58400_1x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/darkness/ui-icons_222222_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/darkness/ui-icons_4b8e0b_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/darkness/ui-icons_a83300_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/darkness/ui-icons_cccccc_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/darkness/ui-icons_ffffff_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/darkred_gradient.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/drag.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/dragcancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/error.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/filter.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/html_editor.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/html_editor_white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-calendar-white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-calendar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-cancel-white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-delete-white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-delete.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-down-blue.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-down-transparent.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-down-white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-down.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-edit-white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-edit.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-first-blue.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-first-transparent.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-first-white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-first.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-last-blue.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-last-transparent.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-last-white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-last.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-left-blue.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-left-transparent.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-left-white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-left.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-menu-minimized-white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-menu-minimized.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-right-blue.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-right-transparent.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-right-white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-right.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-save-white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-save.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-showpassword-white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-showpassword.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-up-blue.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-up-transparent.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-up-white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/icon-up.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/info.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/le-frog/ReadMe.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/le-frog/ui-bg_diagonals-small_0_aaaaaa_40x40.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/le-frog/ui-bg_diagonals-thick_15_444444_40x40.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/le-frog/ui-bg_diagonals-thick_95_ffdc2e_40x40.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/le-frog/ui-bg_glass_55_fbf5d0_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/le-frog/ui-bg_highlight-hard_30_285c00_1x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/le-frog/ui-bg_highlight-soft_33_3a8104_1x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/le-frog/ui-bg_highlight-soft_50_4eb305_1x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/le-frog/ui-bg_highlight-soft_60_4ca20b_1x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/le-frog/ui-bg_inset-soft_10_285c00_1x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/le-frog/ui-icons_4eb305_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/le-frog/ui-icons_72b42d_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/le-frog/ui-icons_cd0a0a_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/le-frog/ui-icons_ffffff_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/lightness/ReadMe.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/lightness/icon-first.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/lightness/icon-last.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/lightness/ui-bg_diagonals-thick_18_b81900_40x40.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/lightness/ui-bg_diagonals-thick_20_666666_40x40.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/lightness/ui-bg_flat_10_000000_40x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/lightness/ui-bg_glass_100_f6f6f6_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/lightness/ui-bg_glass_100_fdf5ce_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/lightness/ui-bg_glass_65_ffffff_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/lightness/ui-bg_gloss-wave_35_f6a828_500x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/lightness/ui-bg_highlight-soft_100_eeeeee_1x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/lightness/ui-bg_highlight-soft_75_ffe45c_1x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/lightness/ui-icons_222222_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/lightness/ui-icons_228ef1_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/lightness/ui-icons_ef8c08_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/lightness/ui-icons_ffd27a_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/lightness/ui-icons_ffffff_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/loader.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/mail.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/menubutton.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/metro-icon-down-white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/metro-icon-down.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/metro-icon-first-white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/metro-icon-first.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/metro-icon-last-white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/metro-icon-last.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/metro-icon-left-white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/metro-icon-left.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/metro-icon-right - Copy.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/metro-icon-right-white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/metro-icon-right.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/metro-icon-up-white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/metro-icon-up.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/multi-arrow.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/office-icon-down.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/office-icon-first.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/office-icon-last.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/office-icon-left.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/office-icon-right.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/office-icon-up.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/overcast/ReadMe.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/overcast/ui-bg_flat_0_aaaaaa_40x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/overcast/ui-bg_flat_0_eeeeee_40x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/overcast/ui-bg_flat_55_c0402a_40x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/overcast/ui-bg_flat_55_eeeeee_40x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/overcast/ui-bg_glass_100_f8f8f8_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/overcast/ui-bg_glass_35_dddddd_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/overcast/ui-bg_glass_60_eeeeee_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/overcast/ui-bg_inset-hard_75_999999_1x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/overcast/ui-bg_inset-soft_50_c9c9c9_1x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/overcast/ui-icons_3383bb_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/overcast/ui-icons_454545_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/overcast/ui-icons_70b2e1_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/overcast/ui-icons_999999_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/overcast/ui-icons_fbc856_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/plus.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/plus_white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/pointer.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/rangebar_classic.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/rangebar_darkblue.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/rangebar_shinyblack.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/rangebar_summer.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/red_arrow_down.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/red_arrow_up.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/red_gradient.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/redmond/ReadMe.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/redmond/icon-first.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/redmond/icon-last.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/redmond/ui-bg_flat_0_aaaaaa_40x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/redmond/ui-bg_flat_55_fbec88_40x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/redmond/ui-bg_glass_75_d0e5f5_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/redmond/ui-bg_glass_85_dfeffc_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/redmond/ui-bg_glass_95_fef1ec_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/redmond/ui-bg_gloss-wave_55_5c9ccc_500x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/redmond/ui-bg_inset-hard_100_f5f8f9_1x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/redmond/ui-bg_inset-hard_100_fcfdfd_1x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/redmond/ui-icons_217bc0_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/redmond/ui-icons_2e83ff_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/redmond/ui-icons_469bdd_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/redmond/ui-icons_6da8d5_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/redmond/ui-icons_cd0a0a_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/redmond/ui-icons_d8e7f3_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/redmond/ui-icons_f9bd01_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/roundbg_check_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/roundbg_check_disabled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/roundbg_check_indeterminate.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/roundbg_check_white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/roundbg_classic_hover.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/roundbg_classic_normal.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/roundbg_disabled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/search.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/search_white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/smoothness/ReadMe.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/smoothness/ui-bg_flat_0_aaaaaa_40x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/smoothness/ui-bg_flat_75_ffffff_40x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/smoothness/ui-bg_glass_55_fbf9ee_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/smoothness/ui-bg_glass_65_ffffff_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/smoothness/ui-bg_glass_75_dadada_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/smoothness/ui-bg_glass_75_e6e6e6_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/smoothness/ui-bg_glass_95_fef1ec_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/smoothness/ui-bg_highlight-soft_75_cccccc_1x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/smoothness/ui-icons_222222_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/smoothness/ui-icons_2e83ff_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/smoothness/ui-icons_454545_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/smoothness/ui-icons_888888_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/smoothness/ui-icons_cd0a0a_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sortasc.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sortascbutton.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sortdesc.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sortdescbutton.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sortremove.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/star.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/star_disabled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/star_hover.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/start/ReadMe.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/start/ui-bg_flat_55_999999_40x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/start/ui-bg_flat_75_aaaaaa_40x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/start/ui-bg_glass_45_0078ae_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/start/ui-bg_glass_55_f8da4e_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/start/ui-bg_glass_75_79c9ec_1x400.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/start/ui-bg_gloss-wave_45_e14f1c_500x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/start/ui-bg_gloss-wave_50_6eac2c_500x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/start/ui-bg_gloss-wave_75_2191c0_500x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/start/ui-bg_inset-hard_100_fcfdfd_1x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/start/ui-icons_0078ae_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/start/ui-icons_056b93_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/start/ui-icons_d8e7f3_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/start/ui-icons_e0fdff_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/start/ui-icons_f5e175_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/start/ui-icons_f7a50d_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/start/ui-icons_fcd113_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/success.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sunny/ReadMe.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sunny/ui-bg_diagonals-medium_20_d34d17_40x40.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sunny/ui-bg_flat_30_cccccc_40x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sunny/ui-bg_flat_50_5c5c5c_40x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sunny/ui-bg_gloss-wave_45_817865_500x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sunny/ui-bg_gloss-wave_60_fece2f_500x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sunny/ui-bg_gloss-wave_70_ffdd57_500x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sunny/ui-bg_gloss-wave_90_fff9e5_500x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sunny/ui-bg_highlight-soft_100_feeebd_1x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sunny/ui-bg_inset-soft_30_ffffff_1x100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sunny/ui-icons_3d3d3d_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sunny/ui-icons_bd7b00_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sunny/ui-icons_d19405_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sunny/ui-icons_eb990f_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sunny/ui-icons_ed9f26_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sunny/ui-icons_fadc7a_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/sunny/ui-icons_ffe180_256x240.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/tick.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/time.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/track_classic.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/track_darkblue.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/track_shinyblack.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/track_summer.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/warning.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/wp_check_indeterminate_white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/images/wp_check_white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.android.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.arctic.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.base.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.black.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.blackberry.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.bootstrap.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.classic.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.darkblue.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.energyblue.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.fresh.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.highcontrast.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.metro.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.metrodark.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.mobile.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.office.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.orange.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.shinyblack.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.summer.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.ui-darkness.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.ui-le-frog.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.ui-lightness.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.ui-overcast.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.ui-redmond.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.ui-smoothness.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.ui-start.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.ui-sunny.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.web.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jqwidgets/styles/jqx.windowsphone.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/trader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/trader.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/tradestation.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/tradestation.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/traderUtilLog.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/traderUtilLog.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -415,31 +27,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/TraderApp.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1305">
-              <caret line="87" column="23" selection-start-line="87" selection-start-column="23" selection-end-line="87" selection-end-column="23" />
+            <state relative-caret-position="109">
+              <caret line="165" lean-forward="true" selection-start-line="165" selection-end-line="165" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/tradestation.html">
+        <entry file="file://$PROJECT_DIR$/public/js/JournalTag.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
-              <caret line="38" selection-start-line="38" selection-end-line="38" />
+            <state relative-caret-position="157">
+              <caret line="97" column="27" selection-start-line="97" selection-start-column="27" selection-end-line="97" selection-end-column="27" />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/js/Card.jsx">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4621">
-              <caret line="75" column="25" selection-start-line="75" selection-start-column="25" selection-end-line="75" selection-end-column="25" />
+            <state relative-caret-position="109">
+              <caret line="939" column="18" selection-start-line="939" selection-start-column="11" selection-end-line="939" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -452,17 +59,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/trader.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6553">
+            <state relative-caret-position="11655">
               <caret line="777" column="84" selection-start-line="777" selection-start-column="84" selection-end-line="777" selection-end-column="84" />
-              <folding>
-                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#td#0;n#tr#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#td#1;n#tr#0;n#!!top" expanded="true" />
-                <element signature="e#29022#29061#0" />
-                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#td#0;n#tr#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#td#1;n#tr#0;n#!!top" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -470,8 +68,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/TraderJournal.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="19" selection-start-line="17" selection-start-column="10" selection-end-line="18" selection-end-column="18" />
+            <state relative-caret-position="109">
+              <caret line="41" column="10" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -479,8 +77,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/TraderLogin.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="50" column="55" selection-start-line="50" selection-start-column="55" selection-end-line="50" selection-end-column="55" />
+            <state relative-caret-position="15">
+              <caret line="22" column="46" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
             </state>
           </provider>
         </entry>
@@ -488,8 +86,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/traderRegister.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1983">
+            <state relative-caret-position="1650">
               <caret line="110" column="4" selection-start-line="110" selection-start-column="4" selection-end-line="110" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/js/JournalPosition.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="282">
+              <caret line="118" column="40" selection-start-line="118" selection-start-column="40" selection-end-line="118" selection-end-column="40" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/js/traderUtilLog.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="99">
+              <caret line="153" column="9" selection-start-line="153" selection-start-column="9" selection-end-line="153" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -505,14 +121,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Combo</find>
-      <find>positionSel</find>
-      <find>ConfigNameCombo</find>
-      <find>moved</find>
-      <find>dlg</find>
-      <find>r up</find>
-      <find>import</find>
-      <find>getAsyncMoveTran</find>
       <find>tran</find>
       <find>ref</find>
       <find>false</find>
@@ -535,6 +143,14 @@
       <find>cdp</find>
       <find>3</find>
       <find>TradeInfo</find>
+      <find>tradep</find>
+      <find>sw</find>
+      <find>radeperformanc</find>
+      <find>switchp</find>
+      <find>witchPosition</find>
+      <find>conso</find>
+      <find>debu</find>
+      <find>deb</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -566,8 +182,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Result.js" />
-        <option value="$PROJECT_DIR$/TradeLogInfo.js" />
         <option value="$PROJECT_DIR$/TradePerformanceInfo.js" />
         <option value="$PROJECT_DIR$/TradeDataRow.js" />
         <option value="$PROJECT_DIR$/TradeDataPeriod.js" />
@@ -610,13 +224,15 @@
         <option value="$PROJECT_DIR$/public/css/virdischem.css" />
         <option value="$PROJECT_DIR$/public/js/traderUtil.jsx" />
         <option value="$PROJECT_DIR$/public/js/Note.jsx" />
-        <option value="$PROJECT_DIR$/public/js/JournalPosition.jsx" />
         <option value="$PROJECT_DIR$/public/js/trader.jsx" />
         <option value="$PROJECT_DIR$/public/js/TraderJournal.jsx" />
-        <option value="$PROJECT_DIR$/public/js/TraderLogin.jsx" />
         <option value="$PROJECT_DIR$/public/tradestation.html" />
-        <option value="$PROJECT_DIR$/public/js/TraderApp.jsx" />
+        <option value="$PROJECT_DIR$/public/js/TraderLogin.jsx" />
         <option value="$PROJECT_DIR$/server.js" />
+        <option value="$PROJECT_DIR$/public/js/JournalPosition.jsx" />
+        <option value="$PROJECT_DIR$/public/js/TraderApp.jsx" />
+        <option value="$PROJECT_DIR$/public/js/JournalTag.jsx" />
+        <option value="$PROJECT_DIR$/public/js/traderUtilLog.jsx" />
       </list>
     </option>
   </component>
@@ -627,7 +243,7 @@
     <other-services-enabled>true</other-services-enabled>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="23" />
+    <option name="y" value="71" />
     <option name="width" value="1238" />
     <option name="height" value="728" />
   </component>
@@ -637,6 +253,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -659,7 +276,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -791,14 +407,9 @@
       <workItem from="1545156781392" duration="119000" />
       <workItem from="1545326249074" duration="103000" />
       <workItem from="1546195600215" duration="11074000" />
-      <workItem from="1563572839334" duration="10236000" />
-    </task>
-    <task id="LOCAL-00006" summary="tradeer import">
-      <created>1530828887238</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1530828887238</updated>
+      <workItem from="1563572839334" duration="12333000" />
+      <workItem from="1569172993908" duration="548000" />
+      <workItem from="1570913019134" duration="2975000" />
     </task>
     <task id="LOCAL-00007" summary="tradeer import">
       <created>1530835360024</created>
@@ -1136,11 +747,18 @@
       <option name="project" value="LOCAL" />
       <updated>1548353485492</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="tradeer import">
+      <created>1563729273741</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1563729273742</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1309106000" />
+    <option name="totallyTimeSpent" value="1314726000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1152,17 +770,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1238" height="728" extended-state="0" />
+    <frame x="0" y="71" width="1238" height="728" extended-state="0" />
     <layout>
       <window_info id="Structure" order="0" weight="0.24897288" />
-      <window_info id="npm" order="1" side_tool="true" />
+      <window_info id="npm" order="1" sideWeight="0.50117093" side_tool="true" weight="0.21528348" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info active="true" id="Project" order="3" visible="true" weight="0.21528348" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info id="Project" order="3" sideWeight="0.49882904" visible="true" weight="0.21528348" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" visible="true" weight="0.32861635" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32861635" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.19654088" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.8562038" visible="true" weight="0.3380503" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.8562038" visible="true" weight="0.3380503" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -1170,6 +787,7 @@
       <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49668324" weight="0.32861635" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.14379622" side_tool="true" weight="0.49842766" />
       <window_info anchor="bottom" id="Messages" order="10" />
+      <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -1209,6 +827,8 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="finishe register" />
     <MESSAGE value="finishe traaderjs - positions" />
     <MESSAGE value="tradeer log" />
@@ -1229,9 +849,9 @@
     <MESSAGE value="tradeer link positions" />
     <MESSAGE value="more journal stuff" />
     <MESSAGE value="loose focus on journal" />
-    <MESSAGE value="tradeer import" />
     <MESSAGE value="report mode" />
-    <option name="LAST_COMMIT_MESSAGE" value="report mode" />
+    <MESSAGE value="tradeer import" />
+    <option name="LAST_COMMIT_MESSAGE" value="tradeer import" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1272,11 +892,6 @@
           <option name="timeStamp" value="1009" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server.js</url>
-          <line>692</line>
-          <option name="timeStamp" value="1092" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/public/js/Note.jsx</url>
           <line>206</line>
           <option name="timeStamp" value="1106" />
@@ -1288,13 +903,19 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/public/js/JournalPosition.jsx</url>
-          <line>135</line>
+          <line>138</line>
           <option name="timeStamp" value="1118" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/public/js/traderUtil.jsx</url>
           <line>56</line>
           <option name="timeStamp" value="1128" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/server.js</url>
+          <line>948</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1129" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -1318,8 +939,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/serverold.js" />
-    <entry file="file://$PROJECT_DIR$/scratch.js" />
     <entry file="file://$PROJECT_DIR$/scr2.js" />
     <entry file="file://$PROJECT_DIR$/standaloneold.js" />
     <entry file="file://$PROJECT_DIR$/node_modules/request/request.js">
@@ -1336,13 +955,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/jqwidgets/jqxdatatable.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8745">
-          <caret line="6" column="67297" selection-start-line="6" selection-start-column="67297" selection-end-line="6" selection-end-column="67297" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/jqwidgets/jqxdatatable.js" />
     <entry file="file://$PROJECT_DIR$/node_modules/mysql/lib/Connection.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="107">
@@ -1367,32 +980,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TradePerformanceInfo.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TradeDataRow.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TradeDataPeriod.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TradeDataCache.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/TradePerformanceInfo.js" />
+    <entry file="file://$PROJECT_DIR$/TradeDataRow.js" />
+    <entry file="file://$PROJECT_DIR$/TradeDataPeriod.js" />
+    <entry file="file://$PROJECT_DIR$/TradeDataCache.js" />
     <entry file="file://$PROJECT_DIR$/Result.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/TradeDataRepository.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/TradeDataRepository.js" />
     <entry file="file://$PROJECT_DIR$/public/js/black-scholes.js" />
-    <entry file="file://$PROJECT_DIR$/MatrixRow.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="78" column="22" selection-start-line="78" selection-start-column="22" selection-end-line="78" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/MatrixRow.js" />
     <entry file="file://$PROJECT_DIR$/node_modules/npm/lib/outdated.js" />
     <entry file="file://$PROJECT_DIR$/public/js/TraderReport.jsx">
       <provider selected="true" editor-type-id="text-editor">
@@ -1436,20 +1033,8 @@
     <entry file="file://$PROJECT_DIR$/standalone.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Transaction.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="16" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TradePerformance.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="68" selection-start-line="6" selection-start-column="68" selection-end-line="6" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Transaction.js" />
+    <entry file="file://$PROJECT_DIR$/TradePerformance.js" />
     <entry file="file://$PROJECT_DIR$/Cookies.js" />
     <entry file="file://$PROJECT_DIR$/public/js/traderConfig.jsx">
       <provider selected="true" editor-type-id="text-editor">
@@ -1493,77 +1078,80 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/JournalPosition.jsx">
+    <entry file="file://$PROJECT_DIR$/TradeLogInfo.js" />
+    <entry file="file://$PROJECT_DIR$/public/tradestation.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="735">
-          <caret line="128" column="24" lean-forward="true" selection-start-line="128" selection-start-column="24" selection-end-line="128" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/trader.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6553">
-          <caret line="777" column="84" selection-start-line="777" selection-start-column="84" selection-end-line="777" selection-end-column="84" />
-          <folding>
-            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#1;n#tr#0;n#!!top" expanded="true" />
-            <element signature="e#29022#29061#0" />
-            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#1;n#tr#0;n#!!top" expanded="true" />
-          </folding>
+        <state relative-caret-position="570">
+          <caret line="38" selection-start-line="38" selection-end-line="38" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/Card.jsx">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/TraderJournal.jsx">
+    <entry file="file://$PROJECT_DIR$/TradeInfo.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/trader.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" selection-start-line="17" selection-start-column="10" selection-end-line="18" selection-end-column="18" />
+        <state relative-caret-position="11655">
+          <caret line="777" column="84" selection-start-line="777" selection-start-column="84" selection-end-line="777" selection-end-column="84" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/traderRegister.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1983">
+        <state relative-caret-position="1650">
           <caret line="110" column="4" selection-start-line="110" selection-start-column="4" selection-end-line="110" selection-end-column="4" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/TraderLogin.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="50" column="55" selection-start-line="50" selection-start-column="55" selection-end-line="50" selection-end-column="55" />
+        <state relative-caret-position="15">
+          <caret line="22" column="46" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/tradestation.html">
+    <entry file="file://$PROJECT_DIR$/public/js/TraderJournal.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="38" selection-start-line="38" selection-end-line="38" />
+        <state relative-caret-position="109">
+          <caret line="41" column="10" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/JournalPosition.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="118" column="40" selection-start-line="118" selection-start-column="40" selection-end-line="118" selection-end-column="40" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/TraderApp.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1305">
-          <caret line="87" column="23" selection-start-line="87" selection-start-column="23" selection-end-line="87" selection-end-column="23" />
+        <state relative-caret-position="109">
+          <caret line="165" lean-forward="true" selection-start-line="165" selection-end-line="165" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TradeInfo.js">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/public/js/JournalTag.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="97" column="27" selection-start-line="97" selection-start-column="27" selection-end-line="97" selection-end-column="27" />
+        </state>
+      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TradeLogInfo.js">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/public/js/traderUtilLog.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="99">
+          <caret line="153" column="9" selection-start-line="153" selection-start-column="9" selection-end-line="153" selection-end-column="9" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4621">
-          <caret line="75" column="25" selection-start-line="75" selection-start-column="25" selection-end-line="75" selection-end-column="25" />
+        <state relative-caret-position="109">
+          <caret line="939" column="18" selection-start-line="939" selection-start-column="11" selection-end-line="939" selection-end-column="18" />
         </state>
       </provider>
     </entry>
