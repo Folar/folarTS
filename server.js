@@ -24,12 +24,24 @@ let dbInfo = {
 
 }
 let token = C.MY_TOKEN;
+let connectCount = 0;
+function xxx() {
+    console.log("connectCount ="+connectCount);
+}
 
 function connectToDB() {
+    if(connectCount > 0)
+        xxx();
     var con = mysql.createConnection(dbInfo);
     con.connect();
+    connectCount++;
     return con;
 
+}
+
+function terminateConnect(con) {
+    con.end();
+    connectCount--;
 }
 
 app = express();
@@ -81,7 +93,7 @@ app.post('/login', function (req, res) {
         }
         let result = {email: name, badLogin: bl}
         res.json(result);
-        con.end();
+        terminateConnect(con);
     }).catch(function (err) {
         console.log("ERROR ERROR login " + err)
         return;
@@ -200,7 +212,7 @@ const register = async (con, data) => {
     let info = user.info;
     let cdu = await chkDuplicateUser(con, data);
     if (cdu.length > 0) {
-        con.end();
+        terminateConnect(con);
         let result = {user: data.email, duplicateUser: true};
         return result;
     }
@@ -210,7 +222,7 @@ const register = async (con, data) => {
     let cdc = await createDefaultConfig(con);
    // let cdp = await createDefaultPosition(con);
     let r = await updateCurrentConfigPosition(con, cdc.insertId,0);
-    con.end();
+    terminateConnect(con);
     user.info = new TradeInfo();
     user.info.currentConfigId = user.currentConfigId = cdc.insertId;
     user.info.config = user.config = new Config();
@@ -267,7 +279,7 @@ app.post('/newConfig', function (req, res) {
         info.config.configNames.push({name: name, idconfig: data.insertId});
         info.configNames = info.config.configNames
         res.json(info.config);
-        con.end();
+        terminateConnect(con);
     }).catch(function (err) {
         console.log("ERROR ERROR register " + err)
         return;
@@ -322,7 +334,7 @@ app.post('/chgposition', function (req, res) {
     // }
     let con = connectToDB();
     updateCurrentPosition(con, info.currentPositionId).then((data) => {
-        con.end();
+        terminateConnect(con);
         user.currentPosition = info.currentPosition;
         user.currentPositionId = info.currentPositionId;
 
@@ -366,7 +378,7 @@ app.post('/newPosition', function (req, res) {
         if (name == info2.positionNames[i].name) {
             let result = {dupName: name}
             res.json(result);
-            con.end();
+            terminateConnect(con);
             return;
         }
     }
@@ -377,7 +389,7 @@ app.post('/newPosition', function (req, res) {
 
         info.positionNames.push({name: name, idposition: data.insertId});
         res.json(info);
-        con.end();
+        terminateConnect(con);
     }).catch(function (err) {
         console.log("ERROR ERROR createposition " + err)
         return;
@@ -403,12 +415,12 @@ app.post('/newJournal', function (req, res) {
         if (name == info2.positionNames[i].name) {
             let result = {dupName: name}
             res.json(result);
-            con.end();
+            terminateConnect(con);
             return;
         }
     }
     newJournal(con, name, dt, tags).then(function (data) {
-        con.end();
+        terminateConnect(con);
         let result = {jid: data}
         res.json(result);
     }).catch(function (err) {
@@ -442,13 +454,13 @@ app.post('/modJournal', function (req, res) {
         if (name == info2.positionNames[i].name) {
             let result = {dupName: name}
             res.json(result);
-            con.end();
+            terminateConnect(con);
             return;
         }
     }
 
     modJournal(con, name, dt, id, tags).then(function (data) {
-        con.end();
+        terminateConnect(con);
         let result = {jid: id}
         res.json(result);
     }).catch(function (err) {
@@ -539,7 +551,7 @@ const setAsyncTags = async (con, journals, tagName) => {
         // }
     }
 
-    con.end();
+    terminateConnect(con);
 
 
     return;
@@ -594,7 +606,7 @@ const removeAsyncTags = async (con, journals, tagName) => {
         // }
     }
 
-    con.end();
+    terminateConnect(con);
 
 
     return;
@@ -620,7 +632,7 @@ const removeAsyncArchived = async (con, journals, tagName) => {
         let r = await getDataFromDB(con, sql);
     }
 
-    con.end();
+    terminateConnect(con);
 
 
     return;
@@ -647,7 +659,7 @@ const getAsyncTags = async (con, tagFlag, tag) => {
             " AND idposition = 0;"
 
         let journals = await getDataFromDB(con, sql);
-        con.end();
+        terminateConnect(con);
         let tagSet = new Set();
         for (let i in journals) {
             if (journals[i].tags.length != 0) {
@@ -932,7 +944,7 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
         }
 
     }
-    con.end();
+    terminateConnect(con);
    // console.log("jid =" + jid);
     return [jid, ops, retJournal, pid, tagArray];
 };
@@ -978,6 +990,7 @@ const getAsyncSaveNote = async (con, specificJID, specificPID, noteId, text, dt)
         }
 
     }
+    terminateConnect(con);
     return rid;
 }
 app.post('/saveNote', function (req, resp) {
@@ -989,6 +1002,7 @@ app.post('/saveNote', function (req, resp) {
         console.log("ERROR ERROR savenote " + err)
         return;
     });
+
 });
 
 
@@ -1025,7 +1039,7 @@ const getAsyncModTrans = async (con, trans) => {
             transactionStr[2] + " where idtransaction = " + transactionStr[0];
         let res = await getDataFromDB(con, sql);
     }
-    con.end();
+    terminateConnect(con);
     return [];
 };
 app.post('/modifytrans', function (req, resp) {
@@ -1050,7 +1064,7 @@ const getAsyncExport = async (con, pos, trans) => {
     }
     sql += ";";
     let data = await getDataFromDB(con, sql);
-    con.end();
+    terminateConnect(con);
     let mm = ["", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
     let froot = "positions_export_" + moment().format('YY-MM-DD_HH-mm') + ".csv"
     let fn = "/tmp/" + froot;
@@ -1156,7 +1170,7 @@ const getAsyncUpload = async (sel, pos, val) => {
             "NOW(),NOW());";
         r = await getDataFromDB(con, sql);
     }
-    con.end();
+    terminateConnect(con);
     return arr.length;
 };
 let lastTransTime = 0
