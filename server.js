@@ -328,7 +328,7 @@ app.post('/chgposition', function (req, res) {
 
         res.json(info);
     }).catch(function (err) {
-        console.log("ERROR ERROR config " + err)
+        console.log("ERROR chg position " + err)
         return;
     });
 });
@@ -941,12 +941,17 @@ app.post('/switchPosition', function (req, resp) { // switch journal
     let con = connectToDB();
     let obj = req.body;
     getAsyncTradePerformance(con, true, obj.jid, obj.pid, obj.tag).then((data) => {
-        resp.json({
+        resp.json({res:"OK",
             currentId: data[0], positions: data[1], dates: data[2], pid: data[3],
             tags: data[4], currentTag: user.currentTag
         });
     }).catch(function (err) {
-        console.log("ERROR ERROR switch positions " + err +"jid ="+ obj.jid+ " pid="+ obj.pid, + " tag="+obj.tag);
+        var d = Date(Date.now());
+
+        // Converting the number of millisecond in date string
+        let a = d.toString();
+        let er = "ERROR switch positions ("+a+")" + err +"jid ="+ obj.jid+ " pid="+ obj.pid + " tag="+obj.tag;
+        resp.json({res:er });
         return;
     });
 });
@@ -993,7 +998,7 @@ app.post('/report', function (req, resp) {
     getAsyncTradePerformance(con, false, -1, -1, -1).then((data) => {
         resp.json({data: data});
     }).catch(function (err) {
-        console.log("ERROR ERROR tradeperformance " + err)
+        console.log("ERROR report " + err)
         return;
     });
 });
@@ -1004,6 +1009,11 @@ app.post('/deleteposition', function (req, resp) {
         user.currentPositionId = data[0].idposition;
         user.currentPosition = data[0].name;
         resp.json({success: true});
+    }).catch(function (err) {
+        let dt = moment().format('YY-MM-DD_HH-mm');
+        let er = "ERROR deleteposition(" +dt+") "+ err + " pid ="+ data[0].idposition + " name= "+data[0].name;
+        console.log(er)
+        resp.json({success: false});
     });
 });
 
@@ -1250,11 +1260,17 @@ app.post('/upload', function (req, resp) {
     });
 
 });
+try {
+
+    var httpServer = http.createServer(app);
+
+    //Set to 3000, but can be any port, code will only come over https, even if you specified http in your Redirect URI
+    httpServer.listen(3000);
+} catch (e) {
+    consle.log ("SERVER err ("+moment().format('YY-MM-DD_HH-mm')+") "+err)
+
+}
 
 
-var httpServer = http.createServer(app);
-
-//Set to 3000, but can be any port, code will only come over https, even if you specified http in your Redirect URI
-httpServer.listen(3000);
 
 

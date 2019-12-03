@@ -28,7 +28,10 @@ var JournalPosition = React.createClass({
         var func = this.success;
         $.post("/switchPosition", {pid: this.props.pid, jid: this.props.jid, tag: "$USECURRENT"}, function (data) {
                 console.log("componentDidMount tag=$USECURRENT");
-                func(data);
+                if(data.res == "OK")
+                    func(data);
+                else
+                    alert (data.res)
                 //this.setState({busy: true});
             }
         ).fail(function() {
@@ -118,7 +121,10 @@ var JournalPosition = React.createClass({
         this.newTags = "$";
         console.log("switchPositiion sel"+sel);
         $.post("/switchPosition", {pid: id, jid: jid, tag: sel}, function (data) {
-            func(data);
+            if(data.res == "OK")
+                func(data);
+            else
+                alert (data.res);
         })
     },
     okNewJournal: function (val, junk, dt, tags) {
