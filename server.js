@@ -702,7 +702,7 @@ const getAsyncTags = async (con, tagFlag, tag) => {
         }
 
 
-        return [ops, tagArray];
+        return [ops, tagArray.sort()];
     }
 ;
 
@@ -893,6 +893,7 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
     if (tagSet.size != 0) {
         tagSet.forEach(v => tagArray.push(v));
     }
+    tagArray.sort();
     let retJournal = [];
     let start;
     if (journalAssigned) {
