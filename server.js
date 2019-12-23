@@ -656,7 +656,7 @@ const getAsyncTags = async (con, tagFlag, tag) => {
         }
         // get the general journals
         sql = "SELECT  idjournal, idposition, tags, name,createDate FROM journal  where iduser = " + user.idUser +
-            " AND idposition = 0;"
+            " AND idposition = 0 ORDER BY createdate ASC;"
 
         let journals = await getDataFromDB(con, sql);
         terminateConnect(con);
@@ -845,7 +845,7 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
     }
     // get the general journals
     sql = "SELECT  idjournal, idposition, tags, name,createDate FROM journal  where iduser = " + user.idUser +
-        " AND idposition = 0;"
+        " AND idposition = 0 ORDER BY createdate DESC;"
 
     let journals = await getDataFromDB(con, sql);
     let assignedJid = false;
