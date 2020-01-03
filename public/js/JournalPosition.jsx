@@ -18,7 +18,9 @@ var JournalPosition = React.createClass({
             dates: [],
             report: this.props.report,
             tags: [],
-            tagSel: "All"
+            tagSel: "All",
+            category:this.journalCategory(),
+            name : this.journalName()
 
         };
     },
@@ -63,6 +65,9 @@ var JournalPosition = React.createClass({
         // alert(this.state.currentId);
         for (let i in this.state.positions) {
             if (this.state.positions[i].jid == this.state.currentId) {
+                this.setState({category:this.journalCategory()});
+                this.setState({name:this.journalName()});
+                debugger;
                 if (this.state.positions[i].id != 0)
                     $("#mybidbuttonModala").addClass("disabled");
                 else
@@ -87,7 +92,18 @@ var JournalPosition = React.createClass({
     },
 
     getBG: function (item) {
-        let col = item.id == 0 ? "#7a414d" : "#20b2aa";
+        switch(item.category){
+            case "Todo":
+                col = "#20b2aa";
+                break;
+            case "Journal":
+                col = "#7a414d";
+                break;
+                case "Strategy":
+                col = "blue";
+                break;
+        }
+
         return item.jid == this.state.currentId ? "white" : col;
     },
     getButtonText: function (item) {
@@ -127,7 +143,7 @@ var JournalPosition = React.createClass({
                 alert (data.res);
         })
     },
-    okNewJournal: function (val, junk, dt, tags) {
+    okNewJournal: function (val, junk, dt, tags,category) {
         console.log("okNewJournal");
         let func = this.switchPosition;
         this.newTags = tags;
@@ -135,7 +151,8 @@ var JournalPosition = React.createClass({
             {
                 name: val,
                 dt: dt,
-                tags: tags
+                tags: tags,
+                category:category
             },
             function (data) {
                 if (data.dupName) {
@@ -148,7 +165,7 @@ var JournalPosition = React.createClass({
             alert("Server is not responding.");
         });
     },
-    okModJournal: function (val, junk, dt, tags) {
+    okModJournal: function (val, junk, dt, tags,category) {
         console.log("okModJournal");
         this.newTags = tags;
         let func = this.switchPosition;
@@ -157,7 +174,8 @@ var JournalPosition = React.createClass({
                 name: val,
                 dt: dt,
                 id: this.state.currentId,
-                tags: tags
+                tags: tags,
+                category:category
             },
             function (data) {
                 if (data.dupName) {
@@ -195,11 +213,33 @@ var JournalPosition = React.createClass({
         }
         return "";
     },
-    journalName: function () {
+    journalCategory: function () {
+
+        if(this.state == undefined)  return "Journal";
         for (let i in this.state.positions) {
             if (this.state.positions[i].jid == this.state.currentId) {
+                this.setState({category: this.state.positions[i].category});
+                return this.state.positions[i].category;
+
+            }
+        }
+        return "Journal";
+    },
+    switchCategories: function (id,name) {
+        debugger;
+        if(name == undefined)
+            this.setState({category: id,name:this.journalName()});
+        else
+             this.setState({category: id,name:name});
+
+    },
+    journalName: function () {
+        if(this.state == undefined)  return "";
+        for (let i in this.state.positions) {
+            if (this.state.positions[i].jid == this.state.currentId) {
+                this.setState({name: this.state.positions[i].name});
                 return this.state.positions[i].name;
-                break;
+
             }
         }
         return "";
@@ -299,7 +339,9 @@ var JournalPosition = React.createClass({
                                      genJournal={[]} gj="false" dt={this.journalDate()} tags={this.state.tags}
                                         setTags={this.journalTags()} rtags={[]}
                                         quit={this.refreshSelections}
-                                     okFunc={this.okModJournal} label="Name" initVal={this.journalName()}/>
+                                        category={this.state.category}
+                                        switchCategories={this.switchCategories}
+                                     okFunc={this.okModJournal} label="Name" initVal={this.state.name}/>
                         </Col> }
                         <Col xs={3}>
                             <h3> Journals </h3>
@@ -310,7 +352,9 @@ var JournalPosition = React.createClass({
                                         setTags={this.journalTags()} rtags={[]}
                                      genJournal={[]} gj="false" dt={this.formatDate()} tags={this.state.tags}
                                         quit={this.refreshSelections}
-                                     okFunc={this.okNewJournal} label="Name" initVal=""/>
+                                        category={this.state.category}
+                                        switchCategories={this.switchCategories}
+                                     okFunc={this.okNewJournal} label="Name" initVal={""}/>
                         </Col> }
                     </Row>
 

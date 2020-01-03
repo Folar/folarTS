@@ -18,7 +18,9 @@ var JournalDlg = React.createClass({
             mySet: new Set(),
             tagList: "",
             tags: this.props.tags,
-            rtags: this.props.rtags
+            rtags: this.props.rtags,
+            category:this.props.category
+
         };
     },
     nameTxt: "",
@@ -39,6 +41,11 @@ var JournalDlg = React.createClass({
     handleDateChange: function (e) {
         this.setState({dateText: e.target.value});
     },
+    switchCategories: function (e) {
+        var id = this.refs.categoreyCombo.getConfigName();
+        this.setState({category: id});
+
+    },
     handleChange: function (e) {
         this.setState({nameText: e.target.value});
         if (this.props.dlgType == 1) {
@@ -47,12 +54,13 @@ var JournalDlg = React.createClass({
             else
                 $("#okButton" + this.props.modal).addClass("disabled");
         }
+
     },
     ok: function (t) {
         if (this.props.dlgType == 1) {
             this.props.okFunc($(this.refs.nameTxt.getDOMNode())[0].value,
                 this.state.genJournalSel, $(this.refs.dateTxt.getDOMNode())[0].value,
-                this.state.tagList);
+                this.state.tagList,this.refs.categoreyCombo.getConfigName());
 
         } else
             this.props.okFunc(this.state.tagList, this.state.genJournalSel, 0, 0);
@@ -78,6 +86,7 @@ var JournalDlg = React.createClass({
         if (this.refs.dateTxt) {
             this.setState({dateText: this.props.dt});
             this.setState({nameText: this.props.initVal});
+            this.setState({category: this.props.category});
             if (this.props.initVal.length >  0)
                 $("#okButton" + this.props.modal).removeClass("disabled");
             if (this.props.title =="Modify General Journal"){
@@ -156,7 +165,7 @@ var JournalDlg = React.createClass({
     },
     render: function () {
 
-
+        console.log(" ddag cat = "+ this.props.category);
         if (this.nameTxt) this.nameTxt.value = this.state.nameText;
         if (this.dtTxt) this.dtTxt.value = this.state.dateText;
         if (this.tagTxt) this.tagTxt.value = this.state.tagText;
@@ -221,13 +230,24 @@ var JournalDlg = React.createClass({
                             <div>
 
                                 {this.props.dlgType == 1 ?
-                                    <Row xs={6} className="container">
+                                    <Row xs={9} className="container">
                                         <Col xs={3} className="positionLbl">
                                             {this.props.label}
                                         </Col>
                                         <Col xs={3} >
                                             <input onChange={this.handleChange} className="searchBox"
                                                                       ref="nameTxt"/>
+                                        </Col>
+                                        <Col xs={1} className="positionLbl">
+
+                                        </Col>
+                                        <Col xs={1} className="positionLbl">
+                                            Category
+                                        </Col>
+                                        <Col xs={1} >
+                                            <StockNameCombo ref="categoreyCombo" names={["Journal","Strategy","Todo"]}
+                                                            sel={this.state.category}
+                                                        switchConfig={this.switchCategories}/>
                                         </Col>
 
                                     </Row> : ""}

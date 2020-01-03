@@ -398,10 +398,13 @@ app.post('/newPosition', function (req, res) {
 
 });
 
-const newJournal = async (con, name, dt, tags) => {
+const newJournal = async (con, name, dt, tags, category) => {
+    let c = 0;
+    if(category == "Strategy") c = 1;
+    else if(category == "Todo") c = 2;
 
-    sql = "INSERT INTO journal (name, tags, openDate, createDate,modifyDate ,idposition,iduser) VALUES( '" + name +
-        "' ,'" + tags + "','" + dt + "', '" + dt + "','" + dt + "',0," + user.idUser + ");";
+    sql = "INSERT INTO journal (name, tags,category, openDate, createDate,modifyDate ,idposition,iduser) VALUES( '" + name +
+        "' ,'" + tags +  "' ," + c  + ",'" + dt + "', '" + dt + "','" + dt + "',0," + user.idUser + ");";
     r = await getDataFromDB(con, sql);
     return r.insertId;
 }
@@ -410,6 +413,7 @@ app.post('/newJournal', function (req, res) {
     let name = req.body.name;
     let dt = req.body.dt;
     let tags = req.body.tags;
+    let category = req.body.category;
     let info2 = user.info;
     for (let i in info2.positionNames) {
         if (name == info2.positionNames[i].name) {
@@ -419,7 +423,7 @@ app.post('/newJournal', function (req, res) {
             return;
         }
     }
-    newJournal(con, name, dt, tags).then(function (data) {
+    newJournal(con, name, dt, tags,category).then(function (data) {
         terminateConnect(con);
         let result = {jid: data}
         res.json(result);
@@ -431,10 +435,13 @@ app.post('/newJournal', function (req, res) {
 
 });
 
-const modJournal = async (con, name, dt, id, tags) => {
+const modJournal = async (con, name, dt, id, tags,category) => {
 
+    let c = 0;
+    if(category == "Strategy") c = 1;
+    else if(category == "Todo") c = 2;
 
-    var sql = "UPDATE journal SET  name = '" + name + "', tags = '" + tags + "'," +
+    var sql = "UPDATE journal SET  name = '" + name + "', tags = '" + tags + "',category = " + c + "," +
         "openDate = '" + dt + "', " +
         "createDate = '" + dt + "', modifyDate = '" +
         dt + "' where idJournal = " + id;
@@ -449,6 +456,7 @@ app.post('/modJournal', function (req, res) {
     let dt = req.body.dt;
     let id = req.body.id;
     let tags = req.body.tags;
+    let category = req.body.category;
     let info2 = user.info;
     for (let i in info2.positionNames) {
         if (name == info2.positionNames[i].name) {
@@ -459,7 +467,7 @@ app.post('/modJournal', function (req, res) {
         }
     }
 
-    modJournal(con, name, dt, id, tags).then(function (data) {
+    modJournal(con, name, dt, id, tags,category).then(function (data) {
         terminateConnect(con);
         let result = {jid: id}
         res.json(result);
@@ -844,8 +852,8 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
 
     }
     // get the general journals
-    sql = "SELECT  idjournal, idposition, tags, name,createDate FROM journal  where iduser = " + user.idUser +
-        " AND idposition = 0 ORDER BY createdate DESC;"
+    sql = "SELECT  idjournal, idposition, tags, name,createDate,category FROM journal  where iduser = " + user.idUser +
+        " AND idposition = 0 ORDER BY category, createdate DESC;"
 
     let journals = await getDataFromDB(con, sql);
     let assignedJid = false;
@@ -885,6 +893,7 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
                 jid: journals[i].idjournal,
                 name: journals[i].name,
                 tags: journals[i].tags,
+                category: ["Journal","Strategy","Todo"][journals[i].category],
                 date: moment(journals[i].createDate, 'YYYY-MM-DD HH:mm:ss').format("YYYY-MM-DD")
             });
         }
