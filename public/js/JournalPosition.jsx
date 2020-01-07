@@ -94,11 +94,13 @@ var JournalPosition = React.createClass({
     getBG: function (item) {
         switch(item.category){
             case "Todo":
-                col = "#20b2aa";
+                col = "#013220";
                 break;
             case "Journal":
                 col = "#7a414d";
                 break;
+
+
                 case "Strategy":
                 col = "blue";
                 break;

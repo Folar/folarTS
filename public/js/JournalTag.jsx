@@ -116,7 +116,19 @@ var JournalTag = React.createClass({
     },
 
     getBG: function (item) {
-        let col = item.id == 0 ? "#7a414d" : "#20b2aa";
+        switch(item.category){
+            case "Todo":
+                col = "#013220";
+                break;
+            case "Journal":
+                col = "#7a414d";
+                break;
+
+
+            case "Strategy":
+                col = "blue";
+                break;
+        }
         return this.state.mySet.has(item.jid) ? "white" : col;
     },
 

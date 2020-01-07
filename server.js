@@ -663,8 +663,8 @@ const getAsyncTags = async (con, tagFlag, tag) => {
             let re = await getDataFromDB(con, sql);
         }
         // get the general journals
-        sql = "SELECT  idjournal, idposition, tags, name,createDate FROM journal  where iduser = " + user.idUser +
-            " AND idposition = 0 ORDER BY createdate ASC;"
+        sql = "SELECT  idjournal, idposition, tags,category, name,createDate FROM journal  where iduser = " + user.idUser +
+            " AND idposition = 0 ORDER BY category, createdate ASC;"
 
         let journals = await getDataFromDB(con, sql);
         terminateConnect(con);
@@ -688,6 +688,7 @@ const getAsyncTags = async (con, tagFlag, tag) => {
                     jid: journals[i].idjournal,
                     name: journals[i].name,
                     tags: journals[i].tags,
+                    category: ["Journal","Strategy","Todo"][journals[i].category],
                     date: moment(journals[i].createDate, 'YYYY-MM-DD HH:mm:ss').format("YYYY-MM-DD")
                 });
             }
@@ -698,6 +699,7 @@ const getAsyncTags = async (con, tagFlag, tag) => {
                     id: 0,
                     jid: journals[i].idjournal,
                     name: journals[i].name,
+                    category: ["Journal","Strategy","Todo"][journals[i].category],
                     tags: journals[i].tags,
                     date: moment(journals[i].createDate, 'YYYY-MM-DD HH:mm:ss').format("YYYY-MM-DD")
                 });
