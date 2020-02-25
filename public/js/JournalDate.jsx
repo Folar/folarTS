@@ -132,12 +132,13 @@ var JournalDate = React.createClass({
 
         let newArray = this.state.dates;
 
-
-        let notes =
-            this.state.dates.map((item2, index2) => {
-                debugger;
-                item2.dateObj.entries.map((item, index) => {
-                debugger;
+        let days=[]
+        for(let i in this.state.dates) {
+            let dateObj = this.state.dates[i].dateObj;
+            debugger;
+            let notes =
+                dateObj.entries.map((item, index) => {
+                    debugger;
                     return (
                         <Row xs={12} className="container" key={item.jid + item.dt}>
                             <Note bg="#c0c0c0" fs="18px" fg="black" date={item.date} text={item.text}
@@ -148,7 +149,31 @@ var JournalDate = React.createClass({
                         </Row>
                     )
                 });
-            });
+            days.push(notes)
+
+        }
+
+        let dateEntries = this.state.dates.map((item, index) => {
+            return (
+                <div xs={10}>
+                    <Row xs={10} className="container" key={item.dateObj.date}>
+                        <Col xs={8}>
+                            <div >{item.dateObj.date}</div>
+                        </Col>
+                    </Row>
+                    <Row xs={10} className="container" key={item.dateObj.date+"77"}>
+                        <Col xs={1}/>
+                        <Col xs={8}>
+                            {days[index]}
+                        </Col>
+                    </Row>
+                </div>
+
+
+            )
+        });
+
+
         return (
             <div xs={12} className="container">
 
@@ -172,7 +197,7 @@ var JournalDate = React.createClass({
                         fontSize: "18px", alignItems: "left", overflow: "auto",
                         height: '60vh'
                     }}>
-                        {notes}
+                        {dateEntries}
                     </div>
                 </div>
 
