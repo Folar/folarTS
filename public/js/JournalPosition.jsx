@@ -67,7 +67,7 @@ var JournalPosition = React.createClass({
             if (this.state.positions[i].jid == this.state.currentId) {
                 this.setState({category:this.journalCategory()});
                 this.setState({name:this.journalName()});
-                debugger;
+
                 if (this.state.positions[i].id != 0)
                     $("#mybidbuttonModala").addClass("disabled");
                 else

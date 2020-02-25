@@ -8,10 +8,11 @@ var Input = ReactBootstrap.Input;
 var Table = ReactBootstrap.Table;
 const JOURNAL_POSITION = 0;
 const JOURNAL_REPORT = 1;
-const JOURNAL_TAG = 2;
-const JOURNAL_ARCHIVE = 3;
-const WEB_STATE_REG = 4;
-const WEB_STATE_LOGIN = 5;
+const JOURNAL_DATE = 2;
+const JOURNAL_TAG = 3;
+const JOURNAL_ARCHIVE = 4;
+const WEB_STATE_REG = 5;
+const WEB_STATE_LOGIN = 6;
 
 var MenuFolar = React.createClass({
 
@@ -133,6 +134,10 @@ var TraderApp = React.createClass({
                 page = <JournalPosition report="true" key={2}  jid={this.state.jid} pid={this.state.pid}
                                         switchJournal={this.switchJournal}/>;
                 break;
+            case JOURNAL_DATE:
+                page = <JournalDate report="true" key={2}  jid={this.state.jid} pid={this.state.pid}
+                                        switchJournal={this.switchJournal}/>;
+                break
             case JOURNAL_TAG:
                 page = <JournalTag tag="true" key={3}/>;
                 break;
@@ -173,7 +178,8 @@ var TraderApp = React.createClass({
                                 </Col>
                                 <Col xs={6}>
                                     <MenuFolar func={transition} focus="0"
-                                               items={ [{name: 'By Position', style: ''}, {name: 'Report', style: ''}, {name: 'Tag', style: ''},{name: 'Archived', style: ''}] }/>
+                                               items={ [{name: 'By Position', style: ''}, {name: 'Report', style: ''} , {name: 'Date', style: ''},
+                                                        {name: 'Tag', style: ''},{name: 'Archived', style: ''}] }/>
 
                                 </Col>
                                 <Col xs={4} className="menuSuffix">

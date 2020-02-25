@@ -25,12 +25,13 @@ let dbInfo = {
 }
 let token = C.MY_TOKEN;
 let connectCount = 0;
+
 function xxx() {
-    console.log("connectCount ="+connectCount);
+    console.log("connectCount =" + connectCount);
 }
 
 function connectToDB() {
-    if(connectCount > 0)
+    if (connectCount > 0)
         xxx();
     var con = mysql.createConnection(dbInfo);
     con.connect();
@@ -63,7 +64,7 @@ function login(con, name, pw) {
         "LEFT JOIN  user_info ON user.iduser = user_info.iduser   where userName ='" + name +
         "' and userPassword = '" + pw + "'";
 
-   // console.log("sql " + sql);
+    // console.log("sql " + sql);
     return new Promise((resolve, reject) => {
         con.query(sql, "", (err, rows) => {
             if (err)
@@ -220,8 +221,8 @@ const register = async (con, data) => {
     user.idUser = cu.insertId;
     let cui = await createUserInfo(con, data);
     let cdc = await createDefaultConfig(con);
-   // let cdp = await createDefaultPosition(con);
-    let r = await updateCurrentConfigPosition(con, cdc.insertId,0);
+    // let cdp = await createDefaultPosition(con);
+    let r = await updateCurrentConfigPosition(con, cdc.insertId, 0);
     terminateConnect(con);
     user.info = new TradeInfo();
     user.info.currentConfigId = user.currentConfigId = cdc.insertId;
@@ -400,11 +401,11 @@ app.post('/newPosition', function (req, res) {
 
 const newJournal = async (con, name, dt, tags, category) => {
     let c = 0;
-    if(category == "Strategy") c = 1;
-    else if(category == "Todo") c = 2;
+    if (category == "Strategy") c = 1;
+    else if (category == "Todo") c = 2;
 
     sql = "INSERT INTO journal (name, tags,category, openDate, createDate,modifyDate ,idposition,iduser) VALUES( '" + name +
-        "' ,'" + tags +  "' ," + c  + ",'" + dt + "', '" + dt + "','" + dt + "',0," + user.idUser + ");";
+        "' ,'" + tags + "' ," + c + ",'" + dt + "', '" + dt + "','" + dt + "',0," + user.idUser + ");";
     r = await getDataFromDB(con, sql);
     return r.insertId;
 }
@@ -423,7 +424,7 @@ app.post('/newJournal', function (req, res) {
             return;
         }
     }
-    newJournal(con, name, dt, tags,category).then(function (data) {
+    newJournal(con, name, dt, tags, category).then(function (data) {
         terminateConnect(con);
         let result = {jid: data}
         res.json(result);
@@ -435,11 +436,11 @@ app.post('/newJournal', function (req, res) {
 
 });
 
-const modJournal = async (con, name, dt, id, tags,category) => {
+const modJournal = async (con, name, dt, id, tags, category) => {
 
     let c = 0;
-    if(category == "Strategy") c = 1;
-    else if(category == "Todo") c = 2;
+    if (category == "Strategy") c = 1;
+    else if (category == "Todo") c = 2;
 
     var sql = "UPDATE journal SET  name = '" + name + "', tags = '" + tags + "',category = " + c + "," +
         "openDate = '" + dt + "', " +
@@ -467,7 +468,7 @@ app.post('/modJournal', function (req, res) {
         }
     }
 
-    modJournal(con, name, dt, id, tags,category).then(function (data) {
+    modJournal(con, name, dt, id, tags, category).then(function (data) {
         terminateConnect(con);
         let result = {jid: id}
         res.json(result);
@@ -495,7 +496,6 @@ const getDataFromDB = async (con, sql) => {
         });
     });
 };
-
 
 
 const getDataFromDBParam = async (con, sql, params) => {
@@ -573,7 +573,6 @@ const removeAsyncTags = async (con, journals, tagName) => {
     let ops = [];
 
 
-
     for (let i in journals) {
         sql = "SELECT  idjournal, tags FROM journal  where idjournal = " + journals[i] + " ;"
         let j = await getDataFromDB(con, sql);
@@ -581,7 +580,7 @@ const removeAsyncTags = async (con, journals, tagName) => {
         let existingTags = j[0].tags;
         let allTags = existingTags.split(",");
         let tmpSet = new Set();
-        for (let ii in allTags){
+        for (let ii in allTags) {
             if (!tagsForRemoval.includes(allTags[ii]))
                 tmpSet.add(allTags[ii]);
         }
@@ -659,7 +658,7 @@ const getAsyncTags = async (con, tagFlag, tag) => {
             sql = "UPDATE user SET   currentTag ='" + tag +
                 "' where iduser = " + user.idUser;
             user.currentTag = tag;
-           // console.log(`in getAsyncTag sql = ${sql}`);
+            // console.log(`in getAsyncTag sql = ${sql}`);
             let re = await getDataFromDB(con, sql);
         }
         // get the general journals
@@ -673,10 +672,10 @@ const getAsyncTags = async (con, tagFlag, tag) => {
             if (journals[i].tags.length != 0) {
                 let ts = journals[i].tags.split(',');
                 if (journals[i].tags.length != 0) {
-                    if(ts.includes("archived") && tagFlag == "true")
+                    if (ts.includes("archived") && tagFlag == "true")
                         continue;
                     for (let t in ts) {
-                        if(ts[t].trim().length== 0)
+                        if (ts[t].trim().length == 0)
                             continue;
                         tagSet.add(ts[t].trim());
                     }
@@ -688,7 +687,7 @@ const getAsyncTags = async (con, tagFlag, tag) => {
                     jid: journals[i].idjournal,
                     name: journals[i].name,
                     tags: journals[i].tags,
-                    category: ["Journal","Strategy","Todo"][journals[i].category],
+                    category: ["Journal", "Strategy", "Todo"][journals[i].category],
                     date: moment(journals[i].createDate, 'YYYY-MM-DD HH:mm:ss').format("YYYY-MM-DD")
                 });
             }
@@ -699,7 +698,7 @@ const getAsyncTags = async (con, tagFlag, tag) => {
                     id: 0,
                     jid: journals[i].idjournal,
                     name: journals[i].name,
-                    category: ["Journal","Strategy","Todo"][journals[i].category],
+                    category: ["Journal", "Strategy", "Todo"][journals[i].category],
                     tags: journals[i].tags,
                     date: moment(journals[i].createDate, 'YYYY-MM-DD HH:mm:ss').format("YYYY-MM-DD")
                 });
@@ -746,7 +745,8 @@ app.post('/tagJournals', function (req, resp) { // switch journal
         return;
     });
 
-});app.post('/removeJournalTags', function (req, resp) { // switch journal
+});
+app.post('/removeJournalTags', function (req, resp) { // switch journal
     let obj = req.body;
     let arr = obj["journals[]"];
     if (obj.len == 1)
@@ -780,9 +780,9 @@ app.post('/tagJournals', function (req, resp) { // switch journal
 app.post('/getTags', function (req, resp) { // switch journal
     let con = connectToDB();
     let obj = req.body;
-   // console.log(`flag = ${obj.tagFlag} jid = ${obj.tag}`);
+    // console.log(`flag = ${obj.tagFlag} jid = ${obj.tag}`);
     getAsyncTags(con, obj.tagFlag, obj.tag).then((data) => {
-        if(obj.tagFlag == "true" && data[0].length == 0){
+        if (obj.tagFlag == "true" && data[0].length == 0) {
 
             let con = connectToDB();
             getAsyncTags(con, obj.tagFlag, "All").then((data) => {
@@ -791,8 +791,7 @@ app.post('/getTags', function (req, resp) { // switch journal
                 console.log("ERROR ERROR gettags " + err);
                 return;
             });
-        }
-        else
+        } else
             resp.json({positions: data[0], tags: data[1], currentTag: user.currentTag});
     }).catch(function (err) {
         console.log("ERROR ERROR gettags " + err);
@@ -804,7 +803,11 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
     let tagSet = new Set();
 
     // figure out which positions are open
-
+    let s = "SELECT  j.name,j.tags,je.entry,je.tr_date " +
+        " FROM    tracker1db.journal j left join tracker1db.tr_journal_entries je  on j.idjournal  = je.journal_id " +
+        "where journal_id in (332,339)  and je.tr_date between adddate(now(),-7) and now() " +
+        " ORDER BY je.tr_date";
+    let dat = await getDataFromDB(con, s);
 
 
     // journal only code
@@ -818,31 +821,6 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
     let spid = specificPID != -1 ? specificPID : user.currentPositionId;
     let jid = specificJID;
     let gjDate = null;
-    // figure out the journal buttons
-    for (let tp in info) {
-        if (info[tp].status == "Open") {
-            if (!journalAssigned) {
-                journalAssigned = true;
-                pid = info[tp].id;
-                openDate = info[tp].openDate;
-            }
-
-            if (info[tp].id == spid) {
-                pid = spid;
-                openDate = info[tp].openDate;
-            }
-            sql = "SELECT  idjournal FROM journal where idposition = " + info[tp].id + ";";
-            let r = await getDataFromDB(con, sql);
-            if (pid == info[tp].id)
-                jid = r[0].idjournal;
-            ops.push({
-                id: info[tp].id,
-                jid: r[0].idjournal,
-                name: info[tp].name,
-                tags: "$N/A"
-            })
-        }
-    }
 
     // check for tag switch
     if (tag != "$USECURRENT" && tag != user.currentTag) {
@@ -873,10 +851,10 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
         journalAssigned = true;
         if (journals[i].tags.length != 0) {
             let ts = journals[i].tags.split(',');
-            if(ts.includes("archived"))
+            if (ts.includes("archived"))
                 continue;
             for (let t in ts) {
-                if(ts[t].trim().length== 0)
+                if (ts[t].trim().length == 0)
                     continue;
                 tagSet.add(ts[t].trim());
             }
@@ -895,7 +873,7 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
                 jid: journals[i].idjournal,
                 name: journals[i].name,
                 tags: journals[i].tags,
-                category: ["Journal","Strategy","Todo"][journals[i].category],
+                category: ["Journal", "Strategy", "Todo"][journals[i].category],
                 date: moment(journals[i].createDate, 'YYYY-MM-DD HH:mm:ss').format("YYYY-MM-DD")
             });
         }
@@ -957,15 +935,138 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
 
     }
     terminateConnect(con);
-   // console.log("jid =" + jid);
+    // console.log("jid =" + jid);
     return [jid, ops, retJournal, pid, tagArray];
 };
+
+
+const getAsyncDate = async (con, tag) => {
+    let info = [];
+    let tagSet = new Set();
+
+    // check for tag switch
+
+
+    if (tag != "$USECURRENT" && tag != user.currentTag) {
+        sql = "UPDATE user SET   currentTag ='" + tag +
+            "' where iduser = " + user.idUser;
+        user.currentTag = tag;
+
+        let re = await getDataFromDB(con, sql);
+
+    }
+
+
+    // journal only code
+
+    let ops = [];
+    let jids = []
+    let pid = -1;
+
+
+    // get the general journals
+    sql = "SELECT  idjournal, idposition, tags, name,createDate,category FROM journal  where iduser = " + user.idUser +
+        " AND idposition = 0 ORDER BY category, createdate DESC;"
+
+    let journals = await getDataFromDB(con, sql);
+    let assignedJid = false;
+    for (let i in journals) {
+
+
+        journalAssigned = true;
+        if (journals[i].tags.length != 0) {
+            let ts = journals[i].tags.split(',');
+            if (ts.includes("archived"))
+                continue;
+            for (let t in ts) {
+                if (ts[t].trim().length == 0)
+                    continue;
+                tagSet.add(ts[t].trim());
+            }
+        }
+        if (hasTag("archived", journals[i].tags)) {
+            continue;
+        }
+        if (user.currentTag == "All" || hasTag(user.currentTag, journals[i].tags)) {
+
+            jids.push(journals[i].idjournal);
+        }
+    }
+    let tagArray = ["All"];
+    if (tagSet.size != 0) {
+        tagSet.forEach(v => tagArray.push(v));
+    }
+    tagArray.sort();
+
+    let istr = "";
+    for (let i in jids) {
+        if (istr.length > 0)
+            istr += ",";
+        istr += jids[i];
+    }
+    let s = "SELECT  j.name,j.idjournal,je.entry,je.id,je.tr_date " +
+        " FROM    tracker1db.journal j left join tracker1db.tr_journal_entries je  on j.idjournal  = je.journal_id " +
+        "where journal_id in (" + istr + ")  and je.tr_date between adddate(now(),-3) and now() " +
+        " ORDER BY je.tr_date";
+    let dat = await getDataFromDB(con, s);
+
+    let dates = [];
+
+    if (dat.length > 0) {
+        let dateRaw = moment(dat[0].tr_date).format('YYYY-MM-DD');
+        let dateObj = {date: moment(dat[0].tr_date).format('dddd MMMM Do'), entries: []};
+        let last = moment(dat[dat.length -1].tr_date).format('YYYY-MM-DD');
+        for (let i in dat) {
+            if (moment(dat[i].tr_date).format('YYYY-MM-DD') != dateRaw) {
+                dates.push({dateObj});
+                dateObj = {date: moment(dat[i].tr_date).format('dddd MMMM Do'), entries: []};
+                dateRaw = moment(dat[i].tr_date).format('YYYY-MM-DD');
+            }
+
+            dateObj.entries.push(
+                {
+                    id: dat[i].id,
+                    jid: dat[i].idjournal,
+                    date: dat[i].name,
+                    text: dat[i].entry,
+                    dt: moment(dat[i].tr_date).format('YYYY-MM-DD'),
+                    last: last == moment(dat[i].tr_date).format('YYYY-MM-DD')
+                });
+        }
+        dates.push({dateObj});
+    }
+
+    terminateConnect(con);
+
+    return [dates, tagArray];
+};
+
+
+app.post('/switchPositionForDate', function (req, resp) { // switch journal
+    let con = connectToDB();
+    let obj = req.body;
+    getAsyncDate(con, obj.tag).then((data) => {
+        resp.json({
+            res: "OK",
+            dates: data[0], tags: data[1], currentTag: user.currentTag
+        });
+    }).catch(function (err) {
+        var d = Date(Date.now());
+
+        // Converting the number of millisecond in date string
+        let a = d.toString();
+        let er = "ERROR switch positions (" + a + ")" + err + " tag=" + obj.tag;
+        resp.json({res: er});
+        return;
+    });
+});
 
 app.post('/switchPosition', function (req, resp) { // switch journal
     let con = connectToDB();
     let obj = req.body;
     getAsyncTradePerformance(con, true, obj.jid, obj.pid, obj.tag).then((data) => {
-        resp.json({res:"OK",
+        resp.json({
+            res: "OK",
             currentId: data[0], positions: data[1], dates: data[2], pid: data[3],
             tags: data[4], currentTag: user.currentTag
         });
@@ -974,8 +1075,8 @@ app.post('/switchPosition', function (req, resp) { // switch journal
 
         // Converting the number of millisecond in date string
         let a = d.toString();
-        let er = "ERROR switch positions ("+a+")" + err +"jid ="+ obj.jid+ " pid="+ obj.pid + " tag="+obj.tag;
-        resp.json({res:er });
+        let er = "ERROR switch positions (" + a + ")" + err + "jid =" + obj.jid + " pid=" + obj.pid + " tag=" + obj.tag;
+        resp.json({res: er});
         return;
     });
 });
@@ -1037,7 +1138,7 @@ app.post('/deleteposition', function (req, resp) {
         resp.json({success: true});
     }).catch(function (err) {
         let dt = moment().format('YY-MM-DD_HH-mm');
-        let er = "ERROR deleteposition(" +dt+") "+ err + " pid ="+ data[0].idposition + " name= "+data[0].name;
+        let er = "ERROR deleteposition(" + dt + ") " + err + " pid =" + data[0].idposition + " name= " + data[0].name;
         console.log(er)
         resp.json({success: false});
     });
@@ -1069,6 +1170,7 @@ const getAsyncExport = async (con, pos, trans) => {
     if (pos == -1) {
         pos = user.currentPositionId;
     }
+
     let sql = "SELECT  strike,qty,type,action,symbol,price, t.opra,t.transaction_time FROM position_transaction pt" +
         "  left join transaction t on  pt.idtransaction = t.idtransaction where idposition in (" + pos + ")";
     if (trans != undefined) {
@@ -1293,7 +1395,7 @@ try {
     //Set to 3000, but can be any port, code will only come over https, even if you specified http in your Redirect URI
     httpServer.listen(3000);
 } catch (e) {
-    consle.log ("SERVER err ("+moment().format('YY-MM-DD_HH-mm')+") "+err)
+    consle.log("SERVER err (" + moment().format('YY-MM-DD_HH-mm') + ") " + err)
 
 }
 

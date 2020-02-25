@@ -216,11 +216,7 @@ var Note = React.createClass({
                     </Col>
                     <Col xs={1}>
                     </Col>
-                    {false && <Col xs={1}>
-                        <button id={this.props.idx} type="button" className="btn btn-primary"
-                                style={{backgroundColor: "blue", color: "white"}}
-                                onClick={this.hitButton}>{this.state.buttonText}</button>
-                    </Col>}
+
                 </Row>
                 {this.state.mode == 2 &&
                 <Row xs={10}>
