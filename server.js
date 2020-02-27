@@ -802,12 +802,7 @@ const getAsyncTradePerformance = async (con, journal, specificJID, specificPID, 
     let info = [];
     let tagSet = new Set();
 
-    // figure out which positions are open
-    let s = "SELECT  j.name,j.tags,je.entry,je.tr_date " +
-        " FROM    tracker1db.journal j left join tracker1db.tr_journal_entries je  on j.idjournal  = je.journal_id " +
-        "where journal_id in (332,339)  and je.tr_date between adddate(now(),-7) and now() " +
-        " ORDER BY je.tr_date";
-    let dat = await getDataFromDB(con, s);
+
 
 
     // journal only code
