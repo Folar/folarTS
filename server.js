@@ -1000,7 +1000,7 @@ const getAsyncDate = async (con, tag) => {
         istr += jids[i];
     }
     let s = "SELECT  j.name,j.idjournal,je.entry,je.id,je.tr_date " +
-        " FROM    tracker1db.journal j left join tracker1db.tr_journal_entries je  on j.idjournal  = je.journal_id " +
+        " FROM   journal j left join tr_journal_entries je  on j.idjournal  = je.journal_id " +
         "where journal_id in (" + istr + ")  and je.tr_date between adddate(now(),-3) and now() " +
         " ORDER BY je.tr_date";
     let dat = await getDataFromDB(con, s);
