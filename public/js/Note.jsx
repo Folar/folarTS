@@ -27,7 +27,8 @@ var Note = React.createClass({
     },
     componentDidMount: function () {
 
-
+        if(this.state.mode == 2)
+            this.adjustHeight();
         // var func = this.success;
         // $.post("/report", {xxx: ""}, function (data) {
         //         func(data);
